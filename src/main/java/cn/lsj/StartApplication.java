@@ -1,0 +1,28 @@
+package cn.lsj;
+
+import cn.lsj.netty.NettyServer;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+/**
+ * @Auther: Lushunjian
+ * @Date: 2018/8/21 22:55
+ * @Description:
+ */
+@SpringBootApplication
+public class StartApplication implements CommandLineRunner {
+
+    @Autowired
+    private NettyServer nettyServer;
+
+    public static void main(String[] args) {
+        SpringApplication.run(StartApplication.class, args);
+    }
+
+    @Override
+    public void run(String... strings) {
+       nettyServer.start();
+    }
+}
