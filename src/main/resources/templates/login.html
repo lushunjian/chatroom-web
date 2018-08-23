@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <link th:href="@{semantic/semantic.min.css}" rel="stylesheet"/>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+</head>
+<body data-th-style="'background:url(' + @{/image/340610.jpg} + '); background-repeat:no-repeat; background-attachment: fixed; background-size: cover;'">
+<div style="height: 15%;width: 100%"></div>
+<div class="ui inverted red card" style="width: 700px;height: 550px;margin-left: auto;margin-right: auto;padding-top: 30px;padding-left: 30px;padding-right: 30px;display:none" id="loginDiv">
+    <h2 class="ui header">欢迎来到我们的站点！ </h2>
+    <br>
+    <div class="ui top attached tabular menu">
+        <a class="item active" data-tab="first">账号登录</a>
+        <a class="item" data-tab="second">用户注册</a>
+    </div>
+    <div class="ui bottom attached tab segment active" data-tab="first" style="height: 380px">
+        <form class="ui form" action="/check" method="post">
+            <div class="field">
+                <label>账号</label>
+                <input type="text" name="userName" placeholder="userName">
+            </div>
+            <div class="field">
+                <label>密码</label>
+                <input type="text" name="passWord" placeholder="passWord">
+            </div><br>
+            <div class="ui toggle checkbox">
+                <input type="checkbox" name="public">
+                <label>记住我</label>
+            </div>
+            <button class="ui primary button" type="submit" style="width:18%;margin-left: 63%">登录</button><br><br><br>
+            <a href="javascript:void(0);" >忘记密码？</a><a href="javascript:void(0);" style="margin-left: 30px">第三方登录</a>
+            <div class="ui red message" data-th-if="${message}">
+                <i class="close icon"></i>
+                <div class="header">抱歉 </div>
+                <p>您的账号或密码错误，登录失败!</p>
+            </div>
+        </form>
+    </div>
+    <div class="ui bottom attached tab segment" data-tab="second" style="height: 380px">
+        <form class="ui form" action="/register" method="post">
+            <div class="field">
+                <label>账号</label>
+                <input type="text" name="userName" placeholder="userName">
+            </div>
+            <div class="field">
+                <label>密码</label>
+                <input type="text" name="passWord" placeholder="passWord">
+            </div>
+            <div class="field">
+                <label>确认密码</label>
+                <input type="text" name="passWordConfirm" placeholder="confirm passWord">
+            </div>
+            <div class="two fields">
+                <div class="field">
+                    <label>电话</label>
+                    <input type="text" name="userTel" placeholder="phone">
+                </div>
+                <div class="field">
+                    <label>年龄</label>
+                    <input type="text" name="userAge" placeholder="age">
+                </div>
+            </div>
+            <button class="ui primary button" type="submit" style="width:18%;margin-left: 81%">提交</button><br>
+        </form>
+    </div>
+</div>
+
+</body>
+<script th:src="@{jquery-3.3.1.min.js}" type="text/javascript"></script>
+<script th:src="@{semantic/semantic.min.js}"></script>
+<script th:inline="javascript">
+    $('.menu .item').tab();
+
+    $('.message .close')
+        .on('click', function() {
+            $(this)
+                .closest('.message')
+                .transition('fade')
+            ;
+        })
+    ;
+
+    $("#loginDiv").fadeIn(1500);
+</script>
+</html>

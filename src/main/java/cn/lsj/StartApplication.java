@@ -14,8 +14,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class StartApplication implements CommandLineRunner {
 
+    private final NettyServer nettyServer;
+
     @Autowired
-    private NettyServer nettyServer;
+    public StartApplication(NettyServer nettyServer) {
+        this.nettyServer = nettyServer;
+    }
 
     public static void main(String[] args) {
         SpringApplication.run(StartApplication.class, args);

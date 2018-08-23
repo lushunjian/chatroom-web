@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
  * @Date: 2018/8/21 22:57
  * @Description: 支持对象存储，使用execute()方法，redis保存的数据会在内存和硬盘上存储，需要做序列化。
  */
-@Service("redisService")
+//@Service("redisService")
 public class RedisService {
 
     @Resource
