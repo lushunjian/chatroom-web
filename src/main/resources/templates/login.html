@@ -20,17 +20,17 @@
         <form class="ui form" action="/check" method="post">
             <div class="field">
                 <label>账号</label>
-                <input type="text" name="userName" placeholder="userName">
+                <input type="text" name="userName" placeholder="userName" />
             </div>
             <div class="field">
                 <label>密码</label>
-                <input type="text" name="passWord" placeholder="passWord">
-            </div><br>
+                <input type="text" name="passWord" placeholder="passWord" />
+            </div>
             <div class="ui toggle checkbox">
                 <input type="checkbox" name="public">
                 <label>记住我</label>
             </div>
-            <button class="ui primary button" type="submit" style="width:18%;margin-left: 63%">登录</button><br><br><br>
+            <button class="ui primary button" type="submit" style="width:18%;margin-left: 63%">登录</button>
             <a href="javascript:void(0);" >忘记密码？</a><a href="javascript:void(0);" style="margin-left: 30px">第三方登录</a>
             <div class="ui red message" data-th-if="${message}">
                 <i class="close icon"></i>
@@ -43,27 +43,27 @@
         <form class="ui form" action="/register" method="post">
             <div class="field">
                 <label>账号</label>
-                <input type="text" name="userName" placeholder="userName">
+                <input type="text" name="userName" placeholder="userName" />
             </div>
             <div class="field">
                 <label>密码</label>
-                <input type="text" name="passWord" placeholder="passWord">
+                <input type="text" name="passWord" placeholder="passWord" />
             </div>
             <div class="field">
                 <label>确认密码</label>
-                <input type="text" name="passWordConfirm" placeholder="confirm passWord">
+                <input type="text" name="passWordConfirm" placeholder="confirm passWord" />
             </div>
             <div class="two fields">
                 <div class="field">
                     <label>电话</label>
-                    <input type="text" name="userTel" placeholder="phone">
+                    <input type="text" name="userTel" placeholder="phone" />
                 </div>
                 <div class="field">
                     <label>年龄</label>
-                    <input type="text" name="userAge" placeholder="age">
+                    <input type="text" name="userAge" placeholder="age" />
                 </div>
             </div>
-            <button class="ui primary button" type="submit" style="width:18%;margin-left: 81%">提交</button><br>
+            <button class="ui primary button" type="submit" style="width:18%;margin-left: 81%">提交</button>
         </form>
     </div>
 </div>
@@ -80,9 +80,7 @@
                 .closest('.message')
                 .transition('fade')
             ;
-        })
-    ;
-
+        });
     $("#loginDiv").fadeIn(1500);
 </script>
 </html>

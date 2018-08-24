@@ -14,7 +14,7 @@ public class LoginController {
 
     @GetMapping("/login")
     public String getLoginHtml(){
-        return "/login";
+        return "/test";
     }
 
 }
