@@ -26,12 +26,16 @@
                     <label>密码</label>
                     <input type="text" name="passWord" placeholder="passWord" />
                 </div>
-                <div class="ui toggle checkbox">
-                    <input type="checkbox" name="public" />
-                    <label>记住我</label>
+                <div class="field">
+                    <div class="ui toggle checkbox">
+                        <input type="checkbox" name="public" />
+                        <label>记住我</label>
+                    </div>
+                    <button class="ui primary button" type="submit" style="width:18%;margin-left: 63%">登录</button>
                 </div>
-                <button class="ui primary button" type="submit" style="width:18%;margin-left: 63%">登录</button>
-                <a href="javascript:void(0);" >忘记密码？</a><a href="javascript:void(0);" style="margin-left: 30px">第三方登录</a>
+                <div class="field">
+                    <a href="javascript:void(0);" >忘记密码？</a><a href="javascript:void(0);" style="margin-left: 30px">第三方登录</a>
+                </div>
                 <div class="ui red message" data-th-if="${message}">
                     <i class="close icon"></i>
                     <div class="header">抱歉 </div>
