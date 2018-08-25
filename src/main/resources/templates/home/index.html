@@ -27,22 +27,112 @@
             </tbody>
         </table>
 
-        <!-- 好友列表 -->
-        <div class="ui link items" data-th-each="friend : ${friendList}">
-            <div class="item">
-                <div class="ui tiny image">
-                    <img src="/semantic/themes/default/assets/images/jenny.jpg">
-                </div>
-                <div class="content">
-                    <div class="header" data-th-text="${friend.friendName}"></div>
-                    <div class="description">
-                        <p data-th-text="${friend.friendDescribe}"></p>
-                    </div>
-                    <div class="extra">
-                        <button class="ui orange button"><i class="user icon"></i> chat </button>
+        <!-- 页面布局 -->
+        <div class="ui segment" style="margin-right: 16%;margin-left: 16%">
+            <!-- 左边部分 -->
+            <div class="ui left very close rail">
+                <div class="ui segment">
+                    <!-- 好友列表 -->
+                    <div class="ui styled accordion">
+                        <div class="title"><i class="dropdown icon"></i> 特别关心 </div>
+                        <div class="content">
+                            <p>没有特别关心的人哦</p>
+                        </div>
+                        <div class="title"><i class="dropdown icon"></i> 我的好友 </div>
+                        <div class="content">
+                            <div class="ui middle aligned animated selection divided list" data-th-each="friend : ${friendList}">
+                                <div class="item">
+                                    <img class="ui avatar image" src="/semantic/themes/default/assets/images/jenny.jpg">
+                                    <div class="content">
+                                        <a class="header" data-th-text="${friend.friendName}"></a>
+                                        <div class="description" data-th-text="${friend.friendDescribe}"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="title"><i class="dropdown icon"></i> 我的群聊 </div>
+                        <div class="content">
+                            <p>没有加入的群聊</p>
+                        </div>
+                        <div class="title"><i class="dropdown icon"></i> 黑名单 </div>
+                        <div class="content">
+                            <p>黑名单中空空如也</p>
+                        </div>
                     </div>
                 </div>
             </div>
+            <!-- 右边部分 -->
+            <!-- 正在聊天的好友信息，群成员信息 -->
+            <div class="ui right very close rail">
+                <div class="ui segment">
+                    <div class="ui card">
+                        <div class="image">
+                            <img src="/semantic/themes/default/assets/images/watchmen-horizontal.jpg">
+                        </div>
+                        <div class="content">
+                            <div class="header">Watchmen</div>
+                            <div class="description">
+                                In a gritty and alternate 1985 the glory days of costumed vigilantes have been brought to a close by a government crackdown, but after one of the masked veterans is brutally murdered an investigation into the killer is initiated.
+                            </div>
+                        </div>
+                        <div class="ui two bottom attached buttons">
+                            <div class="ui button">
+                                <i class="add icon"></i>
+                                Queue
+                            </div>
+                            <div class="ui primary button">
+                                <i class="play icon"></i>
+                                Watch
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 中间聊天框 -->
+            <div>
+                <div class="ui comments"  style="display: inline">
+                    <h3 class="ui dividing header">Comments</h3>
+                    <div class="chat content">
+                        <div class="comment">
+                            <a class="avatar">
+                                <img src="/semantic/themes/default/assets/images/matt.jpg">
+                            </a>
+                            <div class="content">
+                                <a class="author">Matt</a>
+                                <div class="metadata">
+                                    <span class="date">今天下午 5:42</span>
+                                </div>
+                                <div class="text">太赞了！ </div>
+                            </div>
+                        </div>
+                        <div class="comment">
+                            <a class="avatar">
+                                <img src="/semantic/themes/default/assets/images/matt.jpg">
+                            </a>
+                            <div class="content">
+                                <a class="author">Joe Henderson</a>
+                                <div class="metadata">
+                                    <span class="date">5 天以前</span>
+                                </div>
+                                <div class="text">老兄，这太棒了。非常感谢。 </div>
+                            </div>
+                        </div>
+                    </div>
+                    <form class="ui reply form">
+                        <div class="field">
+                            <textarea></textarea>
+                        </div>
+                        <div class="ui blue labeled submit icon button"><i class="icon edit"></i> 发送消息</div>
+                    </form>
+                </div>
+
+                <!-- 好友信息，群信息 -->
+                <div class="ui card">
+
+                </div>
+            </div>
+
         </div>
 
     </div>
@@ -51,6 +141,10 @@
 <script th:src="@{semantic/semantic.min.js}"></script>
 <script th:inline="javascript">
     $('.menu .item').tab();
+
+    $('.ui.accordion')
+        .accordion()
+    ;
 
     $('.message .close')
         .on('click', function() {
