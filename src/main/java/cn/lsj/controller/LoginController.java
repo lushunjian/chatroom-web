@@ -1,6 +1,8 @@
 package cn.lsj.controller;
 
+import cn.lsj.domain.Friend;
 import cn.lsj.domain.User;
+import cn.lsj.service.FriendService;
 import cn.lsj.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @Auther: Lushunjian
@@ -22,6 +25,9 @@ public class LoginController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    FriendService friendService;
 
     @GetMapping("/login")
     public String getLoginHtml(HttpServletRequest request){
@@ -39,8 +45,10 @@ public class LoginController {
     @RequestMapping("/home")
     public String getHome(HttpServletRequest request){
         String userAccount = request.getParameter("userAccount");
+        List<Friend> friendList = friendService.getFriendByAccount(userAccount);
         User user = (User) request.getSession().getAttribute(userAccount);
         request.setAttribute("user",user);
+        request.setAttribute("friendList",friendList);
         return "/home/index";
     }
 

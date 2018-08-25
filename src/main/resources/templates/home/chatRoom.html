@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{semantic/semantic.min.css}" rel="stylesheet"/>
+    <title>Title</title>
+</head>
+<body>
+    <!-- 聊天框 -->
+    <div class="ui comments">
+        <div class="comment">
+            <a class="avatar">
+                <img src="/images/avatar/small/joe.jpg">
+            </a>
+            <div class="content">
+                <a class="author">Joe Henderson</a>
+                <div class="metadata">
+                    <div class="date">1 天以前</div>
+                </div>
+                <div class="text">
+                    <p>The hours, minutes and seconds stand as visible reminders that your effort put them all there. </p>
+                    <p>Preserve until your next run, when the watch lets you see how Impermanent your efforts are.</p>
+                </div>
+                <div class="actions">
+                    <a class="reply">Reply</a>
+                </div>
+            </div>
+        </div>
+        <div class="comment">
+            <a class="avatar">
+                <img src="/images/avatar/small/christian.jpg">
+            </a>
+            <div class="content">
+                <a class="author">Christian Rocha</a>
+                <div class="metadata">
+                    <div class="date">2 天前</div>
+                </div>
+                <div class="text">我转推了该信息。 </div>
+                <div class="actions">
+                    <a class="reply">Reply</a>
+                </div>
+            </div>
+        </div>
+        <form class="ui reply form">
+            <div class="field">
+                <textarea></textarea>
+            </div>
+            <div class="ui primary submit labeled icon button"><i class="icon edit"></i> Add Comment </div>
+        </form>
+    </div>
+</body>
+<script th:src="@{jquery-3.3.1.min.js}" type="text/javascript"></script>
+<script th:src="@{semantic/semantic.min.js}"></script>
+</html>

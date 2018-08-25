@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.lsj.dao.FriendDao">
+
+    <!--auto generated Code-->
+    <resultMap id="friend" type="cn.lsj.domain.Friend">
+        <result column="id" property="id"/>
+        <result column="friend_name" property="friendName"/>
+        <result column="friend_account" property="friendAccount"/>
+        <result column="friend_describe" property="friendDescribe"/>
+        <result column="user_account" property="userAccount"/>
+    </resultMap>
+
+    <select id="getFriendByAccount" parameterType="java.lang.String" resultMap="friend">
+        SELECT f.id,u.user_account as friend_account,u.user_describe as friend_describe,u.user_name as friend_name,f.user_account from friend f,user u WHERE u.user_account=f.friend_account and f.user_account=#{userAccount}
+    </select>
+
+</mapper>
