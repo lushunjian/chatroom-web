@@ -17,29 +17,31 @@
         </div>
 
         <div class="ui bottom attached tab segment active" data-tab="first" style="height: 380px">
-            <form class="ui form" action="/check" method="post">
+            <form class="ui form" action="/login" method="post">
                 <div class="field">
                     <label>账号</label>
-                    <input type="text" name="userName" placeholder="userName" />
+                    <input type="text" name="userAccount" placeholder="userAccount" />
                 </div>
                 <div class="field">
                     <label>密码</label>
-                    <input type="text" name="passWord" placeholder="passWord" />
+                    <input type="text" name="userPassword" placeholder="userPassword" />
                 </div>
                 <div class="field">
                     <div class="ui toggle checkbox">
                         <input type="checkbox" name="public" />
                         <label>记住我</label>
                     </div>
-                    <button class="ui primary button" type="submit" style="width:18%;margin-left: 63%">登录</button>
+                    <button class="ui right labeled icon purple button" type="submit" style="float: right"><i class="right arrow icon"></i> 登录 </button>
+                    <!--<button class="ui primary button" type="submit" style="width:18%;margin-left: 63%">登录</button>-->
                 </div>
-                <div class="field">
+                <div class="field" style="padding-top: 10px">
                     <a href="javascript:void(0);" >忘记密码？</a><a href="javascript:void(0);" style="margin-left: 30px">第三方登录</a>
                 </div>
-                <div class="ui red message" data-th-if="${message}">
+                <br>
+                <div class="ui" data-th-attrappend="class=${' ' + cssStyle}"  data-th-if="${status}">
                     <i class="close icon"></i>
-                    <div class="header">抱歉 </div>
-                    <p>您的账号或密码错误，登录失败!</p>
+                    <div class="header">提示 </div>
+                    <p  data-th-text="${message}"></p>
                 </div>
             </form>
         </div>
@@ -48,24 +50,24 @@
             <form class="ui form" action="/register" method="post">
                 <div class="field">
                     <label>账号</label>
-                    <input type="text" name="userName" placeholder="userName" />
+                    <input type="text" name="userAccount" placeholder="userAccount" />
                 </div>
                 <div class="field">
                     <label>密码</label>
-                    <input type="text" name="passWord" placeholder="passWord" />
+                    <input type="text" name="userPassword" placeholder="userPassword" />
                 </div>
                 <div class="field">
                     <label>确认密码</label>
-                    <input type="text" name="passWordConfirm" placeholder="confirm passWord" />
+                    <input type="text" name="passwordConfirm" placeholder="confirm passWord" />
                 </div>
                 <div class="two fields">
                     <div class="field">
-                        <label>电话</label>
-                        <input type="text" name="userTel" placeholder="phone" />
+                        <label>昵称</label>
+                        <input type="text" name="userName" placeholder="userName" />
                     </div>
                     <div class="field">
-                        <label>年龄</label>
-                        <input type="text" name="userAge" placeholder="age" />
+                        <label>签名</label>
+                        <input type="text" name="userDescribe" placeholder="userDescribe" />
                     </div>
                 </div>
                 <button class="ui primary button" type="submit" style="width:18%;margin-left: 81%">提交</button>

@@ -12,19 +12,17 @@
         <h2 class="ui header">登录成功，欢迎来到我们的站点！ </h2>
         <table class="ui celled table">
             <thead>
-            <tr><th>账号</th>
+            <tr><th>姓名</th>
                 <th>密码</th>
-                <th>年龄</th>
-                <th>电话</th>
+                <th>描述</th>
             </tr></thead>
             <tbody>
-            <tr data-th-each="user : ${userList}">
+            <tr>
                 <td>
                     <div class="ui ribbon label" data-th-text="${user.userName}"></div>
                 </td>
                 <td data-th-text="${user.userPassword}"></td>
-                <td data-th-text="${user.userAge}"></td>
-                <td data-th-text="${user.userTel}"></td>
+                <td data-th-text="${user.userDescribe}"></td>
             </tr>
             </tbody>
             <tfoot>

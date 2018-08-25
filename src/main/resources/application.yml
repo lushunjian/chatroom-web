@@ -9,7 +9,7 @@ netty:
 spring:
   # mysql配置
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/test?useSSL=false&useUnicode=true&characterEncoding=utf8
+    url: jdbc:mysql://127.0.0.1:3306/chat_room?useSSL=false&useUnicode=true&characterEncoding=utf8
     username: root
     password: root
     type: com.alibaba.druid.pool.DruidDataSource
@@ -29,9 +29,9 @@ spring:
 
     # templates 模板引擎配置
   thymeleaf:
-     mode: HTML5
+     mode: LEGACYHTML5  # 不进未关闭标签检查，需配合nekohtml使用
      encoding: UTF-8
-     cache: false
+     cache: false     # 关闭缓存
      prefix: classpath:/templates/
      suffix: .html
 

@@ -6,17 +6,17 @@
     <resultMap id="user" type="cn.lsj.domain.User">
         <result column="id" property="id"/>
         <result column="user_name" property="userName"/>
-        <result column="password" property="userPassword"/>
+        <result column="user_account" property="userAccount"/>
+        <result column="user_password" property="userPassword"/>
         <result column="user_age" property="userAge"/>
-        <result column="user_tel" property="userTel"/>
     </resultMap>
 
 
     <!--auto generated Code-->
-    <insert id="insert">
+    <insert id="addUser">
         INSERT INTO `user`
-        (`id`,`name`,`hobby`)
-        VALUES (#{pojo.id},#{pojo.name},#{pojo.hobby})
+        (user_name,user_account,user_password,user_describe)
+        VALUES (#{user.userName},#{user.userAccount},#{user.userPassword},#{user.userDescribe})
     </insert>
 
     <!--auto generated Code-->
@@ -30,8 +30,12 @@
         WHERE `id` = #{pojo.id}
     </update>
 
-    <select id="getUserByUserNameAndPassWord" parameterType="java.lang.String" resultMap="user">
-        SELECT * FROM user u where u.user_name=#{user_name} and u.password=#{password}
+    <select id="userExist" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT count(1) FROM user u where u.user_account=#{userAccount} and u.user_password=#{userPassword}
+    </select>
+
+    <select id="getUserInfo" parameterType="java.lang.String" resultMap="user">
+        SELECT * FROM user u where u.user_account=#{userAccount} and u.user_password=#{userPassword}
     </select>
 
 </mapper>

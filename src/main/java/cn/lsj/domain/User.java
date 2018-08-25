@@ -2,10 +2,20 @@ package cn.lsj.domain;
 
 public class User {
 
-    private Integer id = null;
-    private String userName = null;
-    private String userPassword = null;
-    private String userAge = null;
+    private Integer id ;
+    private String userName ;
+    private String userAccount ;
+    private String userPassword ;
+    private String userDescribe ;
+
+    public User(){}
+
+    public User(String userName, String userAccount, String userPassword, String userDescribe) {
+        this.userName = userName;
+        this.userAccount = userAccount;
+        this.userPassword = userPassword;
+        this.userDescribe = userDescribe;
+    }
 
     public String getUserPassword() {
         return userPassword;
@@ -33,19 +43,19 @@ public class User {
         this.userName = userName;
     }
 
-    public String getUserAge() {
-        return userAge;
+    public String getUserAccount() {
+        return userAccount;
     }
 
-    public void setUserAge(String userAge) {
-        this.userAge = userAge;
+    public void setUserAccount(String userAccount) {
+        this.userAccount = userAccount;
     }
 
-    public String getUserTel() {
-        return userTel;
+    public String getUserDescribe() {
+        return userDescribe;
     }
 
-    public void setUserTel(String userTel) {
-        this.userTel = userTel;
+    public void setUserDescribe(String userDescribe) {
+        this.userDescribe = userDescribe;
     }
 }
