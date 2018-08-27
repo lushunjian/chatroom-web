@@ -51,8 +51,14 @@
                     </div>
                 </div>
                 <div class="right item">
-                    <div class="ui icon input"><input type="text" placeholder="搜索用户">
-                        <i class="search icon" ></i>
+                    <div class="ui action left icon input">
+                        <input type="text" placeholder="Search...">
+                        <i class="users icon"></i>
+                        <select class="ui compact selection dropdown">
+                            <option value="user">用户</option>
+                            <option value="group">群组</option>
+                        </select>
+                        <div class="ui button">Search</div>
                     </div>
                 </div>
             </div>
@@ -249,6 +255,13 @@
                 url     : 'html_url'
             },
             minCharacters : 3
+        })
+    ;
+
+    //
+    $('.ui.dropdown')
+        .dropdown({
+            useLabels: false
         })
     ;
 </script>
