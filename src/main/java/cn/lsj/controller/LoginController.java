@@ -56,6 +56,7 @@ public class LoginController {
     public String userLogin(String userAccount, String userPassword, HttpServletRequest request,RedirectAttributes attr){
         User user = userService.getUserInfo(userAccount,userPassword);
         if(user != null) {
+            //将用户信息保存在 session中，表示已登录
             request.getSession().setAttribute(userAccount, user);
             return "redirect:/home?userAccount="+userAccount;
         } else {

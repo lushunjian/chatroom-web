@@ -14,25 +14,23 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @Configuration
 @EnableWebMvc
 @ComponentScan
-public class InterceptorConfig extends WebMvcConfigurerAdapter implements ApplicationContextAware {
+public class InterceptorConfig extends WebMvcConfigurerAdapter{
 
-    private ApplicationContext applicationContext;
-
-    public InterceptorConfig(){
-        super();
-    }
+/**
+     * 静态文件映射
+     * addResourceHandler指的是对外暴露的访问路径，addResourceLocations指的是文件放置的目录
+     * 映射之后，Controller返回到 html ，使用映射后的路径
+     * 如下将 static 下的静态文件映射到根路径下，在 html 中就可以通过例如 semantic/semantic.min.js 的路径访问静态文件
+     * */
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/static/**").addResourceLocations(ResourceUtils.CLASSPATH_URL_PREFIX+"/static/");
+       // registry.addResourceHandler("/my/**").addResourceLocations("file:E:/my/");
+        registry.addResourceHandler("/**").addResourceLocations(ResourceUtils.CLASSPATH_URL_PREFIX+"/static/");
         registry.addResourceHandler("/templates/**").addResourceLocations(ResourceUtils.CLASSPATH_URL_PREFIX+"/templates/");
         super.addResourceHandlers(registry);
     }
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
-    }
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         //拦截规则：除了login，其他都拦截判断

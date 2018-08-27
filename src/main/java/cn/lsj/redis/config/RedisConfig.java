@@ -31,6 +31,8 @@ public class RedisConfig {
         factory.setUsePool(true);
         JedisPoolConfig config = getRedisConfig();
         factory.setPoolConfig(config);
+        //在所有的属性被初始化后调用。但是会在init前调用，不加此行代码会报空指针异常
+        factory.afterPropertiesSet();
         return factory;
     }
 

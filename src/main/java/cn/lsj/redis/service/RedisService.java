@@ -1,7 +1,9 @@
 package cn.lsj.redis.service;
 
+import cn.lsj.redis.connect.RedisConnectionPool;
 import cn.lsj.redis.util.SerializeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.RedisCallback;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 
 import javax.annotation.Resource;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 
@@ -19,18 +22,15 @@ import java.util.concurrent.TimeUnit;
  * @Date: 2018/8/21 22:57
  * @Description: 支持对象存储，使用execute()方法，redis保存的数据会在内存和硬盘上存储，需要做序列化。
  */
-//@Service("redisService")
+@Service("redisService")
 public class RedisService {
 
     @Resource
     private RedisTemplate<String, ?> redisTemplate;
 
-    private final Jedis jedis;
-
     @Autowired
-    public RedisService(Jedis jedis) {
-        this.jedis = jedis;
-    }
+    private RedisConnectionPool redisConnectionPool;
+
 
     /**
      * 添加
@@ -87,19 +87,42 @@ public class RedisService {
     /**set Object*/
     public String setObject(String key,Object object)
     {
+        Jedis jedis = redisConnectionPool.getJedis();
         return jedis.set(key.getBytes(), SerializeUtil.objectSerialize(object));
     }
 
+
     /**get Object*/
-    public Object getObject(String key)
-    {
+    public Object getObject(String key){
+        Jedis jedis = redisConnectionPool.getJedis();
         byte[] value = jedis.get(key.getBytes());
         return SerializeUtil.objectDeSerialize(value);
     }
 
     /**delete a key**/
-    public boolean delObject(String key)
-    {
+    public boolean delObject(String key){
+        Jedis jedis = redisConnectionPool.getJedis();
         return jedis.del(key.getBytes())>0;
+    }
+
+    public void putTest(String key, Map<String,String> map){
+        Jedis jedis = redisConnectionPool.getJedis();
+        jedis.hmset(key, map);
+        jedis.expire(key, 3600);
+    }
+
+    public String getTset(String key, String mapKey){
+        Jedis jedis = redisConnectionPool.getJedis();
+        return jedis.hget(key, mapKey);
+    }
+
+    /**
+     * 释放jedis资源
+     * @param jedis
+     */
+    public static void returnResource(Jedis jedis) {
+        if (jedis != null && jedis.isConnected()) {
+            jedis.close();
+        }
     }
 }
