@@ -24,6 +24,10 @@ public class RedisConfig {
         return new JedisPoolConfig();
     }
 
+
+    /**
+     * 使用连接池+工厂模式实例化Redis连接对象
+     * */
     @Bean
     @ConfigurationProperties(prefix = "spring.redis")
     public JedisConnectionFactory getConnectionFactory() {
