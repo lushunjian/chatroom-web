@@ -19,7 +19,7 @@ spring:
   redis:
     host: 127.0.0.1
     port: 6379
-    password: pass1234
+    password:
     timeout: 0
     pool:
       max-active: 100     # 最大活跃连接数
