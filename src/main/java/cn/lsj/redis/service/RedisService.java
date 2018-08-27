@@ -1,6 +1,6 @@
 package cn.lsj.redis.service;
 
-import cn.lsj.redis.connect.RedisConnection;
+import cn.lsj.redis.connect.RedisConnect;
 import cn.lsj.redis.util.SerializeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -27,7 +27,7 @@ public class RedisService {
     private RedisTemplate<String, ?> redisTemplate;
 
     @Autowired
-    private RedisConnection redisConnectionPool;
+    private RedisConnect redisConnect;
 
 
     /**
@@ -85,32 +85,32 @@ public class RedisService {
     /**set Object*/
     public String setObject(String key,Object object)
     {
-        Jedis jedis = redisConnectionPool.getJedis();
+        Jedis jedis = redisConnect.getJedis();
         return jedis.set(key.getBytes(), SerializeUtil.objectSerialize(object));
     }
 
 
     /**get Object*/
     public Object getObject(String key){
-        Jedis jedis = redisConnectionPool.getJedis();
+        Jedis jedis = redisConnect.getJedis();
         byte[] value = jedis.get(key.getBytes());
         return SerializeUtil.objectDeSerialize(value);
     }
 
     /**delete a key**/
     public boolean delObject(String key){
-        Jedis jedis = redisConnectionPool.getJedis();
+        Jedis jedis = redisConnect.getJedis();
         return jedis.del(key.getBytes())>0;
     }
 
     public void putTest(String key, Map<String,String> map){
-        Jedis jedis = redisConnectionPool.getJedis();
+        Jedis jedis = redisConnect.getJedis();
         jedis.hmset(key, map);
         jedis.expire(key, 3600);
     }
 
     public String getTset(String key, String mapKey){
-        Jedis jedis = redisConnectionPool.getJedis();
+        Jedis jedis = redisConnect.getJedis();
         return jedis.hget(key, mapKey);
     }
 
