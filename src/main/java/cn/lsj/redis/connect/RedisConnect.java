@@ -17,12 +17,12 @@ import java.util.UUID;
  * @Description:
  */
 @Component
-public class JedisConnection {
+public class RedisConnect {
 
     @Value("#{redisConfig.getConnectionFactory()}")
     private JedisConnectionFactory connectionFactory;
 
-    private JedisConnection(){}
+    private RedisConnect(){}
 
     private static Jedis jedis = null;
      //获取redis链接
