@@ -4,6 +4,7 @@ import cn.lsj.redis.connect.RedisConnect;
 import cn.lsj.redis.util.SerializeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializer;
@@ -33,10 +34,10 @@ public class RedisService {
     /**
      * 添加
      * */
-    public boolean set(final String key, final String value) {
+    public boolean put(final String key, final String value) {
         boolean result = redisTemplate.execute(new RedisCallback<Boolean>() {
             @Override
-            public Boolean doInRedis(org.springframework.data.redis.connection.RedisConnection connection) throws DataAccessException {
+            public Boolean doInRedis(RedisConnection connection) throws DataAccessException {
                 RedisSerializer<String> serializer = redisTemplate.getStringSerializer();
                 connection.set(serializer.serialize(key), serializer.serialize(value));
                 return true;
@@ -51,7 +52,7 @@ public class RedisService {
     public String get(final String key) {
         String result = redisTemplate.execute(new RedisCallback<String>() {
             @Override
-            public String doInRedis(org.springframework.data.redis.connection.RedisConnection connection) throws DataAccessException {
+            public String doInRedis(RedisConnection connection) throws DataAccessException {
                 RedisSerializer<String> serializer = redisTemplate.getStringSerializer();
                 byte[] value = connection.get(serializer.serialize(key));
                 return serializer.deserialize(value);
@@ -73,7 +74,7 @@ public class RedisService {
     public boolean remove(final String key) {
         boolean result = redisTemplate.execute(new RedisCallback<Boolean>() {
             @Override
-            public Boolean doInRedis(org.springframework.data.redis.connection.RedisConnection connection) throws DataAccessException {
+            public Boolean doInRedis(RedisConnection connection) throws DataAccessException {
                 RedisSerializer<String> serializer = redisTemplate.getStringSerializer();
                 connection.del(key.getBytes());
                 return true;
@@ -82,40 +83,59 @@ public class RedisService {
         return result;
     }
 
+    /**
+     * 对象存储
+     * */
     /**set Object*/
-    public String setObject(String key,Object object)
-    {
+    public boolean putObject(final String key, final Object object) {
+        return redisTemplate.execute(new RedisCallback<Boolean>() {
+            @Override
+            public Boolean doInRedis(RedisConnection connection) throws DataAccessException {
+                RedisSerializer<String> serializer = redisTemplate.getStringSerializer();
+                connection.set(serializer.serialize(key), SerializeUtil.objectSerialize(object));
+                return true;
+            }
+        });
+    }
+
+    /**get Object*/
+    public Object getObject(final String key) {
+        String result = redisTemplate.execute(new RedisCallback<String>() {
+            @Override
+            public String doInRedis(RedisConnection connection) throws DataAccessException {
+                RedisSerializer<String> serializer = redisTemplate.getStringSerializer();
+                byte[] value = connection.get(serializer.serialize(key));
+                return serializer.deserialize(value);
+            }
+        });
+        return SerializeUtil.objectDeSerialize(result.getBytes());
+    }
+
+    /**
+     * 对象存储
+     * */
+    /*set Object*/
+    public void jedisPutObject(String key,Object object){
         Jedis jedis = redisConnect.getJedis();
-        return jedis.set(key.getBytes(), SerializeUtil.objectSerialize(object));
+        jedis.set(key.getBytes(), SerializeUtil.objectSerialize(object));
     }
 
 
-    /**get Object*/
-    public Object getObject(String key){
+    /*get Object*/
+    public Object jedisGetObject(String key){
         Jedis jedis = redisConnect.getJedis();
         byte[] value = jedis.get(key.getBytes());
         return SerializeUtil.objectDeSerialize(value);
     }
 
-    /**delete a key**/
-    public boolean delObject(String key){
+    /*delete a key*/
+    public boolean jedisDelObject(String key){
         Jedis jedis = redisConnect.getJedis();
         return jedis.del(key.getBytes())>0;
     }
 
-    public void putTest(String key, Map<String,String> map){
-        Jedis jedis = redisConnect.getJedis();
-        jedis.hmset(key, map);
-        jedis.expire(key, 3600);
-    }
-
-    public String getTset(String key, String mapKey){
-        Jedis jedis = redisConnect.getJedis();
-        return jedis.hget(key, mapKey);
-    }
-
     /**
-     * 释放jedis资源
+     * 将redis连接，返还到连接池
      * @param jedis
      */
     public static void returnResource(Jedis jedis) {
@@ -123,4 +143,16 @@ public class RedisService {
             jedis.close();
         }
     }
+
+    public void putTest(String key, Map<String,String> map){
+        Jedis jedis = redisConnect.getJedis();
+        jedis.hmset(key, map);
+    }
+
+    public String getTest(String key, String mapKey){
+        Jedis jedis = redisConnect.getJedis();
+        return jedis.hget(key, mapKey);
+    }
+
+
 }

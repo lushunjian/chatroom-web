@@ -46,7 +46,7 @@ public class LoginController {
     public String getHome(HttpServletRequest request){
         String userAccount = request.getParameter("userAccount");
         List<Friend> friendList = friendService.getFriendByAccount(userAccount);
-        User user = (User) request.getSession().getAttribute(userAccount);
+        User user = (User) request.getSession().getAttribute("user");
         request.setAttribute("user",user);
         request.setAttribute("friendList",friendList);
         return "/home/index";
@@ -57,7 +57,7 @@ public class LoginController {
         User user = userService.getUserInfo(userAccount,userPassword);
         if(user != null) {
             //将用户信息保存在 session中，表示已登录
-            request.getSession().setAttribute(userAccount, user);
+            request.getSession().setAttribute("user", user);
             return "redirect:/home?userAccount="+userAccount;
         } else {
             attr.addAttribute("cssStyle","red message");

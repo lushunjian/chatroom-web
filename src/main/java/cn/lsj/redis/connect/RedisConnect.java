@@ -5,11 +5,6 @@ import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPoolConfig;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
 
 /**
  * @Auther: Lushunjian
@@ -28,7 +23,7 @@ public class RedisConnect {
      //获取redis链接
      public synchronized Jedis getJedis(){
          if(jedis==null){
-             org.springframework.data.redis.connection.RedisConnection redisConnection = connectionFactory.getConnection();
+             RedisConnection redisConnection = connectionFactory.getConnection();
              jedis = (Jedis) redisConnection.getNativeConnection();
              return jedis;
          }

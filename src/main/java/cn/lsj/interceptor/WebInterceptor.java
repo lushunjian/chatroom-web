@@ -20,7 +20,7 @@ public class WebInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
         String userAccount = httpServletRequest.getParameter("userAccount");
         HttpSession session = httpServletRequest.getSession();
-        User user = (User) session.getAttribute(userAccount);
+        User user = (User) session.getAttribute("user");
         //没有登录
         if(user == null){
             httpServletResponse.sendRedirect("/login");

@@ -21,7 +21,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
      */
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("连接的客户端地址:" + ctx.channel().remoteAddress());
+        System.out.println("连接的客户端地址:" + ctx.channel().remoteAddress().toString());
         ctx.writeAndFlush(" connect success! [ client host name:"+ InetAddress.getLocalHost().getHostName() + " ]\n");
         super.channelActive(ctx);
     }
@@ -65,6 +65,6 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
             channel.writeAndFlush("[SERVER]-"+incomming.remoteAddress()+"加入\n");
         }*/
 
-       channelMap.put(ctx.channel().remoteAddress()+"",ctx);
+       channelMap.put(ctx.channel().remoteAddress().toString(),ctx);
     }
 }

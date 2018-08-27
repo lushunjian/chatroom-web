@@ -1,5 +1,6 @@
 package cn.lsj.controller;
 
+import cn.lsj.domain.User;
 import cn.lsj.redis.service.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,24 +18,37 @@ public class TestController {
     @Autowired
     RedisService redisService;
 
-    @GetMapping("/redis/def")
+    @GetMapping("/redis")
     public String getData(){
         String key = "token#" + UUID.randomUUID();
         Map<String, String> map = new HashMap<>();
-        map.put("01", "hahahaha");
-        map.put("02", "hehehehe");
+        map.put("01", "hah");
+        map.put("02", "aaa");
         redisService.putTest(key,map);
-        String str = redisService.getTset(key,"01");
-        System.out.println("redis的值:-----"+str);
+        String str = redisService.getTest(key,"01");
+
+        redisService.put(key,"123");
+        String strs = redisService.get(key);
+        System.out.println("redis的值:-----"+strs);
         return str;
     }
 
-    @GetMapping("/redis/abc")
-    public String getTest(){
-        String str = "测试路由";
-        System.out.println("redis的值:-----"+str);
-        return str;
+    /**
+     * 测试对象存储
+     * */
+    @GetMapping("/redis/putObject")
+    public String putObject(){
+        User user = new User();
+        user.setUserName("redis对象存储");
+        user.setUserDescribe("随便写点东西");
+        redisService.jedisPutObject("user",user);
+        return "success";
     }
 
+    @GetMapping("/redis/getObject")
+    public String getObject(){
+        User user = (User) redisService.jedisGetObject("user");
+        return user.getUserName()+"---"+user.getUserDescribe();
+    }
 
 }
