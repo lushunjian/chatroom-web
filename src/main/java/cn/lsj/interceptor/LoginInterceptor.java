@@ -25,15 +25,24 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
         String userAccount = httpServletRequest.getParameter("userAccount");
+        //当前请求的sessionId
+        String sessionIdNow = httpServletRequest.getSession().getId();
+        //redis中的sessionId
+        String sessionId = (String) redisHandler.getObject(userAccount);
+
+        //如果redis中没有查到sessionId，说明用户还没有登录，返回到登录界面
+        //如果redis中查到sessionId与当前请求的sessionId不一致，说明用户是异地登录
+        if(sessionId == null || !sessionId .equals(sessionIdNow)){
+            httpServletResponse.sendRedirect("/login");
+            return false;
+        }
         //从redis中拿取用户信息
-        boolean flag =  redisHandler.exists(token+userAccount);
-        //User user = (User)redisHandler.getObject(token+userAccount);
+        boolean flag =  redisHandler.exists(sessionIdNow);
         //存在就放行，否则回到登录界面
         if(flag)
             return true;
         httpServletResponse.sendRedirect("/login");
         return false;
-
     }
 
 /**

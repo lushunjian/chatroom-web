@@ -52,7 +52,7 @@ public class LoginController {
     public String getHome(HttpServletRequest request){
         String userAccount = request.getParameter("userAccount");
         List<Friend> friendList = friendService.getFriendByAccount(userAccount);
-        User user = (User) redisHandler.getObject(token+userAccount);
+        User user = (User) redisHandler.getObject(request.getSession().getId());
         request.setAttribute("user",user);
         request.setAttribute("friendList",friendList);
         return "/home/index";
@@ -62,9 +62,14 @@ public class LoginController {
     public String userLogin(String userAccount, String userPassword, HttpServletRequest request,RedirectAttributes attr){
         User user = userService.getUserInfo(userAccount,userPassword);
         if(user != null) {
-            //将用户信息保存在 redis中，表示已登录，并设置过期时间为 30分钟
-            redisHandler.putObject(token+userAccount,user);
-            redisHandler.expire(token+userAccount,1800);
+            //保存用户信息 保存在redis中，表示已登录
+            //保存sessionId，用于判断用户异地登录
+            String sessionId = request.getSession().getId();
+            redisHandler.putObject(userAccount,sessionId);
+            redisHandler.putObject(sessionId,user);
+            //设置过期时间为 30分钟
+            redisHandler.expire(userAccount,1800);
+            redisHandler.expire(sessionId,1800);
             return "redirect:/home?userAccount="+userAccount;
         } else {
             attr.addAttribute("cssStyle","red message");
