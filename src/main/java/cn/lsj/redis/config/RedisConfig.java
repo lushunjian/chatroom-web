@@ -40,6 +40,7 @@ public class RedisConfig {
         return factory;
     }
 
+
     @Bean
     public RedisTemplate<?, ?> getRedisTemplate() {
         JedisConnectionFactory factory = getConnectionFactory();
