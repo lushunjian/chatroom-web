@@ -1,6 +1,7 @@
 package cn.lsj.controller;
 
 import cn.lsj.domain.User;
+import cn.lsj.redis.service.RedisHandler;
 import cn.lsj.redis.service.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,9 @@ public class TestController {
 
     @Autowired
     RedisService redisService;
+
+    @Autowired
+    RedisHandler redisHandler;
 
     @GetMapping("/redis")
     public String getData(){
@@ -49,6 +53,16 @@ public class TestController {
     public String getObject(){
         User user = (User) redisService.jedisGetObject("user");
         return user.getUserName()+"---"+user.getUserDescribe();
+    }
+
+    @GetMapping("/redis/object")
+    public String getObjectTest(){
+        User user = new User();
+        user.setUserName("redis对象存储");
+        user.setUserDescribe("随便写点东西");
+        redisHandler.putObject("user",user);
+        User u = (User) redisHandler.getObject("user");
+        return u.getUserName()+"---"+u.getUserDescribe();
     }
 
 }

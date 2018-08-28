@@ -13,6 +13,7 @@ import redis.clients.jedis.Jedis;
 
 import javax.annotation.Resource;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 
@@ -20,6 +21,7 @@ import java.util.concurrent.TimeUnit;
  * @Auther: Lushunjian
  * @Date: 2018/8/21 22:57
  * @Description: 支持对象存储，使用execute()方法，redis保存的数据会在内存和硬盘上存储，需要做序列化。
+ * 不支持连接释放，废弃
  */
 @Service("redisService")
 public class RedisService {
@@ -114,30 +116,63 @@ public class RedisService {
     /**
      * 对象存储
      * */
-    /*set Object*/
+    /**set Object*/
     public void jedisPutObject(String key,Object object){
         Jedis jedis = redisConnect.getJedis();
         jedis.set(key.getBytes(), SerializeUtil.objectSerialize(object));
     }
 
 
-    /*get Object*/
+    /**get Object*/
     public Object jedisGetObject(String key){
         Jedis jedis = redisConnect.getJedis();
         byte[] value = jedis.get(key.getBytes());
         return SerializeUtil.objectDeSerialize(value);
     }
 
-    /*delete a key*/
+    /**delete a key*/
     public boolean jedisDelObject(String key){
         Jedis jedis = redisConnect.getJedis();
         return jedis.del(key.getBytes())>0;
     }
 
     /**
-     * 将redis连接，返还到连接池
-     * @param jedis
+     * 清空redis 所有数据
      */
+    public String flushDB(){
+        Jedis jedis = redisConnect.getJedis();
+        return jedis.flushDB();
+    }
+
+    /**
+     * 检查是否连接成功
+     */
+    public String ping(){
+        Jedis jedis = redisConnect.getJedis();
+        return jedis.ping();
+    }
+
+    /**
+     * 通过正则匹配keys
+     */
+    public Set<String> keys(String pattern){
+        Jedis jedis = redisConnect.getJedis();
+        return jedis.keys(pattern);
+    }
+
+    /**
+     * 检查key是否已经存在\
+     */
+    public boolean exists(String key) {
+        Jedis jedis = redisConnect.getJedis();
+        return jedis.exists(key);
+    }
+
+
+        /**
+         * 将redis连接，返还到连接池
+         * @param jedis
+         */
     public static void returnResource(Jedis jedis) {
         if (jedis != null && jedis.isConnected()) {
             jedis.close();

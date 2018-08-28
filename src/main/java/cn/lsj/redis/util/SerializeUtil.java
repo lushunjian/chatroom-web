@@ -32,6 +32,7 @@ public class SerializeUtil {
             oos.writeObject(obj);
             return byteOut.toByteArray();
         }catch (Exception e) {
+            e.printStackTrace();
             log.error("Serialize failed");
         }
         return null;
