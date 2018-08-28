@@ -65,4 +65,25 @@ public class RedisHandler{
                 }
             });
     }
+
+    /** 设置过期时间*/
+    public void expire(String key, int seconds){
+          redisConnect.doRedis(new RedisAction<Object>() {
+                @Override
+                public Object doRedisAction(Jedis redis) {
+                    return redis.expire(key,seconds);
+                }
+            });
+    }
+
+    public boolean exists(String key){
+       return  (boolean)redisConnect.doRedis(new RedisAction<Object>() {
+            @Override
+            public Object doRedisAction(Jedis redis) {
+                return redis.exists(key);
+            }
+        });
+    }
+
+    /** 判断key是否存在值*/
 }

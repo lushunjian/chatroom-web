@@ -2,6 +2,7 @@ package cn.lsj.controller;
 
 import cn.lsj.domain.Friend;
 import cn.lsj.domain.User;
+import cn.lsj.redis.service.RedisHandler;
 import cn.lsj.service.FriendService;
 import cn.lsj.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +24,16 @@ import java.util.List;
 @Controller
 public class LoginController {
 
-    @Autowired
-    UserService userService;
+    private static final String token = "token#";
 
     @Autowired
-    FriendService friendService;
+    private UserService userService;
+
+    @Autowired
+    private FriendService friendService;
+
+    @Autowired
+    private RedisHandler redisHandler;
 
     @GetMapping("/login")
     public String getLoginHtml(HttpServletRequest request){
@@ -46,7 +52,7 @@ public class LoginController {
     public String getHome(HttpServletRequest request){
         String userAccount = request.getParameter("userAccount");
         List<Friend> friendList = friendService.getFriendByAccount(userAccount);
-        User user = (User) request.getSession().getAttribute("user");
+        User user = (User) redisHandler.getObject(token+userAccount);
         request.setAttribute("user",user);
         request.setAttribute("friendList",friendList);
         return "/home/index";
@@ -56,8 +62,9 @@ public class LoginController {
     public String userLogin(String userAccount, String userPassword, HttpServletRequest request,RedirectAttributes attr){
         User user = userService.getUserInfo(userAccount,userPassword);
         if(user != null) {
-            //将用户信息保存在 session中，表示已登录
-            request.getSession().setAttribute("user", user);
+            //将用户信息保存在 redis中，表示已登录，并设置过期时间为 30分钟
+            redisHandler.putObject(token+userAccount,user);
+            redisHandler.expire(token+userAccount,1800);
             return "redirect:/home?userAccount="+userAccount;
         } else {
             attr.addAttribute("cssStyle","red message");

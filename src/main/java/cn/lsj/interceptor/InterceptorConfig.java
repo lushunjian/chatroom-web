@@ -1,5 +1,6 @@
 package cn.lsj.interceptor;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.ResourceUtils;
@@ -12,6 +13,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @EnableWebMvc
 @ComponentScan
 public class InterceptorConfig extends WebMvcConfigurerAdapter{
+
+    /** 解决拦截器中无法注入bean的问题 */
+    @Bean
+    LoginInterceptor localInterceptor() {
+        return new LoginInterceptor();
+    }
 
     /**
      * 静态文件映射
@@ -35,7 +42,7 @@ public class InterceptorConfig extends WebMvcConfigurerAdapter{
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         //拦截规则：除了login，其他都拦截判断
-        registry.addInterceptor(new WebInterceptor()).addPathPatterns("/**").excludePathPatterns("/login","/test/**");
+        registry.addInterceptor(localInterceptor()).addPathPatterns("/**").excludePathPatterns("/login","/test/**");
         super.addInterceptors(registry);
     }
 

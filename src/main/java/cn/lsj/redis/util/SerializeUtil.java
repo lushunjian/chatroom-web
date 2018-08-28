@@ -52,6 +52,7 @@ public class SerializeUtil {
             ObjectInputStream objIn = new ObjectInputStream(in);
             return objIn.readObject();
         }catch (Exception e) {
+            e.printStackTrace();
             log.error("Serialize failed");
         }
         return null;

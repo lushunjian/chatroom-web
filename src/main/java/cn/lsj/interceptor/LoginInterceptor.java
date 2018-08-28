@@ -1,14 +1,20 @@
 package cn.lsj.interceptor;
 
 import cn.lsj.domain.User;
+import cn.lsj.redis.service.RedisHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-public class WebInterceptor implements HandlerInterceptor {
+public class LoginInterceptor implements HandlerInterceptor {
+
+    private static final String token = "token#";
+
+    @Autowired
+    RedisHandler redisHandler;
 
 /**
      * 在请求处理之前进行调用，在进入Controller方法之前先进入此方法
@@ -19,14 +25,15 @@ public class WebInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
         String userAccount = httpServletRequest.getParameter("userAccount");
-        HttpSession session = httpServletRequest.getSession();
-        User user = (User) session.getAttribute("user");
-        //没有登录
-        if(user == null){
-            httpServletResponse.sendRedirect("/login");
-            return false;
-        }
-        return true;
+        //从redis中拿取用户信息
+        boolean flag =  redisHandler.exists(token+userAccount);
+        //User user = (User)redisHandler.getObject(token+userAccount);
+        //存在就放行，否则回到登录界面
+        if(flag)
+            return true;
+        httpServletResponse.sendRedirect("/login");
+        return false;
+
     }
 
 /**
