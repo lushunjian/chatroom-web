@@ -1,8 +1,12 @@
 package cn.lsj.netty.handler;
 
+import cn.lsj.netty.service.NettyHttpHandler;
+import cn.lsj.netty.service.NettySocketHandler;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.handler.codec.http.FullHttpRequest;
+import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 
 import java.net.InetAddress;
 import java.util.HashMap;
@@ -16,6 +20,22 @@ import java.util.Map;
 public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
 
     public static Map<String,ChannelHandlerContext> channelMap = new HashMap<String,ChannelHandlerContext>();
+
+    /**
+     * 接收客户端发送的消息 channel 通道 Read 读 简而言之就是从通道中读取数据，也就是服务端接收客户端发来的数据。
+     * 但是这个数据在不进行解码时它是ByteBuf类型的
+     * */
+    @Override
+      public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+              // HTTP接入
+             if (msg instanceof FullHttpRequest) {
+                    new NettyHttpHandler().dealRequest(ctx,(FullHttpRequest) msg);
+                }
+            // WebSocket接入
+            else if (msg instanceof WebSocketFrame) {
+                    new NettySocketHandler().dealRequest(ctx,(WebSocketFrame) msg);
+                }
+      }
     /*
      * 建立连接时，返回消息
      */
@@ -26,8 +46,8 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
         super.channelActive(ctx);
     }
 
-    /*
-     * 收到消息时，返回信息
+    /**
+     * 底层调用的还是 channelRead 方法。如果泛型不匹配，不会调用messageReceived
      */
     protected void messageReceived(ChannelHandlerContext channelHandlerContext, String msg) throws Exception {
         // 收到消息直接打印输出
