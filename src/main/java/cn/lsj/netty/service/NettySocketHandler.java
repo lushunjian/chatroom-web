@@ -6,12 +6,8 @@ import io.netty.handler.codec.http.websocketx.*;
 public class NettySocketHandler extends RequestHandler<WebSocketFrame>{
     @Override
     void requestAction(ChannelHandlerContext ctx, WebSocketFrame frame) {
-        // 判断是否是关闭链路的指令
-      /*  if (frame instanceof CloseWebSocketFrame) {
-            handshaker.close(ctx.channel(),
-                    (CloseWebSocketFrame) frame.retain());
-            return;
-        }*/
+
+      System.out.println("消息进入socket处理类");
         // 判断是否是Ping消息
         if (frame instanceof PingWebSocketFrame) {
             ctx.channel().write(

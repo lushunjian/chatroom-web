@@ -17,7 +17,7 @@ import java.util.Map;
  * @Date: 2018/8/21 22:55
  * @Description:
  */
-public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
+public class NettyServerHandler extends SimpleChannelInboundHandler<String > {
 
     public static Map<String,ChannelHandlerContext> channelMap = new HashMap<String,ChannelHandlerContext>();
 
@@ -27,14 +27,14 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
      * */
     @Override
       public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-              // HTTP接入
-             if (msg instanceof FullHttpRequest) {
-                    new NettyHttpHandler().dealRequest(ctx,(FullHttpRequest) msg);
-                }
-            // WebSocket接入
-            else if (msg instanceof WebSocketFrame) {
-                    new NettySocketHandler().dealRequest(ctx,(WebSocketFrame) msg);
-                }
+        // HTTP接入
+         if (msg instanceof FullHttpRequest) {
+                new NettyHttpHandler().dealRequest(ctx,(FullHttpRequest) msg);
+            }
+        // WebSocket接入
+        else if (msg instanceof WebSocketFrame) {
+                new NettySocketHandler().dealRequest(ctx,(WebSocketFrame) msg);
+            }
       }
     /*
      * 建立连接时，返回消息
@@ -47,7 +47,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<String> {
     }
 
     /**
-     * 底层调用的还是 channelRead 方法。如果泛型不匹配，不会调用messageReceived
+     * 底层调用的还是 channelRead 方法。如果重写了channelRead，不会调用messageReceived
      */
     protected void messageReceived(ChannelHandlerContext channelHandlerContext, String msg) throws Exception {
         // 收到消息直接打印输出

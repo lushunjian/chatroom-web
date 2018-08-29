@@ -6,6 +6,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.DelimiterBasedFrameDecoder;
 import io.netty.handler.codec.Delimiters;
 import io.netty.handler.codec.http.HttpObjectAggregator;
+import io.netty.handler.codec.http.HttpResponseEncoder;
 import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
@@ -27,10 +28,12 @@ public class NettyServerFilter extends ChannelInitializer<SocketChannel> {
         ph.addLast("decoder", new StringDecoder());
         ph.addLast("encoder", new StringEncoder());
 
-        //http请求，过滤器设置
-        // http解码,webSocket是以http发起请求的
+        //http请求，过滤器设置,webSocket是以http发起请求的
+        // 编码,http服务器端对response编码
+        ph.addLast("http-encoder", new HttpResponseEncoder());
+        // 解码,http服务器端对request解码
         ph.addLast("http-decoder",new HttpServerCodec());
-        //HttpObjectAggregator会把多个消息转换为一个单一的FullHttpRequest或是FullHttpResponse
+        //对传输文件大少进行限制
         ph.addLast("http-aggregator",new HttpObjectAggregator(65536));
         // 服务端业务逻辑
         ph.addLast("handler", new NettyServerHandler());
