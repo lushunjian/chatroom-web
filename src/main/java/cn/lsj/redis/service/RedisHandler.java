@@ -75,7 +75,7 @@ public class RedisHandler{
                 }
             });
     }
-
+    /** 判断key是否存在值*/
     public boolean exists(String key){
        return  (boolean)redisConnect.doRedis(new RedisAction<Object>() {
             @Override
@@ -85,5 +85,5 @@ public class RedisHandler{
         });
     }
 
-    /** 判断key是否存在值*/
+
 }

@@ -45,7 +45,7 @@ public class RedisConnect<T> {
          }catch (Exception e){
              e.printStackTrace();
              logger.info("-----后台异常！");
-             return null;
+             throw e;
          }finally {
             if(redisConnection != null && !redisConnection.isClosed())
                 redisConnection.close();

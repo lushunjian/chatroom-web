@@ -6,11 +6,13 @@ import cn.lsj.redis.service.RedisHandler;
 import cn.lsj.service.FriendService;
 import cn.lsj.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import redis.clients.jedis.exceptions.JedisConnectionException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -65,12 +67,19 @@ public class LoginController {
             //保存用户信息 保存在redis中，表示已登录
             //保存sessionId，用于判断用户异地登录
             String sessionId = request.getSession().getId();
-            redisHandler.putObject(userAccount,sessionId);
-            redisHandler.putObject(sessionId,user);
-            //设置过期时间为 30分钟
-            redisHandler.expire(userAccount,1800);
-            redisHandler.expire(sessionId,1800);
-            return "redirect:/home?userAccount="+userAccount;
+            try {
+                redisHandler.putObject(userAccount, sessionId);
+                redisHandler.putObject(sessionId, user);
+                //设置过期时间为 30分钟
+                redisHandler.expire(userAccount, 1800);
+                redisHandler.expire(sessionId, 1800);
+                return "redirect:/home?userAccount=" + userAccount;
+            }catch (JedisConnectionException | RedisConnectionFailureException e  ){
+                attr.addAttribute("cssStyle","red message");
+                attr.addAttribute("status","true");
+                attr.addAttribute("message","服务器异常，redis连接失败!");
+                return "redirect:/login";
+            }
         } else {
             attr.addAttribute("cssStyle","red message");
             attr.addAttribute("status","true");
