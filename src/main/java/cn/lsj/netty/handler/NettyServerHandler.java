@@ -17,7 +17,7 @@ import java.util.Map;
  * @Date: 2018/8/21 22:55
  * @Description:
  */
-public class NettyServerHandler extends SimpleChannelInboundHandler<String > {
+public class NettyServerHandler extends SimpleChannelInboundHandler<FullHttpRequest > {
 
     public static Map<String,ChannelHandlerContext> channelMap = new HashMap<String,ChannelHandlerContext>();
 
@@ -49,7 +49,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<String > {
     /**
      * 底层调用的还是 channelRead 方法。如果重写了channelRead，不会调用messageReceived
      */
-    protected void messageReceived(ChannelHandlerContext channelHandlerContext, String msg) throws Exception {
+    protected void messageReceived(ChannelHandlerContext channelHandlerContext, FullHttpRequest msg) throws Exception {
         // 收到消息直接打印输出
         System.out.println("服务端接受的消息 : " + msg);
         if("quit".equals(msg)){//服务端断开的条件
