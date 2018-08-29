@@ -1,5 +1,8 @@
-package cn.lsj.netty.handler;
+package cn.lsj.netty.filter;
 
+import cn.lsj.netty.handler.NettyHttpHandler;
+import cn.lsj.netty.handler.NettySocketHandler;
+import cn.lsj.netty.handler.NettyStringHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
@@ -24,10 +27,10 @@ public class NettyServerFilter extends ChannelInitializer<SocketChannel> {
         ChannelPipeline ph = ch.pipeline();
         //第一个参数为自定义的名称
         // 以("\n")为结尾分割的 解码器
-/*        ph.addLast("framer", new DelimiterBasedFrameDecoder(8192, Delimiters.lineDelimiter()));
+        ph.addLast("framer", new DelimiterBasedFrameDecoder(8192, Delimiters.lineDelimiter()));
         // 字符串解码和编码，应和客户端一致
         ph.addLast("decoder", new StringDecoder());
-        ph.addLast("encoder", new StringEncoder());*/
+        ph.addLast("encoder", new StringEncoder());
 
         //http请求，过滤器设置,webSocket是以http发起请求的
         // 编码,http服务器端对response编码
@@ -39,6 +42,8 @@ public class NettyServerFilter extends ChannelInitializer<SocketChannel> {
         // 支持异步大文件传输
         ph.addLast("http-chunked",new ChunkedWriteHandler());
         // 服务端业务逻辑
-        ph.addLast("handler", new NettyServerHandler());
+        ph.addLast("http-handler", new NettyHttpHandler());
+        ph.addLast("socket-handler", new NettySocketHandler());
+        ph.addLast("string-handler", new NettyStringHandler());
     }
 }

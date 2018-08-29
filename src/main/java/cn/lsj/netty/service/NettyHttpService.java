@@ -13,7 +13,7 @@ import io.netty.util.CharsetUtil;
 import java.util.List;
 import java.util.Map;
 
-public class NettyHttpHandler extends RequestHandler<FullHttpRequest> {
+public class NettyHttpService extends RequestHandler<FullHttpRequest> {
     @Override
     void requestAction(ChannelHandlerContext ctx, FullHttpRequest req) {
 

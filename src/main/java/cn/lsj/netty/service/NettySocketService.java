@@ -3,7 +3,7 @@ package cn.lsj.netty.service;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.websocketx.*;
 
-public class NettySocketHandler extends RequestHandler<WebSocketFrame>{
+public class NettySocketService extends RequestHandler<WebSocketFrame>{
     @Override
     void requestAction(ChannelHandlerContext ctx, WebSocketFrame frame) {
 
