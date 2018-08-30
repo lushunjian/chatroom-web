@@ -227,6 +227,7 @@
 </body>
 <script th:src="@{jquery-3.3.1.min.js}" type="text/javascript"></script>
 <script th:src="@{semantic/semantic.min.js}"></script>
+<script th:src="@{sockjs/sockjs.min.js}"></script>
 <script type="text/javascript">
     $('.menu .item').tab();
 
@@ -299,5 +300,19 @@
             $("#messageArea").val("");
         }
     })
+
+    //SockJS
+    var sock = new SockJS('http://127.0.0.1:8889');
+    sock.onopen = function () {
+        console.log('open')
+        sock.send('test')
+    }
+    sock.onmessage = function (e) {
+        console.log('message', e.data)
+        sock.close()
+    }
+    sock.onclose = function () {
+        console.log('close')
+    }
 </script>
 </html>

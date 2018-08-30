@@ -42,8 +42,8 @@ public class NettyServerFilter extends ChannelInitializer<SocketChannel> {
         // 支持异步大文件传输
         ph.addLast("http-chunked",new ChunkedWriteHandler());
         // 服务端业务逻辑
-        ph.addLast("http-handler", new NettyHttpHandler());
-        ph.addLast("socket-handler", new NettySocketHandler());
+       // ph.addLast("http-handler", new NettyHttpHandler());
+       // ph.addLast("socket-handler", new NettySocketHandler());
         ph.addLast("string-handler", new NettyStringHandler());
     }
 }
