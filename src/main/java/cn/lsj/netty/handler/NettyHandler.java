@@ -5,9 +5,13 @@ import cn.lsj.netty.service.NettySocketService;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.channel.group.ChannelGroup;
+import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.handler.codec.http.DefaultFullHttpRequest;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
+import io.netty.handler.codec.http.websocketx.WebSocketServerHandshaker;
+import io.netty.util.concurrent.GlobalEventExecutor;
 
 import java.net.InetAddress;
 import java.util.HashMap;
@@ -18,7 +22,12 @@ import java.util.Map;
  * @Date: 2018/8/21 22:55
  * @Description:
  */
-public class NettyHttpHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
+public class NettyHandler extends SimpleChannelInboundHandler<Object> {
+
+
+    private WebSocketServerHandshaker serverShakeHand;
+
+    private static ChannelGroup channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
 
     public static Map<String,ChannelHandlerContext> channelMap = new HashMap<String,ChannelHandlerContext>();
 
@@ -26,17 +35,18 @@ public class NettyHttpHandler extends SimpleChannelInboundHandler<FullHttpReques
      * 接收客户端发送的消息 channel 通道 Read 读 简而言之就是从通道中读取数据，也就是服务端接收客户端发来的数据。
      * 但是这个数据在不进行解码时它是ByteBuf类型的
      * */
-/*     @Override
+     @Override
       public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        // new NettyHttpService().dealRequest(ctx,(FullHttpRequest) msg,serverShakeHand);
         // HTTP接入
          if (msg instanceof FullHttpRequest) {
-                new NettyHttpService().dealRequest(ctx,(FullHttpRequest) msg);
+                new NettyHttpService().dealRequest(ctx,(FullHttpRequest) msg,serverShakeHand);
             }
         // WebSocket接入
         else if (msg instanceof WebSocketFrame) {
-                new NettySocketService().dealRequest(ctx,(WebSocketFrame) msg);
+                new NettySocketService().dealRequest(ctx,(WebSocketFrame) msg,serverShakeHand);
             }
-      }*/
+      }
     /*
      * 建立连接时，返回消息
      */
@@ -50,32 +60,13 @@ public class NettyHttpHandler extends SimpleChannelInboundHandler<FullHttpReques
     /**
      * channelRead方法中调用了channelRead
      */
-    protected void messageReceived(ChannelHandlerContext channelHandlerContext, FullHttpRequest msg) throws Exception {
-        // 收到消息直接打印输出
-        new NettyHttpService().dealRequest(channelHandlerContext, msg);
-
-      /*  System.out.println("服务端接受的消息 : " + msg);
-        if("quit".equals(msg)){//服务端断开的条件
-            channelHandlerContext.close();
-        }
-        String message = "server message get";
-        // 返回客户端消息
-        // channelHandlerContext.writeAndFlush(message+"\n");
-        String nowAddress = channelHandlerContext.channel().remoteAddress()+"";
-        System.out.println("当前的address："+nowAddress);
-        for(String address : channelMap.keySet()){
-
-            if(!address.equals(nowAddress)){
-                System.out.println("发送的address："+address);
-                //从Map中取出管道流上下文对象，给客户端发送数据
-                ChannelHandlerContext ctx = channelMap.get(address);
-                ctx.writeAndFlush(msg+"\n");
-            }
-        }*/
+    protected void messageReceived(ChannelHandlerContext channelHandlerContext, Object msg) throws Exception {
+        //new NettyHttpService().dealRequest(channelHandlerContext, msg, serverShakeHand);
     }
 
     /**
      * 每当服务端收到新的客户端连接时,客户端的channel存入ChannelGroup列表中,并通知列表中其他客户端channel
+     * 建立握手
      * @param ctx
      * @throws Exception
      */
@@ -83,7 +74,37 @@ public class NettyHttpHandler extends SimpleChannelInboundHandler<FullHttpReques
     public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
         //获取连接的channel
         Channel channel = ctx.channel();
+        channels.add(channel);
+    }
 
-       channelMap.put(ctx.channel().remoteAddress().toString(),ctx);
+
+    /**
+     * 握手取消
+     */
+    @Override
+    public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
+        Channel incoming = ctx.channel();
+        channels.remove(incoming);
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
+            throws Exception {
+        cause.printStackTrace();
+        System.out.println(
+                "[" + ctx.channel().remoteAddress() + "]" + "exit the room");
+        ctx.writeAndFlush("[" + ctx.channel().remoteAddress() + "]" + "exit the room");
+        ctx.close().sync();
+        ctx.fireExceptionCaught(cause);
+    }
+
+    /**
+     *  断开连接时进入此方法
+     * */
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        Channel channel = ctx.channel();
+        System.out.println("[" + channel.remoteAddress() + "] " + "offline");
+        ctx.writeAndFlush("[" + ctx.channel().remoteAddress() + "]" + "offline");
     }
 }

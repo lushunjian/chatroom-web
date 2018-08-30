@@ -34,15 +34,15 @@ public class InterceptorConfig extends WebMvcConfigurerAdapter{
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
        // registry.addResourceHandler("/**").addResourceLocations("D:/static/");
-        registry.addResourceHandler("/**").addResourceLocations(ResourceUtils.CLASSPATH_URL_PREFIX+"/static/");
+        registry.addResourceHandler("/static/**").addResourceLocations(ResourceUtils.CLASSPATH_URL_PREFIX+"/static/");
         registry.addResourceHandler("/templates/**").addResourceLocations(ResourceUtils.CLASSPATH_URL_PREFIX+"/templates/");
         super.addResourceHandlers(registry);
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        //拦截规则：除了login，其他都拦截判断
-        registry.addInterceptor(localInterceptor()).addPathPatterns("/**").excludePathPatterns("/login","/test/**");
+        //拦截规则：除了login和静态资源，其他都拦截判断
+        registry.addInterceptor(localInterceptor()).addPathPatterns("/**").excludePathPatterns("/login","/static","/static/**","/test/**");
         super.addInterceptors(registry);
     }
 

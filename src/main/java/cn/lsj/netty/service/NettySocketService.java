@@ -5,23 +5,15 @@ import io.netty.handler.codec.http.websocketx.*;
 
 public class NettySocketService extends RequestHandler<WebSocketFrame>{
     @Override
-    void requestAction(ChannelHandlerContext ctx, WebSocketFrame frame) {
+    void requestAction(ChannelHandlerContext ctx, WebSocketFrame frame, WebSocketServerHandshaker serverShakeHand) {
 
-      System.out.println("消息进入socket处理类");
-        // 判断是否是Ping消息
-        if (frame instanceof PingWebSocketFrame) {
-            ctx.channel().write(
-                    new PongWebSocketFrame(frame.content().retain()));
-            return;
-        }
-        //文本消息，不支持二进制消息
-        if (frame instanceof TextWebSocketFrame) {
-            // 返回应答消息
-            String request = ((TextWebSocketFrame) frame).text();
-            ctx.channel().writeAndFlush(
-                    new TextWebSocketFrame(request
-                            + " , 欢迎使用Netty WebSocket服务，现在时刻："
-                            + new java.util.Date().toString()));
+        if (frame instanceof CloseWebSocketFrame) {//关闭
+            serverShakeHand.close(ctx.channel(), (CloseWebSocketFrame)frame.retain());
+        }else if (frame instanceof PingWebSocketFrame) {//ping消息
+            ctx.channel().write(new PongWebSocketFrame(frame.content().retain()));
+        }else if (frame instanceof TextWebSocketFrame) {//文本消息
+            String request = ((TextWebSocketFrame)frame).text();
+            ctx.channel().write(new TextWebSocketFrame("websocket return:"+request));
         }
     }
 }

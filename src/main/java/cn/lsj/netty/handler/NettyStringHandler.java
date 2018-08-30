@@ -1,5 +1,6 @@
 package cn.lsj.netty.handler;
 
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
@@ -14,7 +15,8 @@ public class NettyStringHandler extends SimpleChannelInboundHandler<String> {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         System.out.println("连接的客户端地址:" + ctx.channel().remoteAddress().toString());
-        ctx.writeAndFlush(" connect success! [ client host name:"+ InetAddress.getLocalHost().getHostName() + " ]\n");
+        ctx.writeAndFlush(" connect success! [ client host ip:"+ ctx.channel().remoteAddress() +"client host name:"+InetAddress.getLocalHost().getHostName()+ " ]\n");
+        //ctx.writeAndFlush(" connect success! [ client host name:"+ InetAddress.getLocalHost().getHostName() + " ]\n");
         super.channelActive(ctx);
     }
 
@@ -42,6 +44,31 @@ public class NettyStringHandler extends SimpleChannelInboundHandler<String> {
      */
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
-
+        ctx.writeAndFlush(
+                "[" + ctx.channel().remoteAddress() + "] " + "is coming");
     }
+
+    /**
+     * 连接异常时进入此方法
+     * */
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
+            throws Exception {
+        cause.printStackTrace();
+        System.out.println(
+                "[" + ctx.channel().remoteAddress() + "]" + "exit the room");
+        ctx.writeAndFlush("[" + ctx.channel().remoteAddress() + "]" + "exit the room");
+        ctx.close().sync();
+    }
+
+    /**
+     *  断开连接时进入此方法
+     * */
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        Channel channel = ctx.channel();
+        System.out.println("[" + channel.remoteAddress() + "] " + "offline");
+        ctx.writeAndFlush("[" + ctx.channel().remoteAddress() + "]" + "offline");
+    }
+
 }

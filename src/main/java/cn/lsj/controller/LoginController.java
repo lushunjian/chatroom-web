@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import redis.clients.jedis.exceptions.JedisConnectionException;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -52,7 +54,16 @@ public class LoginController {
 
     @RequestMapping("/home")
     public String getHome(HttpServletRequest request){
-        String userAccount = request.getParameter("userAccount");
+        //从请求的cookie中获取用户账号
+        String userAccount = null;
+        Cookie[] cookies = request.getCookies();
+        for(Cookie cookie : cookies){
+            if(cookie.getName().equals("userAccount")){
+                userAccount = cookie.getValue();
+                break;
+            }
+        }
+        //根据账号查询好友列表
         List<Friend> friendList = friendService.getFriendByAccount(userAccount);
         User user = (User) redisHandler.getObject(request.getSession().getId());
         request.setAttribute("user",user);
@@ -61,7 +72,7 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public String userLogin(String userAccount, String userPassword, HttpServletRequest request,RedirectAttributes attr){
+    public String userLogin(String userAccount, String userPassword, HttpServletRequest request, HttpServletResponse response, RedirectAttributes attr){
         User user = userService.getUserInfo(userAccount,userPassword);
         if(user != null) {
             //保存用户信息 保存在redis中，表示已登录
@@ -73,7 +84,12 @@ public class LoginController {
                 //设置过期时间为 30分钟
                 redisHandler.expire(userAccount, 1800);
                 redisHandler.expire(sessionId, 1800);
-                return "redirect:/home?userAccount=" + userAccount;
+
+                Cookie cookie = new Cookie("userAccount", userAccount);
+                //设置cookie过期时间
+                cookie.setMaxAge(24 * 60 * 60);
+                response.addCookie(cookie);
+                return "redirect:/home";
             }catch (JedisConnectionException | RedisConnectionFailureException e  ){
                 attr.addAttribute("cssStyle","red message");
                 attr.addAttribute("status","true");
