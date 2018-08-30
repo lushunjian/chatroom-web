@@ -36,14 +36,8 @@ public class NettyServerFilter extends ChannelInitializer<SocketChannel> {
         // 支持异步大文件传输，文件分块
         ph.addLast("http-block",new ChunkedWriteHandler());
         //用于处理websocket, /ws为访问websocket时的uri
-        //ph.addLast("socket", new WebSocketServerProtocolHandler("/webSocket"));
         // 服务端业务逻辑
         ph.addLast("http-handler", new NettyHandler());
-        //针对字符串处理的handler
-        //ph.addLast("string-handler", new NettyTextHandler());
-
-        //针对webSocket的handler
-        //ph.addLast("webSocketHandler", new WebSocketHandler());
 
     }
 }
