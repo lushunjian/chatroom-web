@@ -7,7 +7,6 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpResponseEncoder;
 import io.netty.handler.codec.http.HttpServerCodec;
-import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.stream.ChunkedWriteHandler;
 
 /**
@@ -36,14 +35,15 @@ public class NettyServerFilter extends ChannelInitializer<SocketChannel> {
         ph.addLast("http-aggregator",new HttpObjectAggregator(65536));
         // 支持异步大文件传输，文件分块
         ph.addLast("http-block",new ChunkedWriteHandler());
+        //用于处理websocket, /ws为访问websocket时的uri
+        //ph.addLast("socket", new WebSocketServerProtocolHandler("/webSocket"));
         // 服务端业务逻辑
         ph.addLast("http-handler", new NettyHandler());
-       // ph.addLast("socket-handler", new NettySocketHandler());
         //针对字符串处理的handler
-        //ph.addLast("string-handler", new NettyStringHandler());
+        //ph.addLast("string-handler", new NettyTextHandler());
 
         //针对webSocket的handler
-      //  ph.addLast("webSocketHandler", new WebSocketHandler());
+        //ph.addLast("webSocketHandler", new WebSocketHandler());
 
     }
 }

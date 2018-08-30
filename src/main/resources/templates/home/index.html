@@ -79,7 +79,7 @@
                         <div class="content">
                             <div class="ui middle aligned animated selection divided list" data-th-each="friend : ${friendList}">
                                 <div class="item">
-                                    <img class="ui avatar image" src="/semantic/themes/default/assets/images/jenny.jpg">
+                                    <img class="ui avatar image" src="/static/semantic/themes/default/assets/images/jenny.jpg">
                                     <div class="content">
                                         <a class="header" data-th-text="${friend.friendName}"></a>
                                         <div class="description" data-th-text="${friend.friendDescribe}"></div>
@@ -104,7 +104,7 @@
                 <div class="ui segment">
                     <div class="ui card">
                         <div class="image">
-                            <img src="/semantic/themes/default/assets/images/watchmen-horizontal.jpg">
+                            <img src="/static/semantic/themes/default/assets/images/watchmen-horizontal.jpg">
                         </div>
                         <div class="content">
                             <div class="header">Watchmen</div>
@@ -135,7 +135,7 @@
 
                         <div class="comment">
                             <a class="avatar">
-                                <img src="/semantic/themes/default/assets/images/matt.jpg">
+                                <img src="/static/semantic/themes/default/assets/images/matt.jpg">
                             </a>
                             <div class="content">
                                 <a class="author">Matt</a>
@@ -147,7 +147,7 @@
                         </div>
                         <div class="comment">
                             <a class="avatar">
-                                <img src="/semantic/themes/default/assets/images/matt.jpg">
+                                <img src="/static/semantic/themes/default/assets/images/matt.jpg">
                             </a>
                             <div class="content">
                                 <a class="author">Joe Henderson</a>
@@ -159,7 +159,7 @@
                         </div>
                         <div class="comment">
                             <a class="avatar">
-                                <img src="/semantic/themes/default/assets/images/elliot.jpg">
+                                <img src="/static/semantic/themes/default/assets/images/elliot.jpg">
                             </a>
                             <div class="content">
                                 <a class="author">Joe Henderson</a>
@@ -171,7 +171,7 @@
                         </div>
                         <div class="comment">
                             <a class="avatar">
-                                <img src="/semantic/themes/default/assets/images/matt.jpg">
+                                <img src="/static/semantic/themes/default/assets/images/matt.jpg">
                             </a>
                             <div class="content">
                                 <a class="author">Joe Henderson</a>
@@ -183,7 +183,7 @@
                         </div>
                         <div class="comment">
                             <a class="avatar">
-                                <img src="/semantic/themes/default/assets/images/jenny.jpg">
+                                <img src="/static/semantic/themes/default/assets/images/jenny.jpg">
                             </a>
                             <div class="content">
                                 <a class="author">Joe Henderson</a>
@@ -195,7 +195,7 @@
                         </div>
                         <div class="comment">
                             <a class="avatar">
-                                <img src="/semantic/themes/default/assets/images/elliot.jpg">
+                                <img src="/static/semantic/themes/default/assets/images/elliot.jpg">
                             </a>
                             <div class="content">
                                 <a class="author">Elliot Fu </a>
@@ -289,20 +289,44 @@
         return fmt;
     }
 
+    // 打开WebSocket, 传递的参数url没有同源策略的限制。
+    var socket=new WebSocket('ws://127.0.0.1:8889/webSocket');
 
-    var ws=new WebSocket('ws://127.0.0.1:8889/ws');
-         ws.onopen=function(){
-            console.log('连接')
-         }
-        ws.onmessage=function(evt){
-            console.log('连接')
-        }
-        ws.onclose=function(){
-            console.log('断开')
-        };
-        ws.onerror=function(evt){
-           console.log('错误')
-        };
+    // 监听open事件，在成功建立websocket时向url发送纯文本字符串数据(如果是对象则必须序列化处理)。
+     socket.onopen=function(){
+        console.log('连接')
+     }
+
+     // 监听message事件，在服务器响应时接受数据。返回的数据存储在事件对象中。
+    socket.onmessage=function(evt){
+        console.log('连接')
+    }
+
+    // 监听close事件，在连接关闭时触发。只有close事件的事件对象拥有额外的信息。可以通过这些信息来查看关闭状态
+    socket.onclose=function(){
+        console.log('断开')
+    };
+
+    //监听error事件，在发生错误时触发
+    socket.onerror=function(evt){
+       console.log(evt)
+    };
+
+            //SockJS
+   /* var socket = new SockJS('http://127.0.0.1:8889');
+    socket.onopen = function () {
+        console.log('open')
+        sock.send('test')
+    }
+    socket.onmessage = function (e) {
+        console.log('message', e.data)
+        sock.close()
+    }
+    socket.onclose = function () {
+        console.log('close')
+    } */
+
+    var status=["正在连接","连接成功","正在关闭连接","连接已关闭"];
 
     //发送消息按钮，点击事件
     $("#sendMessageButton").on("click",function(){
@@ -310,17 +334,17 @@
         var message = $("#messageArea").val();
         if(message) {
             //添加状态判断，当为OPEN时，发送消息
-            if (ws.readyState===1) {
-                ws.send(JSON.stringify(message));
+            if (socket.readyState===1) {
+                socket.send(JSON.stringify(message));
             }else{
-                alert(ws.readyState);
+                alert(socket.readyState);
                 //do something
             }
             //系统当前时间，格式化日期
             var time = new Date().Format("yyyy-MM-dd HH:mm:ss");
-            var html = '<div class="comment"><a class="avatar"><img src="/semantic/themes/default/assets/images/elliot.jpg"></a><div class="content">' +
-                '<a class="author">Elliot Fu </a><div class="metadata"><span class="date">' + time + '</span></div>' +
-                '<div class="text">' + message + ' </div></div></div>'
+            var html = '<div class="comment"><a class="avatar"><img src="/static/semantic/themes/default/assets/images/elliot.jpg">'+
+                       '</a><div class="content"><a class="author">Elliot Fu </a><div class="metadata"><span class="date">' + time +
+                       '</span></div><div class="text">' + message + ' </div></div></div>'
             $("#chatContent").append(html);
             //清空输入框的内容
             $("#messageArea").val("");
@@ -333,20 +357,6 @@
     $('.message .close').on('click', function() {
         $("#messageNotice").css("display","none");
     });
-
-    //SockJS
-   /* var sock = new SockJS('http://127.0.0.1:8889');
-    sock.onopen = function () {
-        console.log('open')
-        sock.send('test')
-    }
-    sock.onmessage = function (e) {
-        console.log('message', e.data)
-        sock.close()
-    }
-    sock.onclose = function () {
-        console.log('close')
-    }*/
 
 
 </script>

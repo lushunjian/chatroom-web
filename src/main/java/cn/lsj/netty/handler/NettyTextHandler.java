@@ -11,7 +11,7 @@ import java.net.InetAddress;
  * @Date: 2018/8/29 23:01
  * @Description:
  */
-public class NettyStringHandler extends SimpleChannelInboundHandler<String> {
+public class NettyTextHandler extends SimpleChannelInboundHandler<String> {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         System.out.println("连接的客户端地址:" + ctx.channel().remoteAddress().toString());

@@ -24,9 +24,6 @@ import java.util.Map;
  */
 public class NettyHandler extends SimpleChannelInboundHandler<Object> {
 
-
-    private WebSocketServerHandshaker serverShakeHand;
-
     private static ChannelGroup channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
 
     public static Map<String,ChannelHandlerContext> channelMap = new HashMap<String,ChannelHandlerContext>();
@@ -40,11 +37,11 @@ public class NettyHandler extends SimpleChannelInboundHandler<Object> {
         // new NettyHttpService().dealRequest(ctx,(FullHttpRequest) msg,serverShakeHand);
         // HTTP接入
          if (msg instanceof FullHttpRequest) {
-                new NettyHttpService().dealRequest(ctx,(FullHttpRequest) msg,serverShakeHand);
+                new NettyHttpService().dealRequest(ctx,(FullHttpRequest) msg);
             }
         // WebSocket接入
         else if (msg instanceof WebSocketFrame) {
-                new NettySocketService().dealRequest(ctx,(WebSocketFrame) msg,serverShakeHand);
+                new NettySocketService().dealRequest(ctx,(WebSocketFrame) msg);
             }
       }
     /*
