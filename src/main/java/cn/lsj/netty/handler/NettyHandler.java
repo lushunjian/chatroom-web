@@ -1,5 +1,6 @@
 package cn.lsj.netty.handler;
 
+import cn.lsj.netty.constant.WebSocketConstant;
 import cn.lsj.netty.service.NettyHttpService;
 import cn.lsj.netty.service.NettySocketService;
 import io.netty.channel.Channel;
@@ -28,37 +29,29 @@ public class NettyHandler extends SimpleChannelInboundHandler<Object> {
 
     public static Map<String,ChannelHandlerContext> channelMap = new HashMap<String,ChannelHandlerContext>();
 
-    /**
-     * 接收客户端发送的消息 channel 通道 Read 读 简而言之就是从通道中读取数据，也就是服务端接收客户端发来的数据。
-     * 但是这个数据在不进行解码时它是ByteBuf类型的
-     * */
-     @Override
-      public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        // new NettyHttpService().dealRequest(ctx,(FullHttpRequest) msg,serverShakeHand);
-        // HTTP接入
-         if (msg instanceof FullHttpRequest) {
-                new NettyHttpService().dealRequest(ctx,(FullHttpRequest) msg);
-            }
-        // WebSocket接入
-        else if (msg instanceof WebSocketFrame) {
-                new NettySocketService().dealRequest(ctx,(WebSocketFrame) msg);
-            }
-      }
     /*
      * 建立连接时，返回消息
      */
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         System.out.println("连接的客户端地址:" + ctx.channel().remoteAddress().toString());
-        ctx.writeAndFlush(" connect success! [ client host name:"+ InetAddress.getLocalHost().getHostName() + " ]\n");
-        super.channelActive(ctx);
+        WebSocketConstant.group.add(ctx.channel());
+        System.out.println("客户端与服务端连接开启");
     }
 
     /**
-     * channelRead方法中调用了channelRead
+     * channelRead方法中调用了messageReceived，处理连接
+     * web-socket初次连接时，发送的是http连接，之后会升级为webSocket连接
      */
     protected void messageReceived(ChannelHandlerContext channelHandlerContext, Object msg) throws Exception {
-        //new NettyHttpService().dealRequest(channelHandlerContext, msg, serverShakeHand);
+        // Http接入
+        if (msg instanceof FullHttpRequest) {
+            new NettyHttpService().dealRequest(channelHandlerContext,(FullHttpRequest) msg);
+        }
+        // WebSocket接入
+        else if (msg instanceof WebSocketFrame) {
+            new NettySocketService().dealRequest(channelHandlerContext,(WebSocketFrame) msg);
+        }
     }
 
     /**
@@ -100,8 +93,7 @@ public class NettyHandler extends SimpleChannelInboundHandler<Object> {
      * */
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        Channel channel = ctx.channel();
-        System.out.println("[" + channel.remoteAddress() + "] " + "offline");
-        ctx.writeAndFlush("[" + ctx.channel().remoteAddress() + "]" + "offline");
+        WebSocketConstant.group.remove(ctx.channel());
+        System.out.println("客户端与服务端连接关闭");
     }
 }
