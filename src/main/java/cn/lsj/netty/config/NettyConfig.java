@@ -12,6 +12,10 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "netty")
 public class NettyConfig {
 
+    private String host;
+
+    private String route;
+
     private int port;
 
     private int bossThreadCount;
@@ -40,5 +44,21 @@ public class NettyConfig {
 
     public void setPort(int port) {
         this.port = port;
+    }
+
+    public String getHost() {
+        return host;
+    }
+
+    public void setHost(String host) {
+        this.host = host;
+    }
+
+    public String getRoute() {
+        return route;
+    }
+
+    public void setRoute(String route) {
+        this.route = route;
     }
 }

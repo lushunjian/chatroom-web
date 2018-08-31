@@ -1,5 +1,6 @@
 package cn.lsj.netty.service;
 
+import cn.lsj.netty.config.NettyConfig;
 import cn.lsj.netty.constant.WebSocketConstant;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -14,8 +15,11 @@ import io.netty.util.CharsetUtil;
 
 public class NettyHttpService extends RequestHandler<FullHttpRequest> {
 
-    private final static String wsUri = "/ws";
+    private NettyConfig nettyConfig;
 
+    public NettyHttpService(NettyConfig nettyConfig){
+        this.nettyConfig=nettyConfig;
+    }
 
     @Override
     void requestAction(ChannelHandlerContext ctx, FullHttpRequest req) {
@@ -54,8 +58,10 @@ public class NettyHttpService extends RequestHandler<FullHttpRequest> {
             CharSequence charSequence = request.headers().get(HttpHeaderNames.SEC_WEBSOCKET_PROTOCOL);
             if(charSequence!=null)
                 subProtocols = charSequence.toString();
+            // url:ws://127.0.0.1:8889/webSocket
+            String webSocketURL =String.format(WebSocketConstant.WEB_SOCKET_URL, nettyConfig.getHost(),nettyConfig.getPort(),nettyConfig.getRoute());
             WebSocketServerHandshakerFactory wsFactory = new WebSocketServerHandshakerFactory(
-                    "ws://127.0.0.1:8889/webSocket", subProtocols, false);
+                    webSocketURL, subProtocols, false);
             WebSocketServerHandshaker handshake = wsFactory.newHandshaker(request);
             if (handshake == null) {
                 WebSocketServerHandshakerFactory.sendUnsupportedVersionResponse(ctx.channel());

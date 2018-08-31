@@ -1,5 +1,6 @@
 package cn.lsj.netty.handler;
 
+import cn.lsj.netty.config.NettyConfig;
 import cn.lsj.netty.constant.WebSocketConstant;
 import cn.lsj.netty.service.NettyHttpService;
 import cn.lsj.netty.service.NettySocketService;
@@ -25,7 +26,11 @@ import java.util.Map;
  */
 public class NettyHandler extends SimpleChannelInboundHandler<Object> {
 
-    private static ChannelGroup channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
+    private NettyConfig nettyConfig;
+
+    public NettyHandler(NettyConfig nettyConfig){
+        this.nettyConfig=nettyConfig;
+    }
 
     public static Map<String,ChannelHandlerContext> channelMap = new HashMap<String,ChannelHandlerContext>();
 
@@ -46,7 +51,7 @@ public class NettyHandler extends SimpleChannelInboundHandler<Object> {
     protected void messageReceived(ChannelHandlerContext channelHandlerContext, Object msg) throws Exception {
         // Http接入
         if (msg instanceof FullHttpRequest) {
-            new NettyHttpService().dealRequest(channelHandlerContext,(FullHttpRequest) msg);
+            new NettyHttpService(nettyConfig).dealRequest(channelHandlerContext,(FullHttpRequest) msg);
         }
         // WebSocket接入
         else if (msg instanceof WebSocketFrame) {
@@ -64,7 +69,6 @@ public class NettyHandler extends SimpleChannelInboundHandler<Object> {
     public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
         //获取连接的channel
         Channel channel = ctx.channel();
-        channels.add(channel);
     }
 
 
@@ -74,7 +78,6 @@ public class NettyHandler extends SimpleChannelInboundHandler<Object> {
     @Override
     public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
         Channel incoming = ctx.channel();
-        channels.remove(incoming);
     }
 
     @Override

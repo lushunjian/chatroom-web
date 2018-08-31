@@ -68,7 +68,7 @@ public class NettyServer {
                     .channel(NioServerSocketChannel.class)
                     .option(ChannelOption.SO_BACKLOG, 100)
                    // .handler(new LoggingHandler(LogLevel.INFO))
-                    .childHandler(new NettyServerFilter());
+                    .childHandler(new NettyServerFilter(nettyConfig));
 
             /** 绑定本地端口并同步等待完成*/
             ChannelFuture f = bootstrap.bind(port).sync();

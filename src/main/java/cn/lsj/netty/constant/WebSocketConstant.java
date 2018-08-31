@@ -18,4 +18,5 @@ public class WebSocketConstant {
     public final static String UPGRADE= "Upgrade";
     public final static String SEC_WEBSOCKET_VERSION= "Sec-WebSocket-Version";
     public final static String SEC_WEBSOCKET_KEY= "Sec-WebSocket-Key";
+    public static String WEB_SOCKET_URL="ws:///%s:/%d/%s";
 }

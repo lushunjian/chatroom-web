@@ -1,5 +1,6 @@
 package cn.lsj.netty.filter;
 
+import cn.lsj.netty.config.NettyConfig;
 import cn.lsj.netty.handler.NettyHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -16,6 +17,12 @@ import io.netty.handler.stream.ChunkedWriteHandler;
  * @Description:
  */
 public class NettyServerFilter extends ChannelInitializer<SocketChannel> {
+
+    private NettyConfig nettyConfig;
+
+    public NettyServerFilter(NettyConfig nettyConfig){
+        this.nettyConfig=nettyConfig;
+    }
 
     @Override
     protected void initChannel(SocketChannel ch) throws Exception {
@@ -35,7 +42,7 @@ public class NettyServerFilter extends ChannelInitializer<SocketChannel> {
         // 支持异步大文件传输，文件分块
         ph.addLast("http-block",new ChunkedWriteHandler());
         // 服务端业务逻辑处理类
-        ph.addLast("http-handler", new NettyHandler());
+        ph.addLast("http-handler", new NettyHandler(nettyConfig));
 
     }
 }
