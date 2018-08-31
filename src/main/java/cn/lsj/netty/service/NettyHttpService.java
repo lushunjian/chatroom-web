@@ -29,8 +29,6 @@ public class NettyHttpService extends RequestHandler<FullHttpRequest> {
      * 协议升级方法，如果成功返回handshake对象
      * */
     public WebSocketServerHandshaker handleUpgradeRequest(ChannelHandlerContext ctx , FullHttpRequest request){
-        HttpHeaders httpHeaders = request.headers();
-        //判断请求头
         /**
          * 如果HTTP解码失败，或者当前请求不是 请求升级为webSocket的http请求
          * */

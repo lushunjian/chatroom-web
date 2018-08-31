@@ -15,11 +15,9 @@ public class NettySocketService extends RequestHandler<WebSocketFrame>{
     @Override
     void requestAction(ChannelHandlerContext ctx, WebSocketFrame frame) {
 
-        WebSocketServerHandshaker handshake = super.getServerHandshake();
-
         // 判断是否关闭链路的指令
         if (frame instanceof CloseWebSocketFrame) {
-            handshake.close(ctx.channel(), (CloseWebSocketFrame) frame.retain());
+            super.getServerHandshake().close(ctx.channel(), (CloseWebSocketFrame) frame.retain());
         }
 
         // 判断是否ping消息

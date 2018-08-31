@@ -7,12 +7,6 @@ public abstract class RequestHandler<T> {
 
     private WebSocketServerHandshaker serverHandshake;
 
-    RequestHandler(){}
-
-    RequestHandler(WebSocketServerHandshaker serverHandshake){
-        this.serverHandshake=serverHandshake;
-    }
-
     public WebSocketServerHandshaker getServerHandshake() {
         return serverHandshake;
     }
