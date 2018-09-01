@@ -1,15 +1,11 @@
 package cn.lsj.netty.service;
 
-import cn.lsj.netty.chat.impl.BinaryWebSocketFrameHandler;
-import cn.lsj.netty.chat.impl.CloseWebSocketFrameHandler;
-import cn.lsj.netty.chat.impl.PingWebSocketFrameHandler;
-import cn.lsj.netty.constant.WebSocketConstant;
-import cn.lsj.netty.chat.impl.TextWebSocketFrameHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.websocketx.*;
-
-import java.util.Date;
 import java.util.logging.Logger;
+
+import static cn.lsj.netty.chat.factory.WebSocketFrameFactory.createSocketHandler;
+import static cn.lsj.netty.chat.factory.WebSocketFrameFactory.createSocketHandlerBySpring;
 
 public class NettySocketService extends RequestHandler<WebSocketFrame>{
 
@@ -18,22 +14,11 @@ public class NettySocketService extends RequestHandler<WebSocketFrame>{
     @Override
     void requestAction(ChannelHandlerContext ctx, WebSocketFrame frame) {
 
-        // 判断是否关闭链路的指令
-        if (frame instanceof CloseWebSocketFrame) {
-            new CloseWebSocketFrameHandler().socketHand(ctx, (CloseWebSocketFrame)frame);
-        }
-        // 判断是否ping消息
-        else if (frame instanceof PingWebSocketFrame) {
-            new PingWebSocketFrameHandler().socketHand(ctx, (PingWebSocketFrame)frame);
-        }
-        //字符串处理
-        else if(frame instanceof TextWebSocketFrame){
-            new TextWebSocketFrameHandler().socketHand(ctx, (TextWebSocketFrame)frame);
-        }
-        // 二进制文件流
-        else if (frame instanceof BinaryWebSocketFrame) {
-            new BinaryWebSocketFrameHandler().socketHand(ctx, (BinaryWebSocketFrame)frame);
-        }
+        //传统方式生成业务处理对象
+        //createSocketHandler(frame).socketHand(ctx);
+
+        //通过spring，生成业务处理对象
+        createSocketHandlerBySpring(frame).socketHand(ctx);
 
     }
 }

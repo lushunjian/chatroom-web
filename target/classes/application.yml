@@ -2,7 +2,9 @@ server:
   port: 6789
 
 netty:
+  host: 127.0.0.1
   port: 8889
+  route: webSocket      # webSocket建立连接的路由
   bossThreadCount: 200
   workThreadCount: 200
 
