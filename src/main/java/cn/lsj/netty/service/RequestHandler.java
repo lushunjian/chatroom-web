@@ -5,16 +5,6 @@ import io.netty.handler.codec.http.websocketx.WebSocketServerHandshaker;
 
 public abstract class RequestHandler<T> {
 
-    private WebSocketServerHandshaker serverHandshake;
-
-    public WebSocketServerHandshaker getServerHandshake() {
-        return serverHandshake;
-    }
-
-    public void setServerHandshake(WebSocketServerHandshaker serverHandshake) {
-        this.serverHandshake = serverHandshake;
-    }
-
     public void dealRequest(ChannelHandlerContext ctx, T msg){
         requestAction(ctx,msg);
     }

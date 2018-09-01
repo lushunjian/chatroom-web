@@ -9,7 +9,7 @@ import java.net.InetAddress;
 /**
  * @Auther: Lushunjian
  * @Date: 2018/8/29 23:01
- * @Description:
+ * @Description:   测试类，仅支持文本传输 (String)
  */
 public class NettyTextHandler extends SimpleChannelInboundHandler<String> {
     @Override

@@ -23,14 +23,15 @@ public class NettyHttpService extends RequestHandler<FullHttpRequest> {
 
     @Override
     void requestAction(ChannelHandlerContext ctx, FullHttpRequest req) {
-        System.out.println("消息进入http处理类");
-        WebSocketServerHandshaker handshake=handleUpgradeRequest(ctx,req);
-        //握手对象将用于web-socket连接
-        super.setServerHandshake(handshake);
+        //握手对象将用于web-socket连接，web-socket在关闭链路时需要用握手对象，挥手
+        WebSocketConstant.serverHandshake= handleUpgradeRequest(ctx,req);
     }
 
     /**
-     * 协议升级方法，如果成功返回handshake对象
+     * 协议升级处理，如果成功返回handshake对象
+     * websocket在连接时，首先发送的是http请求，此时会进入FullHttpRequest处理类，http请求头中会带 Upgrade 属性。
+     * 此属性值为websocket，则说明客户端请求，将http请求升级为websocket请求。然后进入握手流程。一旦握手成功。
+     * 就建立了端到端的websocket连接。成功建立连接后，后续的websocket请求会进入WebSocketFrame处理类，进行处理。
      * */
     public WebSocketServerHandshaker handleUpgradeRequest(ChannelHandlerContext ctx , FullHttpRequest request){
         /**
@@ -45,7 +46,6 @@ public class NettyHttpService extends RequestHandler<FullHttpRequest> {
                         CharsetUtil.UTF_8);
                 response.content().writeBytes(buf);
                 buf.release();
-                ///HttpUtil.(response, response.content().readableBytes());
             }
             // 如果是非Keep-Alive，关闭连接
             ChannelFuture channelFuture = ctx.channel().writeAndFlush(response);
@@ -68,9 +68,7 @@ public class NettyHttpService extends RequestHandler<FullHttpRequest> {
                 return null;
             } else {
                 handshake.handshake(ctx.channel(), request);
-                //将handshaker绑定给channel
-                AttributeKey<WebSocketServerHandshaker> attributeKey = WebSocketConstant.ATTR_HANDSHAKE;
-                ctx.channel().attr(attributeKey).set(handshake);
+                System.out.println("握手成功！-----");
                 return handshake;
             }
         }

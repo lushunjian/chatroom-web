@@ -48,14 +48,14 @@ public class NettyHandler extends SimpleChannelInboundHandler<Object> {
      * channelRead方法中调用了messageReceived，处理连接
      * web-socket初次连接时，发送的是http连接，之后会升级为webSocket连接
      */
-    protected void messageReceived(ChannelHandlerContext channelHandlerContext, Object msg) throws Exception {
+    protected void messageReceived(ChannelHandlerContext ctx, Object msg) throws Exception {
         // Http接入
         if (msg instanceof FullHttpRequest) {
-            new NettyHttpService(nettyConfig).dealRequest(channelHandlerContext,(FullHttpRequest) msg);
+            new NettyHttpService(nettyConfig).dealRequest(ctx,(FullHttpRequest) msg);
         }
         // WebSocket接入
         else if (msg instanceof WebSocketFrame) {
-            new NettySocketService().dealRequest(channelHandlerContext,(WebSocketFrame) msg);
+            new NettySocketService().dealRequest(ctx,(WebSocketFrame) msg);
         }
     }
 
@@ -80,6 +80,9 @@ public class NettyHandler extends SimpleChannelInboundHandler<Object> {
         Channel incoming = ctx.channel();
     }
 
+    /**
+     * 连接异常处理
+     * */
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
             throws Exception {

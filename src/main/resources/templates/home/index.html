@@ -299,7 +299,7 @@
 
      // 监听message事件，在服务器响应时接受数据。返回的数据存储在事件对象中。
     socket.onmessage=function(evt){
-        console.log('连接')
+        console.log(evt)
     }
 
     // 监听close事件，在连接关闭时触发。只有close事件的事件对象拥有额外的信息。可以通过这些信息来查看关闭状态
@@ -313,18 +313,18 @@
     };
 
             //SockJS
-   /* var socket = new SockJS('http://127.0.0.1:8889');
+/*    var socket = new SockJS('http://127.0.0.1:8889/webSocket');
     socket.onopen = function () {
-        console.log('open')
-        sock.send('test')
-    }
+        console.log('open');
+        sock.send('test');
+    };
     socket.onmessage = function (e) {
-        console.log('message', e.data)
-        sock.close()
-    }
+        console.log('message', e.data);
+        sock.close();
+    };
     socket.onclose = function () {
-        console.log('close')
-    } */
+        console.log('close');
+    };*/
 
     var status=["正在连接","连接成功","正在关闭连接","连接已关闭"];
 

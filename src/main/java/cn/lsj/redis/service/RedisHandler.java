@@ -28,7 +28,10 @@ public class RedisHandler{
             @Override
             public Object doRedisAction(Jedis redis) {
                 byte[] value = redis.get(key.getBytes());
-                return SerializeUtil.objectDeSerialize(value);
+                if(value != null && value.length>0)
+                    return SerializeUtil.objectDeSerialize(value);
+                else
+                    return null;
             }
         });
     }
