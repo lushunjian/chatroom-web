@@ -1,31 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="713e67bc-a513-4f23-b218-f6e39ae6d9f2" name="Default" comment="主页修改">
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/lsj/netty/chat/exception/ChatException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/lsj/netty/chat/factory/WebSocketFrameFactory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/lsj/netty/chat/spring/ApplicationContextProvider.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/lsj/netty/chat/spring/ConfigurationBean.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="713e67bc-a513-4f23-b218-f6e39ae6d9f2" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/lsj/StartApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/lsj/StartApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/lsj/netty/chat/WebSocketFrameHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/lsj/netty/chat/WebSocketFrameHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/lsj/interceptor/LoginInterceptor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/lsj/interceptor/LoginInterceptor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/lsj/netty/NettyServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/lsj/netty/NettyServer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/lsj/netty/chat/impl/BinaryWebSocketFrameHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/lsj/netty/chat/impl/BinaryWebSocketFrameHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/lsj/netty/chat/impl/CloseWebSocketFrameHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/lsj/netty/chat/impl/CloseWebSocketFrameHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/lsj/netty/chat/impl/PingWebSocketFrameHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/lsj/netty/chat/impl/PingWebSocketFrameHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/lsj/netty/chat/impl/TextWebSocketFrameHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/lsj/netty/chat/impl/TextWebSocketFrameHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/lsj/netty/service/NettySocketService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/lsj/netty/service/NettySocketService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/cn/lsj/StartApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cn/lsj/StartApplication.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/cn/lsj/netty/NettyServer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cn/lsj/netty/NettyServer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/cn/lsj/netty/config/NettyConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cn/lsj/netty/config/NettyConfig.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/cn/lsj/netty/handler/NettyServerFilter.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/cn/lsj/netty/handler/NettyServerHandler.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/cn/lsj/redis/config/RedisConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cn/lsj/redis/config/RedisConfig.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/cn/lsj/redis/service/RedisService$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cn/lsj/redis/service/RedisService$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/cn/lsj/redis/service/RedisService$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cn/lsj/redis/service/RedisService$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/cn/lsj/redis/service/RedisService$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cn/lsj/redis/service/RedisService$3.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/cn/lsj/redis/service/RedisService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cn/lsj/redis/service/RedisService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/lsj/netty/filter/NettyServerFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/lsj/netty/filter/NettyServerFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/lsj/netty/handler/NettyHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/lsj/netty/handler/NettyHandler.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -38,45 +23,20 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="NettySocketService.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/netty/service/NettySocketService.java">
+      <file leaf-file-name="NettyHandler.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/netty/handler/NettyHandler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="380">
-              <caret line="20" column="8" lean-forward="true" selection-start-line="20" selection-start-column="8" selection-end-line="20" selection-end-column="8" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state relative-caret-position="304">
+              <caret line="35" column="34" selection-start-line="35" selection-start-column="34" selection-end-line="35" selection-end-column="34" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="WebSocketFrameFactory.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/netty/chat/factory/WebSocketFrameFactory.java">
+      <file leaf-file-name="RedisService.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/redis/service/RedisService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
-              <caret line="21" column="39" selection-start-line="21" selection-start-column="18" selection-end-line="21" selection-end-column="39" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ConfigurationBean.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/netty/chat/spring/ConfigurationBean.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="362">
-              <caret line="33" column="54" lean-forward="true" selection-start-line="33" selection-start-column="54" selection-end-line="33" selection-end-column="54" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#321#322#0" expanded="true" />
-                <element signature="e#361#362#0" expanded="true" />
-                <element signature="e#607#608#0" expanded="true" />
-                <element signature="e#663#664#0" expanded="true" />
-                <element signature="e#753#754#0" expanded="true" />
-                <element signature="e#809#810#0" expanded="true" />
-                <element signature="e#955#956#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="900">
+              <caret line="69" column="14" selection-start-line="69" selection-start-column="8" selection-end-line="69" selection-end-column="14" />
             </state>
           </provider>
         </entry>
@@ -85,41 +45,64 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/controller/LoginController.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="1672">
-              <caret line="105" lean-forward="true" selection-start-line="105" selection-end-line="105" />
+              <caret line="105" selection-start-line="105" selection-end-line="105" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ApplicationContextProvider.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/netty/chat/spring/ApplicationContextProvider.java">
+      <file leaf-file-name="RedisHandler.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/redis/service/RedisHandler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="401">
-              <caret line="35" column="29" lean-forward="true" selection-start-line="35" selection-start-column="29" selection-end-line="35" selection-end-column="29" />
+            <state relative-caret-position="418">
+              <caret line="26" column="34" selection-start-line="26" selection-start-column="34" selection-end-line="26" selection-end-column="34" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="RedisConnect.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/redis/connect/RedisConnect.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="615">
+              <caret line="48" column="19" lean-forward="true" selection-start-line="48" selection-start-column="19" selection-end-line="48" selection-end-column="19" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="NettyServerFilter.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/netty/filter/NettyServerFilter.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="266">
+              <caret line="25" lean-forward="true" selection-start-line="25" selection-end-line="25" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="LoginInterceptor.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/interceptor/LoginInterceptor.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="228">
+              <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#327#328#0" expanded="true" />
-                <element signature="e#387#388#0" expanded="true" />
-                <element signature="e#465#466#0" expanded="true" />
-                <element signature="e#526#527#0" expanded="true" />
-                <element signature="e#681#682#0" expanded="true" />
-                <element signature="e#742#743#0" expanded="true" />
-                <element signature="e#743#744#0" expanded="true" />
-                <element signature="e#784#785#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PingWebSocketFrameHandler.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/netty/chat/impl/PingWebSocketFrameHandler.java">
+      <file leaf-file-name="NettyServer.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/netty/NettyServer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="112">
-              <caret line="13" column="61" selection-start-line="13" selection-start-column="61" selection-end-line="13" selection-end-column="61" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#944#945#0" expanded="true" />
-                <element signature="e#985#986#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="1167">
+              <caret line="79" column="41" lean-forward="true" selection-start-line="79" selection-start-column="41" selection-end-line="79" selection-end-column="41" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="NettyConfig.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/netty/config/NettyConfig.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="209">
+              <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -129,52 +112,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="361">
               <caret line="27" column="8" selection-start-line="27" selection-start-column="8" selection-end-line="27" selection-end-column="8" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BinaryWebSocketFrameHandler.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/netty/chat/impl/BinaryWebSocketFrameHandler.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="205">
-              <caret line="14" column="3" lean-forward="true" selection-start-line="14" selection-start-column="3" selection-end-line="14" selection-end-column="3" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#626#627#0" expanded="true" />
-                <element signature="e#669#670#0" expanded="true" />
-                <element signature="e#934#935#0" expanded="true" />
-                <element signature="e#977#978#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TextWebSocketFrameHandler.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/netty/chat/impl/TextWebSocketFrameHandler.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="226">
-              <caret line="16" column="62" selection-start-line="16" selection-start-column="62" selection-end-line="16" selection-end-column="62" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#884#885#0" expanded="true" />
-                <element signature="e#934#935#0" expanded="true" />
-                <element signature="e#1492#1493#0" expanded="true" />
-                <element signature="e#1533#1534#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CloseWebSocketFrameHandler.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/netty/chat/impl/CloseWebSocketFrameHandler.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="93">
-              <caret line="12" column="3" lean-forward="true" selection-start-line="12" selection-start-column="3" selection-end-line="12" selection-end-column="6" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#946#947#0" expanded="true" />
-                <element signature="e#988#989#0" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -211,7 +148,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/cn/lsj/service/UserService.java" />
         <option value="$PROJECT_DIR$/src/main/java/cn/lsj/domain/User.java" />
         <option value="$PROJECT_DIR$/src/main/resources/templates/home/chatRoom.html" />
         <option value="$PROJECT_DIR$/src/main/java/cn/lsj/dao/Friend.java" />
@@ -238,12 +174,9 @@
         <option value="$PROJECT_DIR$/src/main/java/cn/lsj/netty/handler/NettySocketHandler.java" />
         <option value="$PROJECT_DIR$/src/main/java/cn/lsj/netty/handler/NettyHttpHandler.java" />
         <option value="$PROJECT_DIR$/src/main/java/cn/lsj/netty/handler/NettyStringHandler.java" />
-        <option value="$PROJECT_DIR$/src/main/java/cn/lsj/interceptor/LoginInterceptor.java" />
-        <option value="$PROJECT_DIR$/src/main/java/cn/lsj/netty/filter/NettyServerFilter.java" />
         <option value="$PROJECT_DIR$/src/main/resources/templates/login.html" />
         <option value="$PROJECT_DIR$/src/main/java/cn/lsj/netty/service/RequestHandler.java" />
         <option value="$PROJECT_DIR$/src/main/java/cn/lsj/netty/handler/NettyTextHandler.java" />
-        <option value="$PROJECT_DIR$/src/main/java/cn/lsj/netty/handler/NettyHandler.java" />
         <option value="$PROJECT_DIR$/src/main/java/cn/lsj/netty/service/NettyHttpService.java" />
         <option value="$PROJECT_DIR$/src/main/resources/templates/home/index.html" />
         <option value="$PROJECT_DIR$/src/main/java/cn/lsj/netty/websocket/WebSocketFrameHandler.java" />
@@ -256,12 +189,16 @@
         <option value="$PROJECT_DIR$/src/main/java/cn/lsj/netty/chat/spring/SpringUtil.java" />
         <option value="$PROJECT_DIR$/src/main/java/cn/lsj/netty/chat/spring/ApplicationContextProvider.java" />
         <option value="$PROJECT_DIR$/src/main/java/cn/lsj/StartApplication.java" />
-        <option value="$PROJECT_DIR$/src/main/java/cn/lsj/netty/chat/impl/CloseWebSocketFrameHandler.java" />
-        <option value="$PROJECT_DIR$/src/main/java/cn/lsj/netty/chat/impl/BinaryWebSocketFrameHandler.java" />
-        <option value="$PROJECT_DIR$/src/main/java/cn/lsj/netty/chat/impl/PingWebSocketFrameHandler.java" />
-        <option value="$PROJECT_DIR$/src/main/java/cn/lsj/netty/chat/impl/TextWebSocketFrameHandler.java" />
         <option value="$PROJECT_DIR$/src/main/java/cn/lsj/netty/chat/factory/WebSocketFrameFactory.java" />
         <option value="$PROJECT_DIR$/src/main/java/cn/lsj/netty/service/NettySocketService.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cn/lsj/netty/chat/impl/TextWebSocketFrameHandler.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cn/lsj/netty/chat/impl/BinaryWebSocketFrameHandler.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cn/lsj/netty/chat/impl/CloseWebSocketFrameHandler.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cn/lsj/netty/chat/impl/PingWebSocketFrameHandler.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cn/lsj/interceptor/LoginInterceptor.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cn/lsj/netty/NettyServer.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cn/lsj/netty/filter/NettyServerFilter.java" />
+        <option value="$PROJECT_DIR$/src/main/java/cn/lsj/netty/handler/NettyHandler.java" />
       </list>
     </option>
   </component>
@@ -301,7 +238,6 @@
     </navigator>
     <panes>
       <pane id="PackagesPane" />
-      <pane id="AndroidView" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -342,6 +278,15 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="lsj" type="462c0819:PsiDirectoryNode" />
+              <item name="controller" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="springbootnetty" type="b2602c69:ProjectViewProjectNode" />
+              <item name="springbootnetty" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="lsj" type="462c0819:PsiDirectoryNode" />
               <item name="netty" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -352,7 +297,7 @@
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="lsj" type="462c0819:PsiDirectoryNode" />
               <item name="netty" type="462c0819:PsiDirectoryNode" />
-              <item name="chat" type="462c0819:PsiDirectoryNode" />
+              <item name="filter" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="springbootnetty" type="b2602c69:ProjectViewProjectNode" />
@@ -362,46 +307,14 @@
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="lsj" type="462c0819:PsiDirectoryNode" />
               <item name="netty" type="462c0819:PsiDirectoryNode" />
-              <item name="chat" type="462c0819:PsiDirectoryNode" />
-              <item name="factory" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="springbootnetty" type="b2602c69:ProjectViewProjectNode" />
-              <item name="springbootnetty" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="lsj" type="462c0819:PsiDirectoryNode" />
-              <item name="netty" type="462c0819:PsiDirectoryNode" />
-              <item name="chat" type="462c0819:PsiDirectoryNode" />
-              <item name="impl" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="springbootnetty" type="b2602c69:ProjectViewProjectNode" />
-              <item name="springbootnetty" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="lsj" type="462c0819:PsiDirectoryNode" />
-              <item name="netty" type="462c0819:PsiDirectoryNode" />
-              <item name="chat" type="462c0819:PsiDirectoryNode" />
-              <item name="spring" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="springbootnetty" type="b2602c69:ProjectViewProjectNode" />
-              <item name="springbootnetty" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="lsj" type="462c0819:PsiDirectoryNode" />
-              <item name="netty" type="462c0819:PsiDirectoryNode" />
-              <item name="service" type="462c0819:PsiDirectoryNode" />
+              <item name="handler" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
       <pane id="Scope" />
+      <pane id="AndroidView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -543,7 +456,8 @@
       <workItem from="1535725067093" duration="1537000" />
       <workItem from="1535759978235" duration="7930000" />
       <workItem from="1535785975413" duration="6484000" />
-      <workItem from="1535803941607" duration="6335000" />
+      <workItem from="1535803941607" duration="6810000" />
+      <workItem from="1535845467594" duration="1479000" />
     </task>
     <task id="LOCAL-00001" summary="一些初始化">
       <created>1534896615242</created>
@@ -685,11 +599,18 @@
       <option name="project" value="LOCAL" />
       <updated>1535768938923</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="spring容器管理netty处理handler">
+      <created>1535810436936</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1535810436936</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="75665000" />
+    <option name="totallyTimeSpent" value="77619000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="2062" height="1126" extended-state="6" />
@@ -705,7 +626,7 @@
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info id="UI Designer" order="2" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" sideWeight="0.499501" visible="true" weight="0.3579373" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.499501" visible="true" weight="0.17290193" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Messages" order="7" sideWeight="0.499501" weight="0.28311425" />
       <window_info anchor="right" id="Palette&#9;" order="3" />
@@ -716,7 +637,7 @@
       <window_info anchor="bottom" id="Run" order="2" weight="0.6003584" />
       <window_info anchor="bottom" id="Spring" order="8" />
       <window_info anchor="bottom" id="Terminal" order="7" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2235529" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24351297" />
       <window_info anchor="right" id="Bean Validation" order="4" />
       <window_info id="Web" order="2" side_tool="true" />
       <window_info anchor="right" id="Theme Preview" order="3" />
@@ -752,7 +673,8 @@
     <MESSAGE value="sockjs" />
     <MESSAGE value="主页修改" />
     <MESSAGE value="socket通信" />
-    <option name="LAST_COMMIT_MESSAGE" value="socket通信" />
+    <MESSAGE value="spring容器管理netty处理handler" />
+    <option name="LAST_COMMIT_MESSAGE" value="spring容器管理netty处理handler" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -791,13 +713,6 @@
     </watches-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$MAVEN_REPOSITORY$/redis/clients/jedis/2.9.0/jedis-2.9.0.jar!/redis/clients/jedis/BinaryJedis.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="106">
-          <caret line="190" column="18" selection-start-line="190" selection-start-column="18" selection-end-line="190" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/application.yml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="418">
@@ -837,13 +752,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="570">
           <caret line="39" column="20" selection-start-line="39" selection-start-column="20" selection-end-line="39" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/redis/service/RedisService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="696">
-          <caret line="69" column="14" selection-start-line="69" selection-start-column="8" selection-end-line="69" selection-end-column="14" />
         </state>
       </provider>
     </entry>
@@ -920,20 +828,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/netty/filter/NettyServerFilter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="299">
-          <caret line="33" column="53" lean-forward="true" selection-start-line="33" selection-start-column="53" selection-end-line="33" selection-end-column="53" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/redis/connect/RedisConnect.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="399">
-          <caret line="43" selection-start-line="43" selection-end-line="43" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/templates/home/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2944">
@@ -948,13 +842,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/netty/NettyServer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="380">
-          <caret line="33" column="25" selection-start-line="33" selection-start-column="25" selection-end-line="33" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/io/netty/netty-all/5.0.0.Alpha2/netty-all-5.0.0.Alpha2.jar!/io/netty/handler/codec/http/websocketx/CloseWebSocketFrame.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="114">
@@ -966,20 +853,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="293">
           <caret line="50" selection-start-line="50" selection-end-line="50" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/redis/service/RedisHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="256">
-          <caret line="33" column="32" selection-start-line="33" selection-start-column="32" selection-end-line="33" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/interceptor/LoginInterceptor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="294">
-          <caret line="45" column="19" lean-forward="true" selection-start-line="45" selection-start-column="19" selection-end-line="45" selection-end-column="19" />
         </state>
       </provider>
     </entry>
@@ -1004,31 +877,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/netty/service/RequestHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="171">
-          <caret line="12" column="1" selection-start-line="12" selection-start-column="1" selection-end-line="12" selection-end-column="1" />
-          <folding>
-            <element signature="e#256#257#0" expanded="true" />
-            <element signature="e#294#295#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/netty/handler/NettyHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="722">
-          <caret line="57" column="62" selection-start-line="57" selection-start-column="62" selection-end-line="57" selection-end-column="62" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/netty/service/NettyHttpService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="247">
-          <caret line="26" column="54" selection-start-line="26" selection-start-column="54" selection-end-line="26" selection-end-column="54" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/io/netty/netty-all/5.0.0.Alpha2/netty-all-5.0.0.Alpha2.jar!/io/netty/handler/codec/http/websocketx/WebSocketFrame.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="114">
@@ -1040,10 +888,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="304">
           <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
-          <folding>
-            <element signature="e#327#328#0" expanded="true" />
-            <element signature="e#375#376#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1068,44 +912,94 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/controller/LoginController.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/netty/chat/spring/ConfigurationBean.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/netty/chat/spring/ApplicationContextProvider.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1672">
-          <caret line="105" lean-forward="true" selection-start-line="105" selection-end-line="105" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/netty/chat/spring/ConfigurationBean.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="362">
-          <caret line="33" column="54" lean-forward="true" selection-start-line="33" selection-start-column="54" selection-end-line="33" selection-end-column="54" />
+        <state relative-caret-position="494">
+          <caret line="35" column="29" selection-start-line="35" selection-start-column="29" selection-end-line="35" selection-end-column="29" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#321#322#0" expanded="true" />
-            <element signature="e#361#362#0" expanded="true" />
-            <element signature="e#607#608#0" expanded="true" />
-            <element signature="e#663#664#0" expanded="true" />
-            <element signature="e#753#754#0" expanded="true" />
-            <element signature="e#809#810#0" expanded="true" />
-            <element signature="e#955#956#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/netty/chat/spring/ApplicationContextProvider.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/netty/chat/factory/WebSocketFrameFactory.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="401">
-          <caret line="35" column="29" lean-forward="true" selection-start-line="35" selection-start-column="29" selection-end-line="35" selection-end-column="29" />
+        <state relative-caret-position="255">
+          <caret line="46" column="40" selection-start-line="46" selection-start-column="40" selection-end-line="46" selection-end-column="40" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#327#328#0" expanded="true" />
-            <element signature="e#387#388#0" expanded="true" />
-            <element signature="e#465#466#0" expanded="true" />
-            <element signature="e#526#527#0" expanded="true" />
-            <element signature="e#681#682#0" expanded="true" />
-            <element signature="e#742#743#0" expanded="true" />
-            <element signature="e#743#744#0" expanded="true" />
-            <element signature="e#784#785#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/netty/service/NettySocketService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="380">
+          <caret line="20" column="30" lean-forward="true" selection-start-line="20" selection-start-column="30" selection-end-line="20" selection-end-column="30" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/netty/service/RequestHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="114">
+          <caret line="7" column="16" selection-start-line="7" selection-start-column="16" selection-end-line="7" selection-end-column="16" />
+          <folding>
+            <element signature="e#256#257#0" expanded="true" />
+            <element signature="e#294#295#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/netty/chat/impl/TextWebSocketFrameHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="264">
+          <caret line="18" column="6" selection-start-line="18" selection-start-column="6" selection-end-line="18" selection-end-column="6" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/netty/chat/impl/BinaryWebSocketFrameHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="15" column="6" selection-start-line="15" selection-start-column="6" selection-end-line="15" selection-end-column="6" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/netty/chat/impl/CloseWebSocketFrameHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="15" column="6" selection-start-line="15" selection-start-column="6" selection-end-line="15" selection-end-column="6" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/netty/chat/impl/PingWebSocketFrameHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="380">
+          <caret line="20" lean-forward="true" selection-start-line="20" selection-end-line="20" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/interceptor/LoginInterceptor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="228">
+          <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1117,75 +1011,70 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/netty/chat/impl/CloseWebSocketFrameHandler.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/redis/service/RedisService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="93">
-          <caret line="12" column="3" lean-forward="true" selection-start-line="12" selection-start-column="3" selection-end-line="12" selection-end-column="6" />
+        <state relative-caret-position="900">
+          <caret line="69" column="14" selection-start-line="69" selection-start-column="8" selection-end-line="69" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/redis/service/RedisHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="418">
+          <caret line="26" column="34" selection-start-line="26" selection-start-column="34" selection-end-line="26" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/netty/config/NettyConfig.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="209">
+          <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/netty/service/NettyHttpService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="152">
+          <caret line="19" column="11" selection-start-line="19" selection-start-column="11" selection-end-line="19" selection-end-column="11" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#946#947#0" expanded="true" />
-            <element signature="e#988#989#0" expanded="true" />
+            <element signature="e#741#742#0" expanded="true" />
+            <element signature="e#785#786#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/netty/chat/impl/BinaryWebSocketFrameHandler.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/redis/connect/RedisConnect.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="205">
-          <caret line="14" column="3" lean-forward="true" selection-start-line="14" selection-start-column="3" selection-end-line="14" selection-end-column="3" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#626#627#0" expanded="true" />
-            <element signature="e#669#670#0" expanded="true" />
-            <element signature="e#934#935#0" expanded="true" />
-            <element signature="e#977#978#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="615">
+          <caret line="48" column="19" lean-forward="true" selection-start-line="48" selection-start-column="19" selection-end-line="48" selection-end-column="19" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/netty/chat/impl/PingWebSocketFrameHandler.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/controller/LoginController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="112">
-          <caret line="13" column="61" selection-start-line="13" selection-start-column="61" selection-end-line="13" selection-end-column="61" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#944#945#0" expanded="true" />
-            <element signature="e#985#986#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="1672">
+          <caret line="105" selection-start-line="105" selection-end-line="105" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/netty/chat/impl/TextWebSocketFrameHandler.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/netty/NettyServer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="226">
-          <caret line="16" column="62" selection-start-line="16" selection-start-column="62" selection-end-line="16" selection-end-column="62" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#884#885#0" expanded="true" />
-            <element signature="e#934#935#0" expanded="true" />
-            <element signature="e#1492#1493#0" expanded="true" />
-            <element signature="e#1533#1534#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="1167">
+          <caret line="79" column="41" lean-forward="true" selection-start-line="79" selection-start-column="41" selection-end-line="79" selection-end-column="41" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/netty/chat/factory/WebSocketFrameFactory.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/netty/filter/NettyServerFilter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="21" column="39" selection-start-line="21" selection-start-column="18" selection-end-line="21" selection-end-column="39" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="266">
+          <caret line="25" lean-forward="true" selection-start-line="25" selection-end-line="25" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/netty/service/NettySocketService.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/cn/lsj/netty/handler/NettyHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="380">
-          <caret line="20" column="8" lean-forward="true" selection-start-line="20" selection-start-column="8" selection-end-line="20" selection-end-column="8" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="304">
+          <caret line="35" column="34" selection-start-line="35" selection-start-column="34" selection-end-line="35" selection-end-column="34" />
         </state>
       </provider>
     </entry>

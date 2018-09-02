@@ -1,6 +1,5 @@
 package cn.lsj.interceptor;
 
-import cn.lsj.domain.User;
 import cn.lsj.redis.service.RedisHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;

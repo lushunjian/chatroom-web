@@ -16,8 +16,8 @@ import java.util.Date;
  *   webSocket 文本消息处理类
  *   通过@Component和@Scope注解，把对象交给spring容器管理。@Scope注解注入方式为：多实例注入
  */
-@Component("text")
 @Scope
+@Component("text")
 public class TextWebSocketFrameHandler extends WebSocketFrameHandler {
 
     private static final Logger logger = Logger

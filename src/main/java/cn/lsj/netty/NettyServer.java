@@ -8,8 +8,11 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.logging.LogLevel;
+import io.netty.handler.logging.LoggingHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PreDestroy;
@@ -25,6 +28,9 @@ public class NettyServer {
      */
     @Resource
     private NettyConfig nettyConfig;
+
+    @Autowired
+    NettyServerFilter nettyServerFilter;
 
     private EventLoopGroup boss=null;
 
@@ -67,8 +73,12 @@ public class NettyServer {
                     /** 设置非阻塞,用它来建立新accept的连接*/
                     .channel(NioServerSocketChannel.class)
                     .option(ChannelOption.SO_BACKLOG, 100)
-                   // .handler(new LoggingHandler(LogLevel.INFO))
-                    .childHandler(new NettyServerFilter(nettyConfig));
+                    /** 日志级别*/
+                    .handler(new LoggingHandler(LogLevel.INFO))
+                    /* 官方方式生成处理bean*/
+                    //.childHandler(new NettyServerFilter(nettyConfig));
+                    /** 通过spring 注入bean*/
+                    .childHandler(nettyServerFilter);
 
             /** 绑定本地端口并同步等待完成*/
             ChannelFuture f = bootstrap.bind(port).sync();

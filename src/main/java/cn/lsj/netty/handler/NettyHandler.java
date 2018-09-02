@@ -14,7 +14,9 @@ import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketServerHandshaker;
 import io.netty.util.concurrent.GlobalEventExecutor;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.net.InetAddress;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,18 +26,14 @@ import java.util.Map;
  * @Date: 2018/8/21 22:55
  * @Description:
  */
+@Component
 public class NettyHandler extends SimpleChannelInboundHandler<Object> {
 
+    @Resource
     private NettyConfig nettyConfig;
 
-    public NettyHandler(NettyConfig nettyConfig){
-        this.nettyConfig=nettyConfig;
-    }
-
-    public static Map<String,ChannelHandlerContext> channelMap = new HashMap<String,ChannelHandlerContext>();
-
-    /*
-     * 建立连接时，返回消息
+    /**
+     * 建立连接时，将客户端对应的管道上下文对象 保存起来，向客户端发送消息时需要用到此对象
      */
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {

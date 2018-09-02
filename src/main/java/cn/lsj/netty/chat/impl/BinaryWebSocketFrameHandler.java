@@ -13,8 +13,8 @@ import org.springframework.stereotype.Component;
  *    通过@Component和@Scope注解，把对象交给spring容器管理。@Scope注解注入方式为：多实例注入
  *
  */
-@Component("binary")
 @Scope
+@Component("binary")
 public class BinaryWebSocketFrameHandler extends WebSocketFrameHandler{
 
     private BinaryWebSocketFrame binaryWebSocketFrame;
