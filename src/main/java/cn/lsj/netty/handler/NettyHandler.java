@@ -5,6 +5,7 @@ import cn.lsj.netty.constant.WebSocketConstant;
 import cn.lsj.netty.service.NettyHttpService;
 import cn.lsj.netty.service.NettySocketService;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
@@ -14,6 +15,7 @@ import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketServerHandshaker;
 import io.netty.util.concurrent.GlobalEventExecutor;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -26,19 +28,21 @@ import java.util.Map;
  * @Date: 2018/8/21 22:55
  * @Description:
  */
+
 @Component
+@ChannelHandler.Sharable  //此注解用于handler共享，否则会报 NettyHandler is not a @Sharable handler
 public class NettyHandler extends SimpleChannelInboundHandler<Object> {
 
     @Resource
     private NettyConfig nettyConfig;
 
     /**
-     * 建立连接时，将客户端对应的管道上下文对象 保存起来，向客户端发送消息时需要用到此对象
+     * 建立连接时，
      */
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         System.out.println("连接的客户端地址:" + ctx.channel().remoteAddress().toString());
-        WebSocketConstant.group.add(ctx.channel());
+       // WebSocketConstant.group.add(ctx.channel());
         System.out.println("客户端与服务端连接开启");
     }
 
@@ -47,6 +51,8 @@ public class NettyHandler extends SimpleChannelInboundHandler<Object> {
      * web-socket初次连接时，发送的是http连接，之后会升级为webSocket连接
      */
     protected void messageReceived(ChannelHandlerContext ctx, Object msg) throws Exception {
+        /* 任何新建立的web-socket连接，都会先进入http接入进行协议升级。
+         * 因此在http握手完成后应保存ChannelHandlerContext对象，后面往客户端发送消息需要用到此对象 */
         // Http接入
         if (msg instanceof FullHttpRequest) {
             new NettyHttpService(nettyConfig).dealRequest(ctx,(FullHttpRequest) msg);

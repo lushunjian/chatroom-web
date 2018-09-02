@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
  *  webSocket 处理心跳
  *  通过@Component和@Scope注解，把对象交给spring容器管理。@Scope注解注入方式为：多实例注入
  */
-@Scope
+@Scope("prototype")
 @Component("ping")
 public class PingWebSocketFrameHandler extends WebSocketFrameHandler {
 

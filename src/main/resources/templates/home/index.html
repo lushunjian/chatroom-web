@@ -230,22 +230,14 @@
     </div>
 </body>
 <script th:src="@{static/jquery-3.3.1.min.js}" type="text/javascript"></script>
+<script th:src="@{static/jquery.cookie.js}" type="text/javascript"></script>
 <script th:src="@{static/semantic/semantic.min.js}" type="text/javascript"></script>
-<script th:src="@{static/sockjs/sockjs.min.js}" type="text/javascript"></script>
+
 <script type="text/javascript">
     $('.menu .item').tab();
 
     $('.ui.accordion')
         .accordion()
-    ;
-
-    $('.message .close')
-        .on('click', function() {
-            $(this)
-                .closest('.message')
-                .transition('fade')
-            ;
-        })
     ;
 
     //好友搜索
@@ -287,17 +279,20 @@
         for (var k in o)
         if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
         return fmt;
-    }
+    };
+
+    // 从cookie中获取用户的账号
+    var userAccount = $.cookie("userAccount");
 
     // 打开WebSocket, 传递的参数url没有同源策略的限制。
-    var socket=new WebSocket('ws://127.0.0.1:8889/webSocket');
+    var socket=new WebSocket('ws://127.0.0.1:8889/webSocket?userAccount='+userAccount);
 
     // 监听open事件，在成功建立websocket时向url发送纯文本字符串数据(如果是对象则必须序列化处理)。
      socket.onopen=function(){
         console.log('连接')
      }
 
-     // 监听message事件，在服务器响应时接受数据。返回的数据存储在事件对象中。
+     // 接收到服务器的消息
     socket.onmessage=function(evt){
         console.log(evt)
     }
@@ -312,29 +307,26 @@
        console.log(evt)
     };
 
-            //SockJS
-/*    var socket = new SockJS('http://127.0.0.1:8889/webSocket');
-    socket.onopen = function () {
-        console.log('open');
-        sock.send('test');
-    };
-    socket.onmessage = function (e) {
-        console.log('message', e.data);
-        sock.close();
-    };
-    socket.onclose = function () {
-        console.log('close');
-    };*/
 
     var status=["正在连接","连接成功","正在关闭连接","连接已关闭"];
 
     //发送消息按钮，点击事件
     $("#sendMessageButton").on("click",function(){
+        var messageArea = $("#messageArea");
         //获取用户输入的消息
-        var message = $("#messageArea").val();
-        if(message) {
+        var messageContent = messageArea.val();
+        // 接收者账号
+        var receiver = "222";
+        // 消息类型
+        var messageType = "whisper";
+
+        // 如果用户没有输入内容，不允许发送消息
+        if(messageContent) {
             //添加状态判断，当为OPEN时，发送消息
             if (socket.readyState===1) {
+                // 构建消息对象
+                var message = new Message(userAccount,receiver,messageContent,messageType);
+                // 发送消息
                 socket.send(JSON.stringify(message));
             }else{
                 alert(socket.readyState);
@@ -347,7 +339,7 @@
                        '</span></div><div class="text">' + message + ' </div></div></div>'
             $("#chatContent").append(html);
             //清空输入框的内容
-            $("#messageArea").val("");
+            messageArea.val("");
         }else{
             $("#messageNotice").show();
         }
@@ -355,9 +347,18 @@
 
     //提示框关闭事件
     $('.message .close').on('click', function() {
+        $(this)
+            .closest('.message')
+            .transition('fade') ;
         $("#messageNotice").css("visibility","inherit");
     });
 
-
+    // 消息对象
+    function Message(sender,receiver,messageContent,messageType){
+        this.sender = sender;
+        this.receiver = receiver;
+        this.messageContent = messageContent;
+        this.messageType = messageType;
+    }
 </script>
 </html>

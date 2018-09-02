@@ -4,6 +4,7 @@ import cn.lsj.netty.config.NettyConfig;
 import cn.lsj.netty.constant.WebSocketConstant;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
@@ -12,6 +13,11 @@ import io.netty.handler.codec.http.websocketx.WebSocketServerHandshaker;
 import io.netty.handler.codec.http.websocketx.WebSocketServerHandshakerFactory;
 import io.netty.util.AttributeKey;
 import io.netty.util.CharsetUtil;
+
+import java.util.List;
+import java.util.Map;
+
+import static cn.lsj.netty.constant.WebSocketConstant.concurrentMap;
 
 public class NettyHttpService extends RequestHandler<FullHttpRequest> {
 
@@ -63,11 +69,24 @@ public class NettyHttpService extends RequestHandler<FullHttpRequest> {
             WebSocketServerHandshakerFactory wsFactory = new WebSocketServerHandshakerFactory(
                     webSocketURL, subProtocols, false);
             WebSocketServerHandshaker handshake = wsFactory.newHandshaker(request);
+            // 握手失败
             if (handshake == null) {
                 WebSocketServerHandshakerFactory.sendUnsupportedVersionResponse(ctx.channel());
                 return null;
-            } else {
-                handshake.handshake(ctx.channel(), request);
+            }
+            // 握手成功
+            else {
+                Channel channel = ctx.channel();
+                handshake.handshake(channel, request);
+                // 处理get请求，获取url上的参数信息
+                QueryStringDecoder decoder = new QueryStringDecoder(request.uri());
+                Map<String, List<String>> paramMap = decoder.parameters();
+                // 获取用户账号
+                List<String> paramList = paramMap.get("userAccount");
+                if(paramList != null && paramList.size()>0){
+                    // 将管道与用户账号绑定
+                    WebSocketConstant.concurrentMap.put(paramList.get(0),channel);
+                }
                 System.out.println("握手成功！-----");
                 return handshake;
             }

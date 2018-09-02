@@ -27,6 +27,11 @@ public class LoginInterceptor implements HandlerInterceptor {
         String userAccount = null;
         //从cookie中取值
         Cookie[] cookies = httpServletRequest.getCookies();
+        // 没有获取到Cookie，对象调回登录界面
+        if(cookies == null) {
+            httpServletResponse.sendRedirect("/login");
+            return false;
+        }
         for(Cookie cookie : cookies){
             if(cookie.getName().equals("userAccount")){
                 userAccount = cookie.getValue();
