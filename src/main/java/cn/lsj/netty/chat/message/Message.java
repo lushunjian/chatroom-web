@@ -9,6 +9,12 @@ import java.io.Serializable;
  */
 public class Message implements Serializable {
 
+    public Message(){}
+
+    public Message(int isOffline){
+        this.isOffline=isOffline;
+    }
+
     private Integer id;
     // 消息发送者
     private String sender;
@@ -24,6 +30,8 @@ public class Message implements Serializable {
     // 消息状态
     // 1 表示实时消息  ，0 表示离线消息
     private String status;
+    // 服务端通知用户异地登录下线通知，默认为 0，当为 1 时，强制客户端下线
+    private int isOffline = 0;
 
     public String getSender() {
         return sender;
@@ -79,5 +87,13 @@ public class Message implements Serializable {
 
     public void setMessageType(String messageType) {
         this.messageType = messageType;
+    }
+
+    public int getIsOffline() {
+        return isOffline;
+    }
+
+    public void setIsOffline(int isOffline) {
+        this.isOffline = isOffline;
     }
 }

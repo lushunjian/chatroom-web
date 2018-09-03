@@ -50,7 +50,7 @@ public class TextWebSocketFrameHandler extends WebSocketFrameHandler {
             if(channel == null){
                 logger.info("接收者不在线 !");
             }else {
-                TextWebSocketFrame content = new TextWebSocketFrame(userMessage.getMessageContent());
+                TextWebSocketFrame content = new TextWebSocketFrame(JSON.toJSONString(userMessage));
                 channel.writeAndFlush(content);
             }
         }else {     //群聊

@@ -39,6 +39,11 @@ public class LoginController {
     @Autowired
     private RedisHandler redisHandler;
 
+    @GetMapping("/logout")
+    public String getLogoutHtml(){
+         return "/login";
+    }
+
     @GetMapping("/login")
     public String getLoginHtml(HttpServletRequest request){
         String status = request.getParameter("status");

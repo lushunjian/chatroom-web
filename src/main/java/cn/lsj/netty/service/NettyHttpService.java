@@ -1,7 +1,9 @@
 package cn.lsj.netty.service;
 
+import cn.lsj.netty.chat.message.Message;
 import cn.lsj.netty.config.NettyConfig;
 import cn.lsj.netty.constant.WebSocketConstant;
+import com.alibaba.fastjson.JSON;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
@@ -9,6 +11,7 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.*;
+import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketServerHandshaker;
 import io.netty.handler.codec.http.websocketx.WebSocketServerHandshakerFactory;
 import io.netty.util.AttributeKey;
@@ -84,8 +87,17 @@ public class NettyHttpService extends RequestHandler<FullHttpRequest> {
                 // 获取用户账号
                 List<String> paramList = paramMap.get("userAccount");
                 if(paramList != null && paramList.size()>0){
-                    // 将管道与用户账号绑定
-                    WebSocketConstant.concurrentMap.put(paramList.get(0),channel);
+                    // 得到用户账号
+                    String userAccount = paramList.get(0);
+                    Channel userChannel = concurrentMap.get(userAccount);
+                    // 如果已经存在客户端管道。说明用户已经在别的客户端登录过，给前端发消息，告诉用户账号已在异地登录，需下线
+                    if(userChannel != null){
+                        Message message = new Message(1);
+                        TextWebSocketFrame content = new TextWebSocketFrame(JSON.toJSONString(message));
+                        userChannel.writeAndFlush(content);
+                    }
+                    // 将当前的客户端管道与用户账号绑定
+                    WebSocketConstant.concurrentMap.put(paramList.get(0), channel);
                 }
                 System.out.println("握手成功！-----");
                 return handshake;

@@ -50,6 +50,11 @@
         return fmt;
     };
 
+    // 用户下线方法，另一客户端登录时，已经将当期客户保存在redis中的信息替换。因此跳转到登录界面即可
+    function forceOffline(){
+        location.href="/logout";
+    }
+
     // 从cookie中获取用户的账号
     var userAccount = $.cookie("userAccount");
 
@@ -64,6 +69,19 @@
            console.log('断开');
         },
         onMessage: function(event) {
+            //获取后台数据
+            var result=$.parseJSON(event.data);
+            console.log(result);
+            var isOffline=result.isOffline;
+            //如果值为1，则提示用户在另一客户端登录，强制用户下线
+            if(isOffline){
+                $('#userOffline')
+                  .modal('setting', 'closable', false)
+                  .modal('show')
+                ;
+            }else{
+                //正常消息，业务处理
+            }
             console.log(event)
         },
         onError: function(event) {
