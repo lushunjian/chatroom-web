@@ -12,7 +12,11 @@
     </resultMap>
 
     <select id="getFriendByAccount" parameterType="java.lang.String" resultMap="friend">
-        SELECT f.id,u.user_account as friend_account,u.user_describe as friend_describe,u.user_name as friend_name,f.user_account from friend f,user u WHERE u.user_account=f.friend_account and f.user_account=#{userAccount}
+       <!-- SELECT f.id,u.user_account as friend_account,u.user_describe as friend_describe,u.user_name as friend_name,f.user_account from friend f,user u WHERE u.user_account=f.friend_account and f.user_account=#{userAccount}-->
+        SELECT fd.id,ue.user_account,ue.user_describe as friend_describe,ue.user_name as friend_name,fd.user_account
+        FROM friend fd,user ue WHERE fd.user_account
+        in (SELECT u.user_account as friend_account from friend f,user u
+        WHERE u.user_account=f.friend_account and f.user_account=#{userAccount}) AND ue.user_account=fd.user_account
     </select>
 
 </mapper>
