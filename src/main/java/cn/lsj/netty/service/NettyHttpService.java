@@ -95,9 +95,11 @@ public class NettyHttpService extends RequestHandler<FullHttpRequest> {
                         Message message = new Message(1);
                         TextWebSocketFrame content = new TextWebSocketFrame(JSON.toJSONString(message));
                         userChannel.writeAndFlush(content);
+                        //关闭连接
+                        userChannel.close();
                     }
                     // 将当前的客户端管道与用户账号绑定
-                    WebSocketConstant.concurrentMap.put(paramList.get(0), channel);
+                    WebSocketConstant.concurrentMap.put(userAccount, channel);
                 }
                 System.out.println("握手成功！-----");
                 return handshake;
