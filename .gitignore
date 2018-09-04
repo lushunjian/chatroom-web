@@ -1,0 +1,41 @@
+# Created by .ignore support plugin (hsz.mobi)
+### Example user template template
+### Example user template
+
+# IntelliJ project files
+.idea
+*.iml
+out
+gen
+target/classes/META-INF/
+target/classes/cn/lsj/controller/
+target/classes/cn/lsj/dao/
+target/classes/cn/lsj/domain/
+target/classes/cn/lsj/interceptor/
+target/classes/cn/lsj/netty/chat/
+target/classes/cn/lsj/netty/constant/
+target/classes/cn/lsj/netty/filter/
+target/classes/cn/lsj/netty/handler/
+target/classes/cn/lsj/netty/service/
+target/classes/cn/lsj/redis/connect/
+target/classes/cn/lsj/redis/service/RedisAction.class
+target/classes/cn/lsj/redis/service/RedisHandler$1.class
+target/classes/cn/lsj/redis/service/RedisHandler$2.class
+target/classes/cn/lsj/redis/service/RedisHandler$3.class
+target/classes/cn/lsj/redis/service/RedisHandler$4.class
+target/classes/cn/lsj/redis/service/RedisHandler$5.class
+target/classes/cn/lsj/redis/service/RedisHandler$6.class
+target/classes/cn/lsj/redis/service/RedisHandler$7.class
+target/classes/cn/lsj/redis/service/RedisHandler.class
+target/classes/cn/lsj/redis/service/RedisService$4.class
+target/classes/cn/lsj/redis/service/RedisService$5.class
+target/classes/cn/lsj/redis/util/
+target/classes/cn/lsj/service/
+target/classes/mapper/
+target/classes/static/
+target/classes/templates/
+target/generated-sources/
+target/maven-archiver/
+target/maven-status/
+target/spring-boot-netty-1.0-SNAPSHOT.jar
+target/spring-boot-netty-1.0-SNAPSHOT.jar.original
