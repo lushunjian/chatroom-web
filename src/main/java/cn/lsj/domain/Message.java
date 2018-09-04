@@ -16,10 +16,14 @@ public class Message implements Serializable {
     }
 
     private Integer id;
-    // 消息发送者
+    // 消息发送者账号
     private String sender;
-    // 消息接收者
+    // 消息发送者姓名
+    private String senderName;
+    // 消息接收者账号
     private String receiver;
+    // 消息接收者姓名
+    private String receiverName;
     // 发送时间，毫秒数
     private int sendTime;
     // 发送内容
@@ -95,5 +99,21 @@ public class Message implements Serializable {
 
     public void setIsOffline(int isOffline) {
         this.isOffline = isOffline;
+    }
+
+    public String getSenderName() {
+        return senderName;
+    }
+
+    public void setSenderName(String senderName) {
+        this.senderName = senderName;
+    }
+
+    public String getReceiverName() {
+        return receiverName;
+    }
+
+    public void setReceiverName(String receiverName) {
+        this.receiverName = receiverName;
     }
 }

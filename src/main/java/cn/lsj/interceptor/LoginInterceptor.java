@@ -4,10 +4,12 @@ import cn.lsj.redis.service.RedisHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+import redis.clients.jedis.exceptions.JedisConnectionException;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.net.ConnectException;
 
 public class LoginInterceptor implements HandlerInterceptor {
 
@@ -41,28 +43,34 @@ public class LoginInterceptor implements HandlerInterceptor {
         //当前请求的sessionId
         String sessionIdNow = httpServletRequest.getSession().getId();
         //redis中的sessionId
-        if(userAccount != null){
-            Object sessionObj =  redisHandler.getObject(userAccount);
-            //如果redis中没有查到sessionId，说明用户还没有登录，返回到登录界面
-            if(sessionObj == null){
-                httpServletResponse.sendRedirect("/login");
-                return false;
-            }else {
-                String sessionId = (String) sessionObj;
-                //如果redis中查到sessionId与当前请求的sessionId不一致，说明用户是异地登录
-                if(!sessionId .equals(sessionIdNow)){
+        try {
+            if (userAccount != null) {
+                Object sessionObj = redisHandler.getObject(userAccount);
+                //如果redis中没有查到sessionId，说明用户还没有登录，返回到登录界面
+                if (sessionObj == null) {
                     httpServletResponse.sendRedirect("/login");
                     return false;
+                } else {
+                    String sessionId = (String) sessionObj;
+                    //如果redis中查到sessionId与当前请求的sessionId不一致，说明用户是异地登录
+                    if (!sessionId.equals(sessionIdNow)) {
+                        httpServletResponse.sendRedirect("/login");
+                        return false;
+                    }
                 }
+                //从redis中拿取用户信息
+                boolean flag = redisHandler.exists(sessionIdNow);
+                //存在就放行，否则回到登录界面
+                if (flag)
+                    return true;
             }
-            //从redis中拿取用户信息
-            boolean flag =  redisHandler.exists(sessionIdNow);
-            //存在就放行，否则回到登录界面
-            if(flag)
-                return true;
+            httpServletResponse.sendRedirect("/login");
+            return false;
+        }catch (JedisConnectionException | ConnectException e){
+            System.out.println("redis 连接失败!");
+            httpServletResponse.sendRedirect("/login");
+            return false;
         }
-        httpServletResponse.sendRedirect("/login");
-        return false;
     }
 
 /**

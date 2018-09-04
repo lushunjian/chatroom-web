@@ -57,6 +57,8 @@
      *          {
      *              sender:"",
      *              receiver:"",
+     *              senderName:"",
+     *              receiverName:"",
      *              sendTime:"",
      *              messageContent:""
      *          }
@@ -97,6 +99,32 @@
                 ;
             }else{
                 //正常消息，业务处理
+                var senderAccount = result.sender;
+                var account = $("#receiverAccount");
+                 /* 判断用户的聊天框是否正在和发送者聊天，如果是则将消息追加到聊天框中;
+                    如果不是给用户提示有未读消息 */
+                // 判断是否相等，如果相等则表示用户正在和此好友聊天
+                if(senderAccount == account){
+                    var time = new Date(result.sendTime).Format("yyyy-MM-dd HH:mm:ss");
+                    var html = '<div class="comment"><a class="avatar"><img src="/static/semantic/themes/default/assets/images/matt.jpg">'+
+                               '</a><div class="content"><a class="author">'+result.senderName+' </a><div class="metadata"><span class="date">' + time +
+                               '</span></div><div class="text">' + result.messageContent + ' </div></div></div>';
+                    $("#chatContent").append(html);
+                }else{
+                    // 在对应的好友处给消息提示
+                    var friendItem = $("#"+senderAccount+"");
+                    var html = '<i class="comments icon" style="float:right;padding-top:8px"></i>';
+                    friendItem.append(html);
+                }
+                // 将聊天记录保存到缓存中
+                var messageArray = messageContent[senderAccount];
+                if(messageArray){
+                    messageArray.push(result);
+                }else{
+                    messageArray = new Array();
+                    messageArray.push(result);
+                }
+                messageContent[senderAccount]=messageArray;
             }
             console.log(event)
         },
@@ -113,8 +141,12 @@
         var messageArea = $("#messageArea");
         //获取用户输入的消息
         var messageContent = messageArea.val();
+        // 发送者姓名
+        var senderName = $("#userName").val();
         // 接收者账号
-        var receiver = "222";
+        var receiver = $("#receiverAccount").val();
+        // 接收者姓名
+        var receiverName = $("#receiverName").val();
         // 消息类型
         var messageType = "whisper";
 
@@ -123,7 +155,7 @@
             //添加状态判断，当为OPEN时，发送消息
             if (socket.readyState===1) {
                 // 构建消息对象
-                var message = new Message(userAccount,receiver,messageContent,messageType);
+                var message = new Message(userAccount,senderName,receiver,receiverName,messageContent,messageType);
                 // 发送消息
                 socket.send(JSON.stringify(message));
             }else{
@@ -133,8 +165,8 @@
             //系统当前时间，格式化日期
             var time = new Date().Format("yyyy-MM-dd HH:mm:ss");
             var html = '<div class="comment"><a class="avatar"><img src="/static/semantic/themes/default/assets/images/elliot.jpg">'+
-                       '</a><div class="content"><a class="author">Elliot Fu </a><div class="metadata"><span class="date">' + time +
-                       '</span></div><div class="text">' + message + ' </div></div></div>'
+                       '</a><div class="content"><a class="author">我 </a><div class="metadata"><span class="date">' + time +
+                       '</span></div><div class="text">' + messageContent + ' </div></div></div>'
             $("#chatContent").append(html);
             //清空输入框的内容
             messageArea.val("");
@@ -145,13 +177,37 @@
     
     //好友点击事件，加载缓存中的聊天记录
     $("#friendList").on("click",".item",function () {
-        
+        var friendAccounts = $(this).find(".friendAccount").val();
+        var friendNames = $(this).find(".friendName").val();
+        /*移除消息提醒图标*/
+        $(this).find(".icon").remove();
+        if(friendAccounts){
+            //将接收者账号保存在聊天框的隐藏域中，表示正在和此人聊天
+            $("#receiverAccount").val(friendAccounts);
+            $("#receiverName").val(friendNames);
+            //从缓存中取出与此账号的聊天记录
+            var messageArray = messageContent[friendAccounts];
+            if(messageArray && messageArray.length>0){
+                //清空聊天框的内容
+                $("#chatContent").empty();
+                for(var i = 0,len = messageArray.length; i < len; i++){
+                    var messageItem = messageArray[i];
+                    var time = new Date(messageItem.sendTime).Format("yyyy-MM-dd HH:mm:ss");
+                    var html = '<div class="comment"><a class="avatar"><img src="/static/semantic/themes/default/assets/images/matt.jpg">'+
+                               '</a><div class="content"><a class="author">'+messageItem.senderName+' </a><div class="metadata"><span class="date">' + time +
+                               '</span></div><div class="text">' + messageItem.messageContent + ' </div></div></div>';
+                    $("#chatContent").append(html);
+                }
+            }
+        }
     });
 
     // 消息对象
-    function Message(sender,receiver,messageContent,messageType){
+    function Message(sender,senderName,receiver,receiverName,messageContent,messageType){
         this.sender = sender;
+        this.senderName = senderName;
         this.receiver = receiver;
+        this.receiverName=receiverName;
         this.messageContent = messageContent;
         this.messageType = messageType;
     }

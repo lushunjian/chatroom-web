@@ -12,6 +12,8 @@
 
 
         <h2 class="ui header">登录成功，欢迎来到我们的站点！ </h2>
+        <!--用户姓名-->
+        <input type="hidden" name="userName" data-th-attr="value=${user.userName}" id="userName" />
         <table class="ui celled table">
             <thead>
             <tr><th>姓名</th>
@@ -78,14 +80,15 @@
                         <div class="title"><i class="dropdown icon"></i> 我的好友 </div>
                         <div class="content">
                             <div class="ui middle aligned animated selection divided list" id="friendList" data-th-each="friend : ${friendList}">
-                                <div class="item">
-                                    <input class="friends account" data-th-value="${friend.friendAccount}" type="hidden"/>
+                                <div class="item" data-th-attr="id=${friend.friendAccount}">
+                                    <input class="friendAccount" data-th-attr="value=${friend.friendAccount}" type="hidden"/>
+                                    <input class="friendName" data-th-attr="value=${friend.friendName}" type="hidden"/>
                                     <img class="ui avatar image" src="/static/semantic/themes/default/assets/images/jenny.jpg">
                                     <div class="content">
                                         <a class="header" data-th-text="${friend.friendName}"></a>
                                         <div class="description" data-th-text="${friend.friendDescribe}"></div>
                                     </div>
-                                    <i class="comments icon" style="float:right;padding-top:8px"></i>
+                                    <!--<i class="comments icon" style="float:right;padding-top:8px"></i>-->
                                 </div>
                             </div>
                         </div>
@@ -132,8 +135,9 @@
             <div>
                 <div class="ui comments"  style="display: inline">
                     <h3 class="ui dividing header">Comments</h3>
-                    <!--保存接收者的账号-->
+                    <!--保存接收者的账号和姓名，表示正在和谁聊天-->
                     <input type="hidden" name="receiverAccount" value="" id="receiverAccount" />
+                    <input type="hidden" name="receiverName" value="" id="receiverName" />
                     <!--聊天内容框 每个comment就是一条消息-->
                     <div id="chatContent" class="chat content"  style="overflow-y:auto; height:300px; padding: 20px">
 

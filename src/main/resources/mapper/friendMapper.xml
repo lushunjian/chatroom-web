@@ -14,10 +14,11 @@
     <select id="getFriendByAccount" parameterType="java.lang.String" resultMap="friend">
        <!-- SELECT f.id,u.user_account as friend_account,u.user_describe as friend_describe,u.user_name as friend_name,f.user_account from friend f,user u WHERE u.user_account=f.friend_account and f.user_account=#{userAccount}-->
         /*仅查出双向好友，排除单向好友*/
-        SELECT fd.id,ue.user_account,ue.user_describe as friend_describe,ue.user_name as friend_name,fd.user_account
+        SELECT ue.id,ue.user_account as friend_account,ue.user_describe as friend_describe,ue.user_name as friend_name
         FROM friend fd,user ue WHERE fd.user_account
         in (SELECT u.user_account as friend_account from friend f,user u
         WHERE u.user_account=f.friend_account and f.user_account=#{userAccount}) AND ue.user_account=fd.user_account
+        GROUP BY ue.id
     </select>
 
 </mapper>
