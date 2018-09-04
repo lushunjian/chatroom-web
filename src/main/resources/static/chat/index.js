@@ -50,6 +50,22 @@
         return fmt;
     };
 
+    /* 用于存放，在线时，用户的聊天记录。数据格式如下：
+     *
+     * {
+     *      friendAccount:[
+     *          {
+     *              sender:"",
+     *              receiver:"",
+     *              sendTime:"",
+     *              messageContent:""
+     *          }
+     *      ]
+     * }
+     *
+     * */
+    var messageContent = {};
+
     // 用户下线方法，另一客户端登录时，已经将当期客户保存在redis中的信息替换。因此跳转到登录界面即可
     function forceOffline(){
         location.href="/logout";
@@ -125,6 +141,11 @@
         }else{
             $("#messageNotice").show();
         }
+    });
+    
+    //好友点击事件，加载缓存中的聊天记录
+    $("#friendList").on("click",".item",function () {
+        
     });
 
     // 消息对象

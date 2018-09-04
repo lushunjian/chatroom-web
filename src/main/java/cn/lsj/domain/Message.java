@@ -1,4 +1,4 @@
-package cn.lsj.netty.chat.message;
+package cn.lsj.domain;
 
 import java.io.Serializable;
 

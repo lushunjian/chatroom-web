@@ -1,6 +1,6 @@
 package cn.lsj.netty.chat.impl;
 
-import cn.lsj.netty.chat.message.Message;
+import cn.lsj.domain.Message;
 import cn.lsj.netty.constant.WebSocketConstant;
 import cn.lsj.netty.chat.WebSocketFrameHandler;
 import com.alibaba.fastjson.JSON;
@@ -10,8 +10,6 @@ import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-
-import java.util.Date;
 
 /**
  * @Auther: Lushunjian

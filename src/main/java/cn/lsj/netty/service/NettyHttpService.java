@@ -1,6 +1,6 @@
 package cn.lsj.netty.service;
 
-import cn.lsj.netty.chat.message.Message;
+import cn.lsj.domain.Message;
 import cn.lsj.netty.config.NettyConfig;
 import cn.lsj.netty.constant.WebSocketConstant;
 import com.alibaba.fastjson.JSON;
@@ -14,7 +14,6 @@ import io.netty.handler.codec.http.*;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketServerHandshaker;
 import io.netty.handler.codec.http.websocketx.WebSocketServerHandshakerFactory;
-import io.netty.util.AttributeKey;
 import io.netty.util.CharsetUtil;
 
 import java.util.List;

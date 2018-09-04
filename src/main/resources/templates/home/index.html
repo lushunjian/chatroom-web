@@ -77,8 +77,9 @@
                         </div>
                         <div class="title"><i class="dropdown icon"></i> 我的好友 </div>
                         <div class="content">
-                            <div class="ui middle aligned animated selection divided list" data-th-each="friend : ${friendList}">
+                            <div class="ui middle aligned animated selection divided list" id="friendList" data-th-each="friend : ${friendList}">
                                 <div class="item">
+                                    <input class="friends account" data-th-value="${friend.friendAccount}" type="hidden"/>
                                     <img class="ui avatar image" src="/static/semantic/themes/default/assets/images/jenny.jpg">
                                     <div class="content">
                                         <a class="header" data-th-text="${friend.friendName}"></a>
@@ -141,18 +142,6 @@
                                 <img src="/static/semantic/themes/default/assets/images/matt.jpg">
                             </a>
                             <div class="content">
-                                <a class="author">Matt</a>
-                                <div class="metadata">
-                                    <span class="date">今天下午 5:42</span>
-                                </div>
-                                <div class="text">太赞了！ </div>
-                            </div>
-                        </div>
-                        <div class="comment">
-                            <a class="avatar">
-                                <img src="/static/semantic/themes/default/assets/images/matt.jpg">
-                            </a>
-                            <div class="content">
                                 <a class="author">Joe Henderson</a>
                                 <div class="metadata">
                                     <span class="date">5 天以前</span>
@@ -160,30 +149,7 @@
                                 <div class="text">老兄，这太棒了。非常感谢。 </div>
                             </div>
                         </div>
-                        <div class="comment">
-                            <a class="avatar">
-                                <img src="/static/semantic/themes/default/assets/images/elliot.jpg">
-                            </a>
-                            <div class="content">
-                                <a class="author">Joe Henderson</a>
-                                <div class="metadata">
-                                    <span class="date">3 天以前</span>
-                                </div>
-                                <div class="text">非常感谢。 </div>
-                            </div>
-                        </div>
-                        <div class="comment">
-                            <a class="avatar">
-                                <img src="/static/semantic/themes/default/assets/images/matt.jpg">
-                            </a>
-                            <div class="content">
-                                <a class="author">Joe Henderson</a>
-                                <div class="metadata">
-                                    <span class="date">5 天以前</span>
-                                </div>
-                                <div class="text">老兄，这太棒了。非常感谢。 </div>
-                            </div>
-                        </div>
+
                         <div class="comment">
                             <a class="avatar">
                                 <img src="/static/semantic/themes/default/assets/images/jenny.jpg">
