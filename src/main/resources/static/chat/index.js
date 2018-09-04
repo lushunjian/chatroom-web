@@ -100,13 +100,13 @@
             }else{
                 //正常消息，业务处理
                 var senderAccount = result.sender;
-                var account = $("#receiverAccount");
+                var account = $("#receiverAccount").val();
                  /* 判断用户的聊天框是否正在和发送者聊天，如果是则将消息追加到聊天框中;
                     如果不是给用户提示有未读消息 */
                 // 判断是否相等，如果相等则表示用户正在和此好友聊天
                 if(senderAccount == account){
-                    var time = new Date(result.sendTime).Format("yyyy-MM-dd HH:mm:ss");
-                    var html = '<div class="comment"><a class="avatar"><img src="/static/semantic/themes/default/assets/images/matt.jpg">'+
+                    var time = new Date(Number(result.sendTime)).Format("yyyy-MM-dd HH:mm:ss");
+                    var html = '<div class="comment"><a class="avatar"><img src="/static/semantic/themes/default/assets/images/elliot.jpg">'+
                                '</a><div class="content"><a class="author">'+result.senderName+' </a><div class="metadata"><span class="date">' + time +
                                '</span></div><div class="text">' + result.messageContent + ' </div></div></div>';
                     $("#chatContent").append(html);
@@ -117,14 +117,7 @@
                     friendItem.append(html);
                 }
                 // 将聊天记录保存到缓存中
-                var messageArray = messageContent[senderAccount];
-                if(messageArray){
-                    messageArray.push(result);
-                }else{
-                    messageArray = new Array();
-                    messageArray.push(result);
-                }
-                messageContent[senderAccount]=messageArray;
+                 pushMessage(result,senderAccount);
             }
             console.log(event)
         },
@@ -143,6 +136,8 @@
         var messageContent = messageArea.val();
         // 发送者姓名
         var senderName = $("#userName").val();
+        // 发送时间，毫秒数
+        var sendTime = new Date().getTime();
         // 接收者账号
         var receiver = $("#receiverAccount").val();
         // 接收者姓名
@@ -153,23 +148,25 @@
         // 如果用户没有输入内容，不允许发送消息
         if(messageContent) {
             //添加状态判断，当为OPEN时，发送消息
-            if (socket.readyState===1) {
+            if (socket.readyState==1) {
                 // 构建消息对象
-                var message = new Message(userAccount,senderName,receiver,receiverName,messageContent,messageType);
+                var message = new Message(userAccount,senderName,sendTime,receiver,receiverName,messageContent,messageType);
                 // 发送消息
                 socket.send(JSON.stringify(message));
+                //系统当前时间，格式化日期
+                var time = new Date().Format("yyyy-MM-dd HH:mm:ss");
+                var html = '<div class="comment"><a class="avatar"><img src="/static/semantic/themes/default/assets/images/matt.jpg">'+
+                           '</a><div class="content"><a class="author">我 </a><div class="metadata"><span class="date">' + time +
+                           '</span></div><div class="text">' + messageContent + ' </div></div></div>'
+                $("#chatContent").append(html);
+                // 将聊天记录保存到缓存中
+                pushMessage(message,receiver);
+                //清空输入框的内容
+                messageArea.val("");
             }else{
                 alert(socket.readyState);
                 //do something
             }
-            //系统当前时间，格式化日期
-            var time = new Date().Format("yyyy-MM-dd HH:mm:ss");
-            var html = '<div class="comment"><a class="avatar"><img src="/static/semantic/themes/default/assets/images/elliot.jpg">'+
-                       '</a><div class="content"><a class="author">我 </a><div class="metadata"><span class="date">' + time +
-                       '</span></div><div class="text">' + messageContent + ' </div></div></div>'
-            $("#chatContent").append(html);
-            //清空输入框的内容
-            messageArea.val("");
         }else{
             $("#messageNotice").show();
         }
@@ -182,30 +179,61 @@
         /*移除消息提醒图标*/
         $(this).find(".icon").remove();
         if(friendAccounts){
+            $("#messageArea").removeAttr("disabled");
+            $("#messageArea").attr("placeholder","");
             //将接收者账号保存在聊天框的隐藏域中，表示正在和此人聊天
             $("#receiverAccount").val(friendAccounts);
             $("#receiverName").val(friendNames);
+            $("#chatWith").text("正在与"+friendNames+"聊天");
             //从缓存中取出与此账号的聊天记录
+            console.log(friendAccounts);
+            console.log(messageContent);
             var messageArray = messageContent[friendAccounts];
             if(messageArray && messageArray.length>0){
                 //清空聊天框的内容
                 $("#chatContent").empty();
+                // 暂时搞两个不同的头像区分，对方和我; (可做个头像上传)
+                var me = "/static/semantic/themes/default/assets/images/matt.jpg";
+                var you = "/static/semantic/themes/default/assets/images/elliot.jpg";
                 for(var i = 0,len = messageArray.length; i < len; i++){
                     var messageItem = messageArray[i];
-                    var time = new Date(messageItem.sendTime).Format("yyyy-MM-dd HH:mm:ss");
-                    var html = '<div class="comment"><a class="avatar"><img src="/static/semantic/themes/default/assets/images/matt.jpg">'+
-                               '</a><div class="content"><a class="author">'+messageItem.senderName+' </a><div class="metadata"><span class="date">' + time +
-                               '</span></div><div class="text">' + messageItem.messageContent + ' </div></div></div>';
+                    var time = new Date(Number(messageItem.sendTime)).Format("yyyy-MM-dd HH:mm:ss");
+                    var html = "";
+                    // 对方的消息
+                    if(friendAccounts == messageItem.sender){
+                        html = '<div class="comment"><a class="avatar"><img src="'+you+'">'+
+                                  '</a><div class="content"><a class="author">'+messageItem.senderName+' </a><div class="metadata"><span class="date">' + time +
+                                  '</span></div><div class="text">' + messageItem.messageContent + ' </div></div></div>';
+                    }else{
+                        html = '<div class="comment"><a class="avatar"><img src="'+me+'">'+
+                                  '</a><div class="content"><a class="author">我 </a><div class="metadata"><span class="date">' + time +
+                                  '</span></div><div class="text">' + messageItem.messageContent + ' </div></div></div>';
+                    }
                     $("#chatContent").append(html);
                 }
+            }else{
+                $("#chatContent").empty();
             }
         }
     });
 
+    // 保存消息到缓存
+    function pushMessage(message,account){
+        var messageArray = messageContent[account];
+        if(messageArray){
+            messageArray.push(message);
+        }else{
+            messageArray = new Array();
+            messageArray.push(message);
+        }
+        messageContent[account]=messageArray;
+    }
+
     // 消息对象
-    function Message(sender,senderName,receiver,receiverName,messageContent,messageType){
+    function Message(sender,senderName,sendTime,receiver,receiverName,messageContent,messageType){
         this.sender = sender;
         this.senderName = senderName;
+        this.sendTime = sendTime;
         this.receiver = receiver;
         this.receiverName=receiverName;
         this.messageContent = messageContent;

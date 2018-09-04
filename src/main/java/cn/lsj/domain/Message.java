@@ -25,7 +25,7 @@ public class Message implements Serializable {
     // 消息接收者姓名
     private String receiverName;
     // 发送时间，毫秒数
-    private int sendTime;
+    private String sendTime;
     // 发送内容
     private String messageContent;
     // 消息类型
@@ -51,14 +51,6 @@ public class Message implements Serializable {
 
     public void setReceiver(String receiver) {
         this.receiver = receiver;
-    }
-
-    public int getSendTime() {
-        return sendTime;
-    }
-
-    public void setSendTime(int sendTime) {
-        this.sendTime = sendTime;
     }
 
     public String getStatus() {
@@ -115,5 +107,13 @@ public class Message implements Serializable {
 
     public void setReceiverName(String receiverName) {
         this.receiverName = receiverName;
+    }
+
+    public String getSendTime() {
+        return sendTime;
+    }
+
+    public void setSendTime(String sendTime) {
+        this.sendTime = sendTime;
     }
 }
