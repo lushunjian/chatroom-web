@@ -79,6 +79,8 @@
     // 打开WebSocket, 传递的参数url没有同源策略的限制。
     var socket = IWebSocket({
         uri:'ws://127.0.0.1:8889/webSocket?userAccount='+userAccount,
+        // 二进制数据类型
+        binaryType:'arraybuffer',
         // 可以自定义四大事件
         onOpen: function(event) {
             console.log('连接');
@@ -88,38 +90,47 @@
         },
         onMessage: function(event) {
             //获取后台数据
-            var result=$.parseJSON(event.data);
-            console.log(result);
-            var isOffline=result.isOffline;
-            //如果值为1，则提示用户在另一客户端登录，强制用户下线
-            if(isOffline){
-                $('#userOffline')
-                  .modal('setting', 'closable', false)
-                  .modal('show')
-                ;
-            }else{
-                //正常消息，业务处理
-                var senderAccount = result.sender;
-                var account = $("#receiverAccount").val();
-                 /* 判断用户的聊天框是否正在和发送者聊天，如果是则将消息追加到聊天框中;
-                    如果不是给用户提示有未读消息 */
-                // 判断是否相等，如果相等则表示用户正在和此好友聊天
-                if(senderAccount == account){
-                    var time = new Date(Number(result.sendTime)).Format("yyyy-MM-dd HH:mm:ss");
-                    var html = '<div class="comment"><a class="avatar"><img src="/static/semantic/themes/default/assets/images/elliot.jpg">'+
-                               '</a><div class="content"><a class="author">'+result.senderName+' </a><div class="metadata"><span class="date">' + time +
-                               '</span></div><div class="text">' + result.messageContent + ' </div></div></div>';
-                    $("#chatContent").append(html);
+            var resultData = event.data;
+            console.log(resultData);
+            // 后台数据可能是文本，也可能是流
+            //字符串处理
+            if(typeof(resultData)=="string"){
+                var result=$.parseJSON(resultData);
+                console.log("Received data string");
+                var isOffline=result.isOffline;
+                //如果值为1，则提示用户在另一客户端登录，强制用户下线
+                if(isOffline){
+                    $('#userOffline')
+                      .modal('setting', 'closable', false)
+                      .modal('show')
+                    ;
                 }else{
-                    // 在对应的好友处给消息提示
-                    var friendItem = $("#"+senderAccount+"");
-                    var html = '<i class="comments icon" style="float:right;padding-top:8px"></i>';
-                    friendItem.append(html);
+                    //正常消息，业务处理
+                    var senderAccount = result.sender;
+                    var account = $("#receiverAccount").val();
+                     /* 判断用户的聊天框是否正在和发送者聊天，如果是则将消息追加到聊天框中;
+                        如果不是给用户提示有未读消息 */
+                    // 判断是否相等，如果相等则表示用户正在和此好友聊天
+                    if(senderAccount == account){
+                        var time = new Date(Number(result.sendTime)).Format("yyyy-MM-dd HH:mm:ss");
+                        var html = '<div class="comment"><a class="avatar"><img src="/static/semantic/themes/default/assets/images/elliot.jpg">'+
+                                   '</a><div class="content"><a class="author">'+result.senderName+' </a><div class="metadata"><span class="date">' + time +
+                                   '</span></div><div class="text">' + result.messageContent + ' </div></div></div>';
+                        $("#chatContent").append(html);
+                    }else{
+                        // 在对应的好友处给消息提示
+                        var friendItem = $("#"+senderAccount+"");
+                        var html = '<i class="comments icon" style="float:right;padding-top:8px"></i>';
+                        friendItem.append(html);
+                    }
+                    // 将聊天记录保存到缓存中
+                     pushMessage(result,senderAccount);
                 }
-                // 将聊天记录保存到缓存中
-                 pushMessage(result,senderAccount);
+            }else if(resultData instanceof ArrayBuffer){
+                 // 流处理
+                var buffer = event.data;
+                console.log("Received arrayBuffer");
             }
-            console.log(event)
         },
         onError: function(event) {
             console.log('异常')
@@ -186,8 +197,6 @@
             $("#receiverName").val(friendNames);
             $("#chatWith").text("正在与"+friendNames+"聊天");
             //从缓存中取出与此账号的聊天记录
-            console.log(friendAccounts);
-            console.log(messageContent);
             var messageArray = messageContent[friendAccounts];
             if(messageArray && messageArray.length>0){
                 //清空聊天框的内容

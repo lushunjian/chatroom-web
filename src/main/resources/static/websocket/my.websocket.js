@@ -1,6 +1,7 @@
 var IWebSocket = function(json) {
     let options = {
         uri:"#", // Socket绑定的URI
+        binaryType:"#", // 二进制文件类型
         sockJsUri:"#",
         projectName: window.location.pathname.split("/")[1], // 项目名称。默认以“/”为分隔符切割URI后取第2个字符串
         host: window.location.host, // 项目IP和端口。默认取当前项目的主机IP和Port
@@ -26,6 +27,7 @@ var IWebSocket = function(json) {
     let websocket;
     if ('WebSocket' in window) {
         websocket = new WebSocket(options.uri);
+        websocket.binaryType = options.binaryType;
     } else if ('MozWebSocket' in window) {
         websocket = new MozWebSocket(options.uri);
     } else {
