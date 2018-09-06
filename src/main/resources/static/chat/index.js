@@ -149,7 +149,7 @@
 
     //未读好友消息样式
     function messageUnreadCount(senderAccount){
-        var friendItem = $("#"+senderAccount+"");
+        var friendItem = $("#item-"+senderAccount+"");
         //var html = '<i class="comments icon" style="float:right;padding-top:8px"></i>';
         // 从缓存中取出未读消息条数
         var num =0;
@@ -166,7 +166,7 @@
         if(label.length){
             label.text(num);
         }else{
-            var html = '<div class="ui teal left pointing label" style="float:right" id="'+id+'">'+num+'</div>';
+            var html = '<div class="ui teal left pointing label" style="float:right;margin-top:10px" id="'+id+'">'+num+'</div>';
             friendItem.append(html);
         }
         unreadMessageCount[senderAccount] = num;
@@ -219,10 +219,10 @@
     
     //好友点击事件，加载缓存中的聊天记录
     $("#friendList").on("click",".item",function () {
-        var friendAccounts = $(this).find(".friendAccount").val();
-        var friendNames = $(this).find(".friendName").val();
+        var friendAccounts = $(this).prevAll(".friendAccount").val();
+        var friendNames = $(this).prevAll(".friendName").val();
         /*移除消息提醒图标*/
-        $(this).find(".icon").remove();
+        $(this).find(".label").remove();
         if(friendAccounts){
             // 隐藏遮罩层
             $('#dimmer').removeClass("active");

@@ -67,41 +67,34 @@
         </div>
 
         <!-- 页面布局 -->
-        <div class="ui horizontal segment" style="margin-left: 310px">
+        <div class="ui horizontal segment" style="margin-left: 400px">
             <!-- 左边部分 -->
-            <div class="ui left very close rail">
-                <div class="ui segment">
-                    <!-- 好友列表 -->
-                    <div class="ui styled accordion">
-                        <div class="title"><i class="dropdown icon"></i> 特别关心 </div>
-                        <div class="content">
-                            <p>没有特别关心的人哦</p>
-                        </div>
-                        <div class="title"><i class="dropdown icon"></i> 我的好友 </div>
-                        <div class="content"  id="friendList">
-                            <div class="ui middle aligned animated selection divided list" data-th-each="friend : ${friendList}">
-                                <div class="item" data-th-attr="id=${friend.friendAccount}">
-                                    <input class="friendAccount" data-th-attr="value=${friend.friendAccount}" type="hidden"/>
-                                    <input class="friendName" data-th-attr="value=${friend.friendName}" type="hidden"/>
-                                    <img class="ui avatar image" src="/static/semantic/themes/default/assets/images/jenny.jpg">
-                                    <div class="content">
-                                        <a class="header" data-th-text="${friend.friendName}"></a>
-                                        <div class="description" data-th-text="${friend.friendDescribe}"></div>
-                                    </div>
-                                    <!--<div class="ui teal left pointing label" style="float:right">1</div>-->
-                                </div>
+            <div class="ui left very close rail" style="width: 400px">
+                <div class="ui pointing menu">
+                    <a class="item active" data-tab="one">我的好友 </a>
+                    <a class="item" data-tab="two">我的群组 </a>
+                    <a class="item" data-tab="three">黑名单 </a>
+                </div>
+                <idv id="friendList">
+                    <div class="ui active tab segment" data-tab="one" style="height: 642px;overflow-y:auto;">
+                        <div class="ui vertical menu" style="width: 100%">
+                            <div  data-th-each="friend : ${friendList}" data-th-attr="id=${friend.friendAccount}">
+                                <input class="friendAccount" data-th-attr="value=${friend.friendAccount}" type="hidden"/>
+                                <input class="friendName" data-th-attr="value=${friend.friendName}" type="hidden"/>
+                                <a class="item"  id="item-" data-th-attrappend="id=${friend.friendAccount}" style="height: 52px;padding-top: 9px">
+                                    <img class="ui medium rounded mini image" src="/static/semantic/themes/default/assets/images/elyse.png" style="width: 35px;height: 35px;display:inline">
+                                    <span data-th-text="${friend.friendName}" style="margin-left: 10px;font-weight: bold"></span>
+                                </a>
                             </div>
                         </div>
-                        <div class="title"><i class="dropdown icon"></i> 我的群聊 </div>
-                        <div class="content">
-                            <p>没有加入的群聊</p>
-                        </div>
-                        <div class="title"><i class="dropdown icon"></i> 黑名单 </div>
-                        <div class="content">
-                            <p>黑名单中空空如也</p>
-                        </div>
                     </div>
-                </div>
+                    <div class="ui tab segment" data-tab="two" style="height: 642px;overflow-y:auto;">
+                        5
+                    </div>
+                    <div class="ui tab segment" data-tab="three" style="height: 642px;overflow-y:auto;">
+                        6
+                    </div>
+                </idv>
             </div>
             <!-- 右边部分 -->
             <!-- 正在聊天的好友信息，群成员信息 -->
@@ -148,6 +141,7 @@
                             <a class="item"><i class="folder open icon"></i> 文件 </a>
                             <a class="item"><i class="unmute icon"></i> 语音 </a>
                             <a class="item"><i class="video camera icon"></i> 视频 </a>
+                            <a class="item"><i class="calendar icon"></i> 聊天记录 </a>
                         </div>
                         <form class="ui reply form">
                             <div class="field">
