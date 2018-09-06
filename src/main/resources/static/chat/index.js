@@ -2,6 +2,9 @@
 
  $('.ui.accordion').accordion();
 
+ // 遮罩层
+ //$('.dimmer').dimmer('show');
+
     //好友搜索
     $('.ui.search')
         .search({
@@ -221,8 +224,8 @@
         /*移除消息提醒图标*/
         $(this).find(".icon").remove();
         if(friendAccounts){
-            $("#messageArea").removeAttr("disabled");
-            $("#messageArea").attr("placeholder","");
+            // 隐藏遮罩层
+            $('#dimmer').removeClass("active");
             //将接收者账号保存在聊天框的隐藏域中，表示正在和此人聊天
             $("#receiverAccount").val(friendAccounts);
             $("#receiverName").val(friendNames);

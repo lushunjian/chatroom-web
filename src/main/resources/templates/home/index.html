@@ -67,7 +67,7 @@
         </div>
 
         <!-- 页面布局 -->
-        <div class="ui horizontal segment" style="margin-right: 310px;margin-left: 310px">
+        <div class="ui horizontal segment" style="margin-left: 310px">
             <!-- 左边部分 -->
             <div class="ui left very close rail">
                 <div class="ui segment">
@@ -105,7 +105,7 @@
             </div>
             <!-- 右边部分 -->
             <!-- 正在聊天的好友信息，群成员信息 -->
-            <div class="ui right very close rail">
+            <!--<div class="ui right very close rail">
                 <div class="ui segment">
                     <div class="ui card">
                         <div class="image">
@@ -129,7 +129,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>-->
 
             <!-- 中间聊天框 -->
             <div>
@@ -142,16 +142,33 @@
                     <div id="chatContent" class="chat content"  style="overflow-y:auto; height:300px; padding: 20px">
 
                     </div>
-                    <form class="ui reply form">
-                        <div class="field">
-                            <textarea id="messageArea" placeholder="选择好友，和他开始聊天吧" disabled></textarea>
+                     <div class="ui segment">
+                        <div class="ui menu">
+                            <a class="item"><i class="image icon"></i> 图片 </a>
+                            <a class="item"><i class="folder open icon"></i> 文件 </a>
+                            <a class="item"><i class="unmute icon"></i> 语音 </a>
+                            <a class="item"><i class="video camera icon"></i> 视频 </a>
                         </div>
-                        <div class="ui blue labeled submit icon button" id="sendMessageButton"><i class="icon edit"></i> 发送消息</div>
-                        <div class="ui red message" id="messageNotice" style="width: 300px;height: 38px;float: right;margin-top: 0px;padding-top: 0px;display:none">
-                            <i class="close icon"></i>
-                            <p>不允许发送空消息</p>
-                        </div>
-                    </form>
+                        <form class="ui reply form">
+                            <div class="field">
+                                <textarea id="messageArea"></textarea>
+                            </div>
+                            <div class="ui blue labeled submit icon button" id="sendMessageButton"><i class="icon edit"></i> 发送消息</div>
+                            <div class="ui red message" id="messageNotice" style="width: 300px;height: 38px;float: right;margin-top: 0px;padding-top: 0px;display:none">
+                                <i class="close icon"></i>
+                                <p>不允许发送空消息</p>
+                            </div>
+                        </form>
+                         <!--遮罩层-->
+                         <div class="ui inverted active dimmer" id="dimmer">
+                             <div class="ui icon message">
+                                 <i class="comments icon"></i>
+                                 <div class="content">
+                                     <div class="header">选择好友开始聊天吧！ </div>
+                                 </div>
+                             </div>
+                         </div>
+                    </div>
                 </div>
 
                 <!-- 好友信息，群信息 -->
