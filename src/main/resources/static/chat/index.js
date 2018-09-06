@@ -51,7 +51,7 @@
     };
 
     /* 用于存放，在线时，用户的聊天记录。数据格式如下：
-     *
+     * friendAccount是变量，表示用户账号
      * {
      *      friendAccount:[
      *          {
@@ -67,6 +67,15 @@
      *
      * */
     var messageContent = {};
+
+    /* 用于存放，用户的未读消息。数据格式如下：
+     * friendAccount是变量，表示用户账号
+     * {
+     *      friendAccount:1
+     * }
+     *
+     * */
+    var unreadMessageCount = {};
 
     // 用户下线方法，另一客户端登录时，已经将当期客户保存在redis中的信息替换。因此跳转到登录界面即可
     function forceOffline(){
@@ -119,12 +128,10 @@
                         $("#chatContent").append(html);
                     }else{
                         // 在对应的好友处给消息提示
-                        var friendItem = $("#"+senderAccount+"");
-                        var html = '<i class="comments icon" style="float:right;padding-top:8px"></i>';
-                        friendItem.append(html);
+                        messageUnreadCount(senderAccount);
+                        // 将聊天记录保存到缓存中
+                         pushMessage(result,senderAccount);
                     }
-                    // 将聊天记录保存到缓存中
-                     pushMessage(result,senderAccount);
                 }
             }else if(resultData instanceof ArrayBuffer){
                  // 流处理
@@ -137,6 +144,30 @@
          }
     });
 
+    //未读好友消息样式
+    function messageUnreadCount(senderAccount){
+        var friendItem = $("#"+senderAccount+"");
+        //var html = '<i class="comments icon" style="float:right;padding-top:8px"></i>';
+        // 从缓存中取出未读消息条数
+        var num =0;
+        var count = unreadMessageCount[senderAccount];
+        // 如果没有则初始化为 1 ，如果有就累加 1
+        if(count){
+            count = count+1;
+            num = count;
+        }else{
+           num = num+1;
+        }
+        var id = senderAccount+"-label";
+        var label =  $("#"+id+"");
+        if(label.length){
+            label.text(num);
+        }else{
+            var html = '<div class="ui teal left pointing label" style="float:right" id="'+id+'">'+num+'</div>';
+            friendItem.append(html);
+        }
+        unreadMessageCount[senderAccount] = num;
+    }
 
     var status=["正在连接","连接成功","正在关闭连接","连接已关闭"];
 
@@ -220,6 +251,14 @@
                     }
                     $("#chatContent").append(html);
                 }
+                // 将未读消息设置为 0，消息提示div移除
+                var count = unreadMessageCount[friendAccounts];
+                if(count){
+                    unreadMessageCount[friendAccounts] = 0;
+                }
+                var friendItem = $("#"+friendAccounts+"");
+                var label = friendItem.find(".label");
+                label.remove();
             }else{
                 $("#chatContent").empty();
             }
