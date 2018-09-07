@@ -54,7 +54,7 @@
                     <a class="item" data-tab="three">黑名单 </a>
                 </div>
                 <idv id="friendList">
-                    <div class="ui active tab segment" data-tab="one" style="height: 642px;overflow-y:auto;">
+                    <div class="ui active tab segment" data-tab="one" style="height: 630px;overflow-y:auto;">
                         <div class="ui vertical menu" style="width: 100%">
                             <div  data-th-each="friend : ${friendList}" data-th-attr="id=${friend.friendAccount}">
                                 <input class="friendAccount" data-th-attr="value=${friend.friendAccount}" type="hidden"/>
@@ -115,7 +115,7 @@
 
                         <div class="ui menu">
                             <a class="item"><i class="image icon"></i> 图片 </a>
-                            <a class="item"><i class="folder open icon"></i> 文件 </a>
+                            <a class="item"><i class="folder open icon"></i>文件 </a>
                             <a class="item"><i class="unmute icon"></i> 语音 </a>
                             <a class="item"><i class="video camera icon"></i> 视频 </a>
                             <a class="item"><i class="calendar icon"></i> 聊天记录 </a>
@@ -142,15 +142,12 @@
                          </div>
                     </div>
                 </div>
-
-                <!-- 好友信息，群信息 -->
-                <div class="ui card">
-
-                </div>
             </div>
-
         </div>
-
+    </div>
+    <div>
+        <input id="file" type="file" multiple />
+        <button id="sendFile">发送</button>
     </div>
     <!-- 用户下线提示框 -->
     <div class="ui small modal" id="userOffline">
@@ -167,6 +164,9 @@
 <script th:src="@{static/jquery.cookie.js}" type="text/javascript"></script>
 <script th:src="@{static/semantic/semantic.min.js}" type="text/javascript"></script>
 <!-- 简单对webSocket封装了一下 -->
-<script th:src="@{static/websocket/my.websocket.js}" type="text/javascript"></script>
+<script th:src="@{static/util/my.websocket.js}" type="text/javascript"></script>
+<!-- 文件上传对象 -->
+<script th:src="@{static/util/upload.operate.js}" type="text/javascript"></script>
+<!-- 文件上传对象 -->
 <script th:src="@{static/chat/index.js}" type="text/javascript"></script>
 </html>
