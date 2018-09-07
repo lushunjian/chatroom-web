@@ -7,6 +7,10 @@ import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 /**
  * @Auther: Lushunjian
  * @Date: 2018/9/1 10:12
@@ -28,12 +32,14 @@ public class BinaryWebSocketFrameHandler extends WebSocketFrameHandler{
     @Override
     public void webSocketHandler(ChannelHandlerContext ctx) {
         System.out.println("二进制消息:"+binaryWebSocketFrame);
-        ByteBuf buf = binaryWebSocketFrame.content();
 
-        for (int i = 0; i < buf.capacity(); i++){
-            byte b = buf.getByte(i);
-            System.out.println("byte:"+b);
+        ByteBuf byteBuf=binaryWebSocketFrame.content();
+        try(FileOutputStream outputStream=new FileOutputStream("D:\\a.txt")){
+            byteBuf.readBytes(outputStream,byteBuf.capacity());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        byteBuf.clear();
 
     }
 
