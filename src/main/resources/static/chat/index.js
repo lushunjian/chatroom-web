@@ -5,6 +5,11 @@
  // 遮罩层
  //$('.dimmer').dimmer('show');
 
+ //悬浮样式
+ $('.special.cards .image').dimmer({
+     on: 'hover'
+ });
+
     //好友搜索
     $('.ui.search')
         .search({

@@ -132,10 +132,9 @@
                     <input type="hidden" name="receiverAccount" value="" id="receiverAccount" />
                     <input type="hidden" name="receiverName" value="" id="receiverName" />
                     <!--聊天内容框 每个comment就是一条消息-->
-                    <div id="chatContent" class="chat content"  style="overflow-y:auto; height:300px; padding: 20px">
+                    <div class="ui segment">
+                        <div id="chatContent" class="chat content"  style="overflow-y:auto; height:300px; padding: 20px"></div>
 
-                    </div>
-                     <div class="ui segment">
                         <div class="ui menu">
                             <a class="item"><i class="image icon"></i> 图片 </a>
                             <a class="item"><i class="folder open icon"></i> 文件 </a>
@@ -156,9 +155,32 @@
                          <!--遮罩层-->
                          <div class="ui inverted active dimmer" id="dimmer">
                              <div class="ui icon message">
-                                 <i class="comments icon"></i>
+                                 <!--<i class="comments icon"></i>-->
                                  <div class="content">
-                                     <div class="header">选择好友开始聊天吧！ </div>
+                                     <div class="ui special cards">
+                                         <div class="card">
+                                             <div class="blurring dimmable image">
+                                                 <div class="ui dimmer">
+                                                     <div class="content">
+                                                         <div class="center">
+                                                             <div class="ui inverted button">Add Friend</div>
+                                                         </div>
+                                                     </div>
+                                                 </div>
+                                                 <img src="/static/semantic/themes/default/assets/images/elyse.png">
+                                             </div>
+                                             <div class="content">
+                                                 <a class="header">Team Fu</a>
+                                                 <div class="meta">
+                                                     <span class="date">Create in Sep 2014</span>
+                                                 </div>
+                                             </div>
+                                             <div class="extra content">
+                                                 <span class="right floated">2014年加入 </span>
+                                                 <span><i class="user icon"></i> 151 Friends </span>
+                                             </div>
+                                         </div>
+                                     </div>
                                  </div>
                              </div>
                          </div>
