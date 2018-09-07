@@ -9,46 +9,24 @@
 </head>
 <body>
     <div style="padding: 50px">
-
-
-        <h2 class="ui header">登录成功，欢迎来到我们的站点！ </h2>
         <!--用户姓名-->
         <input type="hidden" name="userName" data-th-attr="value=${user.userName}" id="userName" />
-        <table class="ui celled table">
-            <thead>
-            <tr><th>姓名</th>
-                <th>密码</th>
-                <th>描述</th>
-            </tr></thead>
-            <tbody>
-            <tr>
-                <td>
-                    <div class="ui ribbon label" data-th-text="${user.userName}"></div>
-                </td>
-                <td data-th-text="${user.userPassword}"></td>
-                <td data-th-text="${user.userDescribe}"></td>
-            </tr>
-            </tbody>
-        </table>
 
         <!-- 顶部导航栏 -->
         <div class="ui attached stackable menu">
             <div class="ui container">
-                <a class="item">
-                    <i class="home icon"></i> Home
+                <a class="item" style="height:50px">
+                    <img class="ui medium rounded mini image" src="/static/semantic/themes/default/assets/images/matthew.png" style="width: 35px;height: 35px;display:inline">
+                    <span data-th-text="${user.userName}" style="margin-left: 10px;font-weight: bold"></span>
                 </a>
                 <a class="item">
                     <i class="grid layout icon"></i> Browse
-                </a>
-                <a class="item">
-                    <i class="mail icon"></i> Messages
                 </a>
                 <div class="ui simple dropdown item">
                     More
                     <i class="dropdown icon"></i>
                     <div class="menu">
                         <a class="item"><i class="edit icon"></i> Edit Profile</a>
-                        <a class="item"><i class="globe icon"></i> Choose Language</a>
                         <a class="item"><i class="settings icon"></i> Account Settings</a>
                     </div>
                 </div>
@@ -141,6 +119,7 @@
                             <a class="item"><i class="unmute icon"></i> 语音 </a>
                             <a class="item"><i class="video camera icon"></i> 视频 </a>
                             <a class="item"><i class="calendar icon"></i> 聊天记录 </a>
+                            <a class="item"><i class="user icon"></i> 好友详情 </a>
                         </div>
                         <form class="ui reply form">
                             <div class="field">
@@ -155,32 +134,9 @@
                          <!--遮罩层-->
                          <div class="ui inverted active dimmer" id="dimmer">
                              <div class="ui icon message">
-                                 <!--<i class="comments icon"></i>-->
+                                 <i class="comments icon"></i>
                                  <div class="content">
-                                     <div class="ui special cards">
-                                         <div class="card">
-                                             <div class="blurring dimmable image">
-                                                 <div class="ui dimmer">
-                                                     <div class="content">
-                                                         <div class="center">
-                                                             <div class="ui inverted button">Add Friend</div>
-                                                         </div>
-                                                     </div>
-                                                 </div>
-                                                 <img src="/static/semantic/themes/default/assets/images/elyse.png">
-                                             </div>
-                                             <div class="content">
-                                                 <a class="header">Team Fu</a>
-                                                 <div class="meta">
-                                                     <span class="date">Create in Sep 2014</span>
-                                                 </div>
-                                             </div>
-                                             <div class="extra content">
-                                                 <span class="right floated">2014年加入 </span>
-                                                 <span><i class="user icon"></i> 151 Friends </span>
-                                             </div>
-                                         </div>
-                                     </div>
+                                     <p>选择好友开始聊天吧</p>
                                  </div>
                              </div>
                          </div>
