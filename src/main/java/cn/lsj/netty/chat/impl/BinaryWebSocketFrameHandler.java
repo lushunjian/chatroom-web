@@ -1,6 +1,7 @@
 package cn.lsj.netty.chat.impl;
 
 import cn.lsj.netty.chat.WebSocketFrameHandler;
+import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.websocketx.BinaryWebSocketFrame;
 import org.springframework.context.annotation.Scope;
@@ -27,6 +28,13 @@ public class BinaryWebSocketFrameHandler extends WebSocketFrameHandler{
     @Override
     public void webSocketHandler(ChannelHandlerContext ctx) {
         System.out.println("二进制消息:"+binaryWebSocketFrame);
+        ByteBuf buf = binaryWebSocketFrame.content();
+
+        for (int i = 0; i < buf.capacity(); i++){
+            byte b = buf.getByte(i);
+            System.out.println("byte:"+b);
+        }
+
     }
 
     public BinaryWebSocketFrame getBinaryWebSocketFrame() {
