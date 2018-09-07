@@ -274,16 +274,15 @@
     });
 
 
-var paragraph = 1024*32;
- var startSize,endSize = 0;
- var j=0;
+    // 服务端每次接受流有最大长度限制(65536)，所以大文件需分块发送
+    var j=0;
+    var block = 1024*32;
      //发送文件
     $("#sendFile").click(function() {
         var inputElement = document.getElementById("file");
         var fileList = inputElement.files;
 
         for ( var i = 0; i < fileList.length; i++) {
-            console.log(fileList[i]);
             console.log(fileList[i].name);
             //发送文件名
             //socket.send(fileList[i].name);
@@ -299,36 +298,46 @@ var paragraph = 1024*32;
 
             }*/
             var file = fileList[i];
-            console.log("文件大小:"+file.size);
-             if(endSize < file.size){
-                 startSize = endSize;
-                 endSize += paragraph ;
-                 var blob;
-                 if (file.webkitSlice) {
-                      blob = file.webkitSlice(startSize, endSize);
-                 } else if (file.mozSlice) {
-                      blob = file.mozSlice(startSize, endSize);
-                 } else if(file.slice) {
-                      blob = file.slice(startSize, endSize);
-                 } else {
-                      alert('不支持分段读取！');
-                      return false;
-                  }
-                 console.log(blob);
-                 var reader = new FileReader();
-                 reader.readAsArrayBuffer(blob);
-                 reader.onload = function loaded(evt) {
-                     var ArrayBuffer = evt.target.result;
-                     console.log("发送文件第" + (i++) + "部分");
-                     socket.send(ArrayBuffer);
-                 }
-             }else{
-                  startSize = endSize = 0;
-                  log("发送" + file.name +"完毕");
+            // 文件总长度
+            var total = file.size;
+            console.log("文件大小:"+total);
+            // 计算的出分块次数
+             var len = 0;
+             if(total%block==0) len = total/block;
+             else len = total/block+1;
+             var startSize=0;
+             var endSize = block;
+             // 循环发送文件
+             for(var i=0;i<len;i++){
+                sendBlock(startSize,endSize,file);
+                startSize=endSize;
+                endSize=startSize+block;
              }
-        }
+         }
         return false;
     });
+
+    // 分块发送文件
+    function sendBlock(startSize,endSize,file){
+         var blob;
+         if (file.webkitSlice) {
+              blob = file.webkitSlice(startSize, endSize);
+         } else if (file.mozSlice) {
+              blob = file.mozSlice(startSize, endSize);
+         } else if(file.slice) {
+              blob = file.slice(startSize, endSize);
+         } else {
+              alert('不支持分段读取！');
+              return false;
+         }
+       var reader = new FileReader();
+       reader.readAsArrayBuffer(blob);
+       reader.onload = function loaded(evt) {
+           var ArrayBuffer = evt.target.result;
+           console.log("发送文件第" + (j++) + "部分");
+           socket.send(ArrayBuffer);
+       }
+    }
 
     // 保存消息到缓存
     function pushMessage(message,account){
