@@ -307,7 +307,7 @@
              else len = total/block+1;
              var startSize=0;
              var endSize = block;
-             // 循环发送文件
+             // 循环发送文件块
              for(var i=0;i<len;i++){
                 sendBlock(startSize,endSize,file);
                 startSize=endSize;
