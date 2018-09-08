@@ -1,6 +1,8 @@
 package cn.lsj.netty.chat.impl;
 
+import cn.lsj.domain.FileBlock;
 import cn.lsj.domain.Message;
+import cn.lsj.domain.SocketFile;
 import cn.lsj.netty.constant.WebSocketConstant;
 import cn.lsj.netty.chat.WebSocketFrameHandler;
 import com.alibaba.fastjson.JSON;
@@ -39,25 +41,35 @@ public class TextWebSocketFrameHandler extends WebSocketFrameHandler {
         System.out.println("服务端收到：" + message);
 
         Message userMessage = JSON.parseObject(message,Message.class);
-        String type=userMessage.getMessageType();
-        // 私聊
-        if(WebSocketConstant.WHISPER.equals(type)){
-            // 获得接收者的管道流
-            Channel channel = WebSocketConstant.concurrentMap.get(userMessage.getReceiver());
-            // 如果为 null 表示接收方没有上线，存入数据库，并设置状态为离线消息
-            if(channel == null){
-                logger.info("接收者不在线 !");
-            }else {
-                TextWebSocketFrame content = new TextWebSocketFrame(JSON.toJSONString(userMessage));
-                channel.writeAndFlush(content);
+        // 是否是文件上传信息
+        int haveFile = userMessage.getHaveFile();
+        if(haveFile == 0){
+            String type=userMessage.getMessageType();
+            // 私聊
+            if(WebSocketConstant.WHISPER.equals(type)){
+                // 获得接收者的管道流
+                Channel channel = WebSocketConstant.concurrentMap.get(userMessage.getReceiver());
+                // 如果为 null 表示接收方没有上线，存入数据库，并设置状态为离线消息
+                if(channel == null){
+                    logger.info("接收者不在线 !");
+                }else {
+                    TextWebSocketFrame content = new TextWebSocketFrame(JSON.toJSONString(userMessage));
+                    channel.writeAndFlush(content);
+                }
+            }else {     //群聊
+                logger.info("查出群中所有用户，群发!");
             }
-        }else {     //群聊
-            logger.info("查出群中所有用户，群发!");
+            // 群发
+            //WebSocketConstant.group.writeAndFlush(test);
+        }else {
+            // 文件请求推入队列
+            SocketFile socketFile = userMessage.getSocketFile();
+            for(int i=0;i<socketFile.getSplitSize();i++){
+                FileBlock block = new FileBlock(socketFile.getUuid(),i);
+                WebSocketConstant.socketFileLinkQueue.add(block);
+            }
+
         }
-
-
-        // 群发
-        //WebSocketConstant.group.writeAndFlush(test);
     }
 
     public TextWebSocketFrame getTextWebSocketFrame() {

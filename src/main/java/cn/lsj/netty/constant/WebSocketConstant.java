@@ -1,5 +1,8 @@
 package cn.lsj.netty.constant;
 
+import cn.lsj.domain.FileBlock;
+import cn.lsj.domain.SocketFile;
+import cn.lsj.util.LinkQueue;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.group.ChannelGroup;
@@ -27,6 +30,8 @@ public class WebSocketConstant {
     public static String WEB_SOCKET_URL="ws:///%s:/%d/%s";
     // 私聊
     public static String WHISPER="whisper";
-    //群聊
+    // 群聊
     public static String GROUP="group";
+    // 文件上传队列
+    public static LinkQueue<FileBlock> socketFileLinkQueue = new LinkQueue<>();
 }

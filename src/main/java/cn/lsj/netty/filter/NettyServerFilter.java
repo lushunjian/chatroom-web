@@ -5,6 +5,7 @@ import cn.lsj.netty.handler.NettyHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
+import io.netty.handler.codec.FixedLengthFrameDecoder;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpResponseEncoder;
 import io.netty.handler.codec.http.HttpServerCodec;
@@ -45,6 +46,8 @@ public class NettyServerFilter extends ChannelInitializer<SocketChannel> {
         ph.addLast("http-aggregator",new HttpObjectAggregator(65536));
         // 支持异步大文件传输，文件分块
         ph.addLast("http-block",new ChunkedWriteHandler());
+        // 文件分块大小
+        ph.addLast("fix-length",new FixedLengthFrameDecoder(32768));
         // 服务端业务逻辑处理类
         //ph.addLast("http-handler", new NettyHandler(nettyConfig));
         // 通过spring 注入

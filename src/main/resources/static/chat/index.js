@@ -283,7 +283,6 @@
         var fileList = inputElement.files;
 
         for ( var i = 0; i < fileList.length; i++) {
-            console.log(fileList[i].name);
             //发送文件名
             //socket.send(fileList[i].name);
             //读取文件　　
@@ -302,42 +301,29 @@
             var total = file.size;
             console.log("文件大小:"+total);
             // 计算的出分块次数
-             var len = 0;
-             if(total%block==0) len = total/block;
-             else len = total/block+1;
+             var fileBlockSize = 0;
+             if(total%block===0) fileBlockSize = total/block;
+             else fileBlockSize = total/block+1;
              var startSize=0;
              var endSize = block;
-             // 循环发送文件块
-             for(var i=0;i<len;i++){
-                sendBlock(startSize,endSize,file);
-                startSize=endSize;
-                endSize=startSize+block;
-             }
+             //向下取整
+            var blockSize = Math.floor(fileBlockSize);
+            var fileParam = {};
+            fileParam["fileLength"]=total;
+            fileParam["fileBlockSize"]=blockSize;
+            fileParam["fileName"]=file.name;
+            fileParam["paramBoundary"]=$.md5(file.name);
+            var extraParam = {};
+            extraParam["senderAccount"]="111";
+            extraParam["receiverAccount"]="222";
+            extraParam["sendTime"]=new Date().getTime();
+
+            // 上传文件
+            fileBlockUpload(fileParam,extraParam,startSize,endSize,blockSize,file);
          }
         return false;
     });
 
-    // 分块发送文件
-    function sendBlock(startSize,endSize,file){
-         var blob;
-         if (file.webkitSlice) {
-              blob = file.webkitSlice(startSize, endSize);
-         } else if (file.mozSlice) {
-              blob = file.mozSlice(startSize, endSize);
-         } else if(file.slice) {
-              blob = file.slice(startSize, endSize);
-         } else {
-              alert('不支持分段读取！');
-              return false;
-         }
-       var reader = new FileReader();
-       reader.readAsArrayBuffer(blob);
-       reader.onload = function loaded(evt) {
-           var ArrayBuffer = evt.target.result;
-           console.log("发送文件第" + (j++) + "部分");
-           socket.send(ArrayBuffer);
-       }
-    }
 
     // 保存消息到缓存
     function pushMessage(message,account){
@@ -345,11 +331,111 @@
         if(messageArray){
             messageArray.push(message);
         }else{
-            messageArray = new Array();
+            messageArray = [];
             messageArray.push(message);
         }
         messageContent[account]=messageArray;
     }
+
+     // 分块发送文件
+     function sendBlock(startSize,endSize,file){
+         var blob;
+         if (file.webkitSlice) {
+             blob = file.webkitSlice(startSize, endSize);
+         } else if (file.mozSlice) {
+             blob = file.mozSlice(startSize, endSize);
+         } else if(file.slice) {
+             blob = file.slice(startSize, endSize);
+         } else {
+             alert('不支持分段读取！');
+             return false;
+         }
+         var reader = new FileReader();
+         reader.readAsArrayBuffer(blob);
+         reader.onload = function loaded(evt) {
+             var ArrayBuffer = evt.target.result;
+             console.log("发送文件第" + (j++) + "部分,块大小--"+ArrayBuffer.byteLength);
+             socket.send(ArrayBuffer);
+         }
+     }
+
+     function getBuffer(str) {
+         var buf = new ArrayBuffer(str.length * 2); // 每个字符占用2个字节
+         var bufView = new Uint16Array(buf);
+         for (var i = 0, strLen = str.length; i < strLen; i++) {
+             bufView[i] = str.charCodeAt(i);
+         }
+         return buf;
+     }
+
+ //文件分块上传方法，包含请求头，文件体，结束标识
+ function fileBlockUpload(fileParam,extraParam,startSize,endSize,fileBlockSize,file) {
+        console.log("分块数--"+fileBlockSize);
+     /** 构造请求头，附带额外信息*/
+     var fileMessages = fileMessage(fileParam,extraParam);
+     //将字符串 转换成 二进制流
+     var start = getBuffer(fileMessages);
+     console.log("开始--发送请求头--长度:"+fileMessages.length);
+     socket.send(start);
+
+
+     /** 发送文件块部分，文件主体分块上传*/
+     // 循环发送文件块
+     for(var x=0;x<fileBlockSize;x++){
+         sendBlock(startSize,endSize,file);
+         startSize=endSize;
+         endSize=startSize+block;
+     }
+
+ }
+
+     //  生成文件上传请求报文
+     /**
+      *      Content-Type:multipart/file
+      *      Accept-Encoding:utf-8
+      *      File-Length:
+      *      File-Block-Size:
+      *      File-Name:
+      *      Param-Boundary:--abc
+      *      --abc
+      *      name="senderAccount"
+      *      111
+      *
+      *      --abc
+      *      name="receiverAccount"
+      *      222
+      *
+      *      --abc
+      *      name="sendTime"
+      *      131231313123
+      *
+      *      --abc
+      *
+      */
+     function fileMessage(fileParam,extraParam) {
+         var str = "Content-Type:multipart/file\nAccept-Encoding:utf-8";
+         var fileLength = fileParam["fileLength"];
+         var fileBlockSize = fileParam["fileBlockSize"];
+         var fileName = fileParam["fileName"];
+         var paramBoundary = fileParam["paramBoundary"];
+         if(!fileLength) return null;
+         if(!fileBlockSize) return null;
+         if(!fileName) return null;
+         str += "\nFile-Length:"+fileLength+"\nFile-Block-Size:"+fileBlockSize+"\nFile-Name:"+fileName;
+         if (!paramBoundary) {
+             return str;
+         }
+         str += "\nParam-Boundary:" + paramBoundary;
+         for (var key in extraParam) {
+             if(extraParam.hasOwnProperty(key)){
+                 str += "\n" + paramBoundary;
+                 str += "\nname=" + key;
+                 str += "\n" + extraParam[key]+"\n";
+             }
+         }
+         str += paramBoundary;
+         return str;
+     }
 
     // 消息对象
     function Message(sender,senderName,sendTime,receiver,receiverName,messageContent,messageType){

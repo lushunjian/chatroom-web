@@ -1,4 +1,4 @@
-package cn.lsj.redis.util;
+package cn.lsj.util;
 
 import org.apache.log4j.Logger;
 

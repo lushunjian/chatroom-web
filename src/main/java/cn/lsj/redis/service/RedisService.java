@@ -1,7 +1,7 @@
 package cn.lsj.redis.service;
 
 import cn.lsj.redis.connect.RedisConnect;
-import cn.lsj.redis.util.SerializeUtil;
+import cn.lsj.util.SerializeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.connection.RedisConnection;

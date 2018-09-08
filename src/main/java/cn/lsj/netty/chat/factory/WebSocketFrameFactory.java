@@ -4,6 +4,7 @@ import cn.lsj.netty.chat.WebSocketFrameHandler;
 import cn.lsj.netty.chat.exception.ChatException;
 import cn.lsj.netty.chat.impl.*;
 import cn.lsj.netty.chat.spring.ApplicationContextProvider;
+import cn.lsj.netty.constant.WebSocketConstant;
 import io.netty.handler.codec.http.websocketx.*;
 
 /**
@@ -75,10 +76,19 @@ public class WebSocketFrameFactory {
         else if (frame instanceof BinaryWebSocketFrame) {
             BinaryWebSocketFrameHandler frameHandler = ApplicationContextProvider.getBean("binary",BinaryWebSocketFrameHandler.class);
             frameHandler.setBinaryWebSocketFrame((BinaryWebSocketFrame)frame);
+            ///frameHandler.setSocketFileLinkQueue(WebSocketConstant.socketFileLinkQueue);
+            return frameHandler;
+        }
+        //
+        else if(frame instanceof ContinuationWebSocketFrame){
+            ContinuationWebSocketFrameHandler frameHandler = ApplicationContextProvider.getBean("continuation",ContinuationWebSocketFrameHandler.class);
+            frameHandler.setContinuationWebSocketFrame((ContinuationWebSocketFrame)frame);
             return frameHandler;
         }
         else {
-            throw ChatException.error("没有找到对应socket的处理类");
+            System.out.println("暂不支持这种处理"+frame.getClass().getName());
+            //throw ChatException.error("没有找到对应socket的处理类");
+            return null;
         }
     }
 }
