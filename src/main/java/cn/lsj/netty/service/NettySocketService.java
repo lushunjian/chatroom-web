@@ -1,5 +1,6 @@
 package cn.lsj.netty.service;
 
+import cn.lsj.netty.chat.WebSocketFrameHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.websocketx.*;
 import java.util.logging.Logger;
@@ -16,9 +17,9 @@ public class NettySocketService extends RequestHandler<WebSocketFrame>{
 
         //传统方式生成业务处理对象
         //createSocketHandler(frame).socketHand(ctx);
-
         //通过spring，生成业务处理对象
-        createSocketHandlerBySpring(frame).socketHand(ctx);
-
+        WebSocketFrameHandler handler = createSocketHandlerBySpring(frame);
+        if(handler != null)
+            createSocketHandlerBySpring(frame).socketHand(ctx);
     }
 }

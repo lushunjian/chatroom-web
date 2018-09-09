@@ -86,8 +86,8 @@ public class WebSocketFrameFactory {
         }
         else {
             System.out.println("暂不支持这种处理"+frame.getClass().getName());
-            //throw ChatException.error("没有找到对应socket的处理类");
-            return null;
+            throw ChatException.error("没有找到对应socket的处理类");
+            //return null;
         }
     }
 }

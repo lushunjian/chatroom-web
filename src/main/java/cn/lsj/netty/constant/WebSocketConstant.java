@@ -33,10 +33,7 @@ public class WebSocketConstant {
     public static String GROUP="group";
     // 文件上传队列
     public static LinkQueue<FileBlock> socketFileLinkQueue = new LinkQueue<>();
-    // 用户的文件上传信息
+    // 用户的文件上传信息,键是 channelId
     public static ConcurrentMap<String,FileQueueBean> fileBlockMap = new ConcurrentHashMap<>();
-    // 当前正在上传的用户
-    public static String currentUser;
-    // 默认是true,表示当前请求是请求报文，而不是文件。 第一次请求时是文件请求报文。
-    public static boolean isFileMessage = true;
+
 }

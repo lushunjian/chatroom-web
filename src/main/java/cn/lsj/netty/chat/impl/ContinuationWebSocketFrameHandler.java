@@ -34,11 +34,11 @@ public class ContinuationWebSocketFrameHandler extends WebSocketFrameHandler {
     public void webSocketHandler(ChannelHandlerContext ctx) {
         System.out.println("continuationWebSocketFrame-----"+continuationWebSocketFrame+"此帧是否结束--"+continuationWebSocketFrame.isFinalFragment());
         ByteBuf byteBuf=continuationWebSocketFrame.content();
+        ConcurrentMap<String,FileQueueBean> concurrentFileMap = WebSocketConstant.fileBlockMap;
+        FileQueueBean fileQueueBean = concurrentFileMap.get(ctx.channel().id().asLongText());
         try {
             byte[] byteArray = new byte[byteBuf.capacity()];
             byteBuf.readBytes(byteArray);
-            ConcurrentMap<String,FileQueueBean> concurrentFileMap = WebSocketConstant.fileBlockMap;
-            FileQueueBean fileQueueBean = concurrentFileMap.get(WebSocketConstant.currentUser);
             // 获取上传的文件块队列
             LinkQueue<FileBlock> blockLinkQueue = fileQueueBean.getFileQueue();
             // 获取首节点但不弹出
@@ -71,7 +71,7 @@ public class ContinuationWebSocketFrameHandler extends WebSocketFrameHandler {
                     }finally {
                         // 重置为01
                         fileQueueBean.getCurrentBlockNum().getAndSet(0);
-                        WebSocketConstant.isFileMessage = true;
+                        fileQueueBean.setFileMessage(true);
                         try {
                             byteArrayOutputStream.close();
                             if(fileOutputStream != null)
