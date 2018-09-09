@@ -46,8 +46,6 @@ public class NettyServerFilter extends ChannelInitializer<SocketChannel> {
         ph.addLast("http-aggregator",new HttpObjectAggregator(65536));
         // 支持异步大文件传输，文件分块
         ph.addLast("http-block",new ChunkedWriteHandler());
-        // 文件分块大小
-        ph.addLast("fix-length",new FixedLengthFrameDecoder(32768));
         // 服务端业务逻辑处理类
         //ph.addLast("http-handler", new NettyHandler(nettyConfig));
         // 通过spring 注入

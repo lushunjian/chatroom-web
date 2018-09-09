@@ -276,7 +276,7 @@
 
     // 服务端每次接受流有最大长度限制(65536)，所以大文件需分块发送
     var j=0;
-    var block = 1024*32;
+    var block = 1024*1024*5;
      //发送文件
     $("#sendFile").click(function() {
         var inputElement = document.getElementById("file");

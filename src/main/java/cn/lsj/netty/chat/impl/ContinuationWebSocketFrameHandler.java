@@ -1,12 +1,15 @@
 package cn.lsj.netty.chat.impl;
 
 import cn.lsj.netty.chat.WebSocketFrameHandler;
+import cn.lsj.netty.constant.WebSocketConstant;
 import cn.lsj.util.ByteBufUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.websocketx.ContinuationWebSocketFrame;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+
+import java.io.IOException;
 
 /**
  * @Auther: Lushunjian
@@ -23,7 +26,13 @@ public class ContinuationWebSocketFrameHandler extends WebSocketFrameHandler {
     public void webSocketHandler(ChannelHandlerContext ctx) {
         System.out.println("continuationWebSocketFrame-----"+continuationWebSocketFrame);
         ByteBuf byteBuf=continuationWebSocketFrame.content();
-        String str = ByteBufUtil.byteToString(byteBuf);
+        try {
+            byte[] byteArray = new byte[byteBuf.capacity()];
+            byteBuf.readBytes(byteArray);
+            WebSocketConstant.fileOutput.write(byteArray);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public ContinuationWebSocketFrame getContinuationWebSocketFrame() {

@@ -14,12 +14,14 @@ import io.netty.handler.codec.http.*;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketServerHandshaker;
 import io.netty.handler.codec.http.websocketx.WebSocketServerHandshakerFactory;
+import io.netty.handler.codec.http.websocketx.WebSocketVersion;
 import io.netty.util.CharsetUtil;
 
 import java.util.List;
 import java.util.Map;
 
 import static cn.lsj.netty.constant.WebSocketConstant.concurrentMap;
+import static io.netty.handler.codec.http.websocketx.WebSocketVersion.*;
 
 public class NettyHttpService extends RequestHandler<FullHttpRequest> {
 
@@ -68,8 +70,9 @@ public class NettyHttpService extends RequestHandler<FullHttpRequest> {
                 subProtocols = charSequence.toString();
             // url:ws://127.0.0.1:8889/webSocket
             String webSocketURL =String.format(WebSocketConstant.WEB_SOCKET_URL, nettyConfig.getHost(),nettyConfig.getPort(),nettyConfig.getRoute());
-            WebSocketServerHandshakerFactory wsFactory = new WebSocketServerHandshakerFactory(
-                    webSocketURL, subProtocols, false);
+            //WebSocketServerHandshakerFactory wsFactory = new WebSocketServerHandshakerFactory(webSocketURL, subProtocols, false);
+            //数据帧最大长度，合理设置可避免大数据包攻击你的服务器,默认值为：65536。这里改大点方便大文件上传
+            WebSocketServerHandshakerFactory wsFactory = new WebSocketServerHandshakerFactory(webSocketURL,subProtocols, false, 1024*1024*5);
             WebSocketServerHandshaker handshake = wsFactory.newHandshaker(request);
             // 握手失败
             if (handshake == null) {

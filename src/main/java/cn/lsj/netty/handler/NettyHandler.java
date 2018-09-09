@@ -37,7 +37,7 @@ public class NettyHandler extends SimpleChannelInboundHandler<Object> {
     private NettyConfig nettyConfig;
 
     /**
-     * 建立连接时，
+     * 当客户端主动链接服务端的链接后，这个通道就是活跃的了。也就是客户端与服务端建立了通信通道并且可以传输数据
      */
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {

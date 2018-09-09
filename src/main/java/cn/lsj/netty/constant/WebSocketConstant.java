@@ -11,6 +11,7 @@ import io.netty.handler.codec.http.websocketx.WebSocketServerHandshaker;
 import io.netty.util.AttributeKey;
 import io.netty.util.concurrent.GlobalEventExecutor;
 
+import java.io.ByteArrayOutputStream;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -34,4 +35,6 @@ public class WebSocketConstant {
     public static String GROUP="group";
     // 文件上传队列
     public static LinkQueue<FileBlock> socketFileLinkQueue = new LinkQueue<>();
+    // 保存文件二进制流
+    public  static ByteArrayOutputStream fileOutput = new ByteArrayOutputStream();
 }
