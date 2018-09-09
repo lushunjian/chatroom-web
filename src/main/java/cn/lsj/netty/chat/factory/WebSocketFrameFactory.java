@@ -76,10 +76,9 @@ public class WebSocketFrameFactory {
         else if (frame instanceof BinaryWebSocketFrame) {
             BinaryWebSocketFrameHandler frameHandler = ApplicationContextProvider.getBean("binary",BinaryWebSocketFrameHandler.class);
             frameHandler.setBinaryWebSocketFrame((BinaryWebSocketFrame)frame);
-            ///frameHandler.setSocketFileLinkQueue(WebSocketConstant.socketFileLinkQueue);
             return frameHandler;
         }
-        //
+        // 包含二进制数据或文本数据，BinaryWebSocketFrame和TextWebSocketFrame的结合体。这个类型的数据是BinaryWebSocketFrame或TextWebSocketFrame数据中粘包导致
         else if(frame instanceof ContinuationWebSocketFrame){
             ContinuationWebSocketFrameHandler frameHandler = ApplicationContextProvider.getBean("continuation",ContinuationWebSocketFrameHandler.class);
             frameHandler.setContinuationWebSocketFrame((ContinuationWebSocketFrame)frame);

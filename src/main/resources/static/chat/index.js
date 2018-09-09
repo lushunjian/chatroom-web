@@ -111,7 +111,7 @@
             console.log(resultData);
             // 后台数据可能是文本，也可能是流
             //字符串处理
-            if(typeof(resultData)=="string"){
+            if(typeof(resultData)==="string"){
                 var result=$.parseJSON(resultData);
                 console.log("Received data string");
                 var isOffline=result.isOffline;
@@ -128,7 +128,7 @@
                      /* 判断用户的聊天框是否正在和发送者聊天，如果是则将消息追加到聊天框中;
                         如果不是给用户提示有未读消息 */
                     // 判断是否相等，如果相等则表示用户正在和此好友聊天
-                    if(senderAccount == account){
+                    if(senderAccount === account){
                         var time = new Date(Number(result.sendTime)).Format("yyyy-MM-dd HH:mm:ss");
                         var html = '<div class="comment"><a class="avatar"><img src="/static/semantic/themes/default/assets/images/elliot.jpg">'+
                                    '</a><div class="content"><a class="author">'+result.senderName+' </a><div class="metadata"><span class="date">' + time +
@@ -198,7 +198,7 @@
         // 如果用户没有输入内容，不允许发送消息
         if(messageContent) {
             //添加状态判断，当为OPEN时，发送消息
-            if (socket.readyState==1) {
+            if (socket.readyState===1) {
                 // 构建消息对象
                 var message = new Message(userAccount,senderName,sendTime,receiver,receiverName,messageContent,messageType);
                 // 发送消息
@@ -248,7 +248,7 @@
                     var time = new Date(Number(messageItem.sendTime)).Format("yyyy-MM-dd HH:mm:ss");
                     var html = "";
                     // 对方的消息
-                    if(friendAccounts == messageItem.sender){
+                    if(friendAccounts === messageItem.sender){
                         html = '<div class="comment"><a class="avatar"><img src="'+you+'">'+
                                   '</a><div class="content"><a class="author">'+messageItem.senderName+' </a><div class="metadata"><span class="date">' + time +
                                   '</span></div><div class="text">' + messageItem.messageContent + ' </div></div></div>';
@@ -274,9 +274,9 @@
     });
 
 
-    // 服务端每次接受流有最大长度限制(65536)，所以大文件需分块发送
+    // 服务端每次接受流有最大长度限制(65536)，所以大文件需分块发送 -- 1024*1024*5;
     var j=0;
-    var block = 1024*1024*5;
+    var block = 1024*100;
      //发送文件
     $("#sendFile").click(function() {
         var inputElement = document.getElementById("file");
@@ -311,9 +311,12 @@
             var fileParam = {};
             fileParam["fileLength"]=total;
             fileParam["fileBlockSize"]=blockSize;
+            // 文件名 不可为空
             fileParam["fileName"]=file.name;
+            // 参数分隔符，可自定义
             fileParam["paramBoundary"]=$.md5(file.name);
             var extraParam = {};
+            // senderAccount字段必填
             extraParam["senderAccount"]="111";
             extraParam["receiverAccount"]="222";
             extraParam["sendTime"]=new Date().getTime();
@@ -354,7 +357,7 @@
          reader.readAsArrayBuffer(blob);
          reader.onload = function loaded(evt) {
              var ArrayBuffer = evt.target.result;
-             console.log("发送文件第" + (j++) + "部分,块大小--"+ArrayBuffer.byteLength);
+             console.log("发送文件第" + (j++) + "部分,起始:"+startSize+"---结束:"+endSize+"块大小--"+ArrayBuffer.byteLength);
              socket.send(ArrayBuffer);
          }
      }

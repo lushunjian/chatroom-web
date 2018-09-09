@@ -22,6 +22,8 @@ public class NettyConfig {
 
     private int workThreadCount;
 
+    private int maxFramePayloadLength;
+
     public int getWorkThreadCount() {
         return workThreadCount;
     }
@@ -60,5 +62,13 @@ public class NettyConfig {
 
     public void setRoute(String route) {
         this.route = route;
+    }
+
+    public int getMaxFramePayloadLength() {
+        return maxFramePayloadLength;
+    }
+
+    public void setMaxFramePayloadLength(int maxFramePayloadLength) {
+        this.maxFramePayloadLength = maxFramePayloadLength;
     }
 }

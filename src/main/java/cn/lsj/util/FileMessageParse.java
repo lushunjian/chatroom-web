@@ -1,11 +1,13 @@
 package cn.lsj.util;
 
-import cn.lsj.domain.FileMessage;
+import cn.lsj.vo.FileMessage;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * @Auther: Lushunjian
@@ -14,11 +16,12 @@ import java.io.InputStreamReader;
  */
 public class FileMessageParse {
 
-    public static FileMessage messageParse(String str) throws IOException {
+    public static FileMessage messageParse(String str) throws IOException, NoSuchAlgorithmException {
         ByteArrayInputStream is=new ByteArrayInputStream(str.getBytes());
         BufferedReader br=new BufferedReader(new InputStreamReader(is));
         String line = null;
         FileMessage fileMessage = new FileMessage();
+        MessageDigest md5 = MessageDigest.getInstance("MD5");
         while((line = br.readLine()) != null){
             String[] kv = line.split(":");
             if(kv.length==2){
@@ -34,6 +37,8 @@ public class FileMessageParse {
                     fileMessage.setFileBlockSize(Integer.parseInt(value));
                 else if("Param-Boundary".equals(key))
                     fileMessage.setParamBoundary(value);
+                else if("File-Name".equals(key))
+                    fileMessage.setFileName(value);
             }else {
                 // 判断参数分割符是否和定义的一致，不一致则不解析额外参数
                 if(fileMessage.getParamBoundary() != null && fileMessage.getParamBoundary().equals(line)){
@@ -45,6 +50,8 @@ public class FileMessageParse {
                         String[] param = line1.split("=");
                         fileMessage.getParam().put(param[1],line2);
                     }else {  // 如果为空则已经解析完毕
+                       //  设置文件名 md5值
+                        fileMessage.setFileNameMD5(MD5Utils.getMD5(fileMessage.getFileName()));
                         return fileMessage;
                     }
                     // 第三行为换行
@@ -52,6 +59,8 @@ public class FileMessageParse {
                 }
             }
         }
+        //  设置文件名 md5值
+        fileMessage.setFileNameMD5(MD5Utils.getMD5(fileMessage.getFileName()));
         return fileMessage;
     }
 

@@ -56,9 +56,20 @@ public class LinkQueue<E> {
     }
 
     /**
-     * 返回队首元素，但不删除
+     * 返回队首元素，但不弹出
      * */
-    public Node peek(){
+    public synchronized E peek(){
+        if(empty()){
+            throw new RuntimeException("空队列异常！");
+        }else{
+            return front.e;
+        }
+    }
+
+    /**
+     * 返回队首Node，但不弹出
+     * */
+    public synchronized Node peekNode(){
         if(empty()){
             throw new RuntimeException("空队列异常！");
         }else{
@@ -79,6 +90,22 @@ public class LinkQueue<E> {
             value.next = null; //释放原队列头元素的next引用
             size --;
             return value.e;
+        }
+    }
+
+    /**
+     * 出队
+     * */
+    public synchronized Node pollNode(){
+        if(empty()){
+            //throw new RuntimeException("空队列异常！");
+            return null;
+        }else{
+            Node value = front; //得到队列头元素
+            front = front.next;//让front引用指向原队列头元素的下一个元素
+            value.next = null; //释放原队列头元素的next引用
+            size --;
+            return value;
         }
     }
 

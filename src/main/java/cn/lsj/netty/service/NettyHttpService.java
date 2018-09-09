@@ -72,7 +72,7 @@ public class NettyHttpService extends RequestHandler<FullHttpRequest> {
             String webSocketURL =String.format(WebSocketConstant.WEB_SOCKET_URL, nettyConfig.getHost(),nettyConfig.getPort(),nettyConfig.getRoute());
             //WebSocketServerHandshakerFactory wsFactory = new WebSocketServerHandshakerFactory(webSocketURL, subProtocols, false);
             //数据帧最大长度，合理设置可避免大数据包攻击你的服务器,默认值为：65536。这里改大点方便大文件上传
-            WebSocketServerHandshakerFactory wsFactory = new WebSocketServerHandshakerFactory(webSocketURL,subProtocols, false, 1024*1024*5);
+            WebSocketServerHandshakerFactory wsFactory = new WebSocketServerHandshakerFactory(webSocketURL,subProtocols, false, nettyConfig.getMaxFramePayloadLength());
             WebSocketServerHandshaker handshake = wsFactory.newHandshaker(request);
             // 握手失败
             if (handshake == null) {

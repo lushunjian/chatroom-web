@@ -1,14 +1,12 @@
 package cn.lsj.netty.constant;
 
-import cn.lsj.domain.FileBlock;
-import cn.lsj.domain.SocketFile;
+import cn.lsj.vo.FileBlock;
 import cn.lsj.util.LinkQueue;
+import cn.lsj.vo.FileQueueBean;
 import io.netty.channel.Channel;
-import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.handler.codec.http.websocketx.WebSocketServerHandshaker;
-import io.netty.util.AttributeKey;
 import io.netty.util.concurrent.GlobalEventExecutor;
 
 import java.io.ByteArrayOutputStream;
@@ -35,6 +33,10 @@ public class WebSocketConstant {
     public static String GROUP="group";
     // 文件上传队列
     public static LinkQueue<FileBlock> socketFileLinkQueue = new LinkQueue<>();
-    // 保存文件二进制流
-    public  static ByteArrayOutputStream fileOutput = new ByteArrayOutputStream();
+    // 用户的文件上传信息
+    public static ConcurrentMap<String,FileQueueBean> fileBlockMap = new ConcurrentHashMap<>();
+    // 当前正在上传的用户
+    public static String currentUser;
+    // 默认是true,表示当前请求是请求报文，而不是文件。 第一次请求时是文件请求报文。
+    public static boolean isFileMessage = true;
 }

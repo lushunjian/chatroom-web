@@ -1,4 +1,4 @@
-package cn.lsj.domain;
+package cn.lsj.vo;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * @Auther: Lushunjian
  * @Date: 2018/9/8 21:09
- * @Description:
+ * @Description:   文件上传请求报文解析bean
  */
 public class FileMessage {
 
@@ -15,6 +15,7 @@ public class FileMessage {
     private long fileLength;
     private int fileBlockSize;
     private String fileName;
+    private String fileNameMD5;
     private String paramBoundary;
     private Map<String,String> param = new HashMap<>();
 
@@ -72,5 +73,13 @@ public class FileMessage {
 
     public void setParam(Map<String, String> param) {
         this.param = param;
+    }
+
+    public String getFileNameMD5() {
+        return fileNameMD5;
+    }
+
+    public void setFileNameMD5(String fileNameMD5) {
+        this.fileNameMD5 = fileNameMD5;
     }
 }

@@ -1,12 +1,13 @@
 package cn.lsj.netty.chat.impl;
 
-import cn.lsj.domain.FileBlock;
-import cn.lsj.domain.FileMessage;
+import cn.lsj.vo.FileBlock;
+import cn.lsj.vo.FileMessage;
 import cn.lsj.netty.chat.WebSocketFrameHandler;
 import cn.lsj.netty.constant.WebSocketConstant;
 import cn.lsj.util.ByteBufUtil;
 import cn.lsj.util.FileMessageParse;
 import cn.lsj.util.LinkQueue;
+import cn.lsj.vo.FileQueueBean;
 import com.alibaba.fastjson.JSON;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -15,6 +16,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @Auther: Lushunjian
@@ -29,14 +32,8 @@ public class BinaryWebSocketFrameHandler extends WebSocketFrameHandler{
 
     private BinaryWebSocketFrame binaryWebSocketFrame;
 
-    private LinkQueue<FileBlock> socketFileLinkQueue ;
-
-    // 默认是true,表示当前请求是请求报文，而不是文件。 第一次请求时是文件请求报文。
-    private static boolean isFileMessage = true;
     // 分块序号
-    private static int num = 1;
-    // 解析的报文
-    private static FileMessage fileMessage;
+    private static AtomicInteger num = new AtomicInteger(1);
 
     public BinaryWebSocketFrameHandler(){}
 
@@ -44,64 +41,100 @@ public class BinaryWebSocketFrameHandler extends WebSocketFrameHandler{
         this.binaryWebSocketFrame=binaryWebSocketFrame;
     }
 
-    public LinkQueue<FileBlock> getSocketFileLinkQueue() {
-        return socketFileLinkQueue;
-    }
-
-    public void setSocketFileLinkQueue(LinkQueue<FileBlock> socketFileLinkQueue) {
-        this.socketFileLinkQueue = socketFileLinkQueue;
-    }
-
     @Override
     public void webSocketHandler(ChannelHandlerContext ctx) {
-       // FileBlock fileBlock = socketFileLinkQueue.poll();
-       // System.out.println("二进制消息:-----"+fileBlock.getNumber()+"----"+binaryWebSocketFrame);
-
-    /*    ByteBuf byteBuf=binaryWebSocketFrame.content();
-        try(FileOutputStream outputStream=new FileOutputStream("D:\\a.txt")){
-            byteBuf.readBytes(outputStream,byteBuf.capacity());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        byteBuf.clear();*/
         ByteBuf byteBuf=binaryWebSocketFrame.content();
         try {
-            // 第一次是请求报文
-            if(isFileMessage){
+            // 第一次是请求报文，报文数据很小;不会出现粘包现象
+            if(WebSocketConstant.isFileMessage){
                 String str = ByteBufUtil.byteToString(byteBuf);
                 // 解析报文
-                fileMessage = FileMessageParse.messageParse(str);
-                System.out.println("报文解析：");
-                System.out.println(JSON.toJSONString(fileMessage));
-                System.out.println();
-                System.out.println(str);
-                isFileMessage = false;
+                FileMessage fileMessage = FileMessageParse.messageParse(str);
+                System.out.println("报文解析完毕----"+JSON.toJSONString(fileMessage));
+                // 获取发送者的用户账号，此字段请求报文中必填，否则不进行后续操作
+                String userAccount = fileMessage.getParam().get("senderAccount");
+                if(userAccount != null && !"".equals(userAccount)){
+                    WebSocketConstant.currentUser = userAccount;
+                    // 获取文件名的 md5值
+                    String fileNameMD5 = fileMessage.getFileNameMD5();
+                    ConcurrentMap<String,FileQueueBean> concurrentFileMap = WebSocketConstant.fileBlockMap;
+                    FileQueueBean fileQueueBean = concurrentFileMap.get(userAccount);
+                    if(fileQueueBean == null)
+                        fileQueueBean = new FileQueueBean();
+                    //先返回值,然后在+1,相当于i++
+                    fileQueueBean.getFileQueueCount().getAndIncrement();
+                    // 保存文件报文信息
+                    fileQueueBean.getFileMessageMap().put(fileNameMD5,fileMessage);
+                    // 生成文件二进制流缓存
+                    fileQueueBean.getFileOutputMap().put(fileNameMD5,new ByteArrayOutputStream());
+                    // 文件块上传队列。 队列中格式如下
+                    /**
+                     * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+                     *  dataBlock |  dataBlock |  dataBlock |  dataBlock | endBlock
+                     * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+                     * */
+                    LinkQueue<FileBlock> fileBlockLinkQueue = new LinkQueue<>();
+                    for(int i=0;i<fileMessage.getFileBlockSize();i++){
+                        fileBlockLinkQueue.add(new FileBlock(fileNameMD5,i,userAccount));
+                    }
+                    // 加入结束标志 block
+                    fileBlockLinkQueue.add(new FileBlock(fileNameMD5,true,userAccount));
+                    // 保存文件上传队列
+                    fileQueueBean.setFileQueue(fileBlockLinkQueue);
+                    concurrentFileMap.put(userAccount,fileQueueBean);
+                }
+                WebSocketConstant.isFileMessage = false;
             }else {
+                // 用户文件块传输开始
                 byte[] byteArray = new byte[byteBuf.capacity()];
                 byteBuf.readBytes(byteArray);
-                WebSocketConstant.fileOutput.write(byteArray);
-                // 如果收到的文件块等于定义的，说明当前文件块是最后一个文件块，文件块全部传输完毕
-                if(num==fileMessage.getFileBlockSize()){
-                    //输出到文件
-                    System.out.println("输出到文件！------------------");
-                    try {
-                        FileOutputStream fileOutputStream = new FileOutputStream( new File( "D:/123.pdf" ) ) ;
-                        WebSocketConstant.fileOutput.writeTo(fileOutputStream) ;
-                        fileOutputStream.flush();
-                        num=1;
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }finally{
-                        try {
-                            WebSocketConstant.fileOutput.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
+                ConcurrentMap<String,FileQueueBean> concurrentFileMap = WebSocketConstant.fileBlockMap;
+                FileQueueBean fileQueueBean = concurrentFileMap.get(WebSocketConstant.currentUser);
+                // 获取上传的文件块队列
+                LinkQueue<FileBlock> blockLinkQueue = fileQueueBean.getFileQueue();
+                // 获取首节点但不弹出
+                FileBlock fileBlock = blockLinkQueue.peek();
+                // 获取缓存字节流对象
+                ByteArrayOutputStream byteArrayOutputStream = fileQueueBean.getFileOutputMap().get(fileBlock.getUuid());
+                // 获取文件报文
+                FileMessage fileMessage = fileQueueBean.getFileMessageMap().get(fileBlock.getUuid());
+                // 将文件块流保存在缓存中
+                byteArrayOutputStream.write(byteArray);
+                // 判断此帧是否结束，如果结束，队列中头节点出队
+                if(binaryWebSocketFrame.isFinalFragment()) {
+                    // 头结点出队
+                    blockLinkQueue.poll();
+                    //当前处理的文件块序号加1
+                    fileQueueBean.getCurrentBlockNum().getAndIncrement();
                 }
-                num++;
-                System.out.println("binaryWebSocketFrame--"+num+"---"+binaryWebSocketFrame);
+                if(fileQueueBean.getCurrentBlockNum().get() ==  fileMessage.getFileBlockSize()){
+                    // 取出下一个block ，正常情况，这个block是结束标志 block
+                    FileBlock endBlock = blockLinkQueue.poll();
+                    if(endBlock.isFinish()){
+                        System.out.println("输出到文件！-------------BinaryWebSocketFrameHandler-----");
+                        FileOutputStream fileOutputStream = null;
+                        try {
+                            fileOutputStream = new FileOutputStream(new File("D:/123.pdf"));
+                            byteArrayOutputStream.writeTo(fileOutputStream);
+                            fileOutputStream.flush();
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }finally {
+                            // 重置为01
+                            fileQueueBean.getCurrentBlockNum().getAndSet(0);
+                            WebSocketConstant.isFileMessage = true;
+                            try {
+                                byteArrayOutputStream.close();
+                                if(fileOutputStream != null)
+                                    fileOutputStream.close();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }else {
+                        System.out.println("解析文件出错!");
+                    }
+                }
             }
         }catch (Exception e){
             e.printStackTrace();

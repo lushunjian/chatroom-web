@@ -7,6 +7,8 @@ netty:
   route: webSocket      # webSocket建立连接的路由
   bossThreadCount: 200
   workThreadCount: 200
+  maxFramePayloadLength: 102400   #最大数据帧的长度,与前端文件分块大小保持一致    -- 5M -- 1024*1024*5
+
 
 spring:
   # mysql配置
