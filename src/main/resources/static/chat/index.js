@@ -276,40 +276,28 @@
 
     // 服务端每次接受流有最大长度限制(65536)，所以大文件需分块发送 -- 1024*1024*5;
     var j=0;
-    var block = 1024*100;
+    var block = 1024*1024;   //每次传 1M
+    var totalSize = 0;
      //发送文件
     $("#sendFile").click(function() {
         var inputElement = document.getElementById("file");
         var fileList = inputElement.files;
 
         for ( var i = 0; i < fileList.length; i++) {
-            //发送文件名
-            //socket.send(fileList[i].name);
-            //读取文件　　
-　　　　　　/*var reader = new FileReader();
-            reader.readAsArrayBuffer(fileList[i]);
-            //文件读取完毕后该函数响应
-            reader.onload = function loaded(evt) {
-                *//*var binaryString = evt.target.result;
-                console.log("开始发送文件");
-                socket.send(binaryString);*//*
-                //根据当前缓冲区来控制客户端读取速度，防止文件过大，做分段上传
-
-            }*/
             var file = fileList[i];
             // 文件总长度
-            var total = file.size;
-            console.log("文件大小:"+total);
+            totalSize = file.size;
+            console.log("文件大小:"+totalSize);
             // 计算的出分块次数
              var fileBlockSize = 0;
-             if(total%block===0) fileBlockSize = total/block;
-             else fileBlockSize = total/block+1;
+             if(totalSize%block===0) fileBlockSize = totalSize/block;
+             else fileBlockSize = totalSize/block+1;
              var startSize=0;
              var endSize = block;
              //向下取整
             var blockSize = Math.floor(fileBlockSize);
             var fileParam = {};
-            fileParam["fileLength"]=total;
+            fileParam["fileLength"]=totalSize;
             fileParam["fileBlockSize"]=blockSize;
             // 文件名 不可为空
             fileParam["fileName"]=file.name;
@@ -340,7 +328,7 @@
         messageContent[account]=messageArray;
     }
 
-     // 分块发送文件
+     // 分块发送文件---保证顺序递归调用，当前一个文件块读取完成后，才读取下一个文件块
      function sendBlock(startSize,endSize,file){
          var blob;
          if (file.webkitSlice) {
@@ -355,10 +343,33 @@
          }
          var reader = new FileReader();
          reader.readAsArrayBuffer(blob);
-         reader.onload = function loaded(evt) {
-             var ArrayBuffer = evt.target.result;
-             console.log("发送文件第" + (j++) + "部分,起始:"+startSize+"---结束:"+endSize+"块大小--"+ArrayBuffer.byteLength);
-             socket.send(ArrayBuffer);
+         if(startSize<totalSize){
+             // 处理load事件。该事件在读取操作完成时触发。
+             reader.onload = function loaded(e) {
+                 var ArrayBuffer = e.target.result;
+                 console.log("发送文件第" + (j++) + "部分,起始:"+startSize+"---结束:"+endSize+"块大小--"+ArrayBuffer.byteLength);
+                 socket.send(ArrayBuffer);
+                 startSize = endSize;
+                 endSize = startSize+block;
+                 // 递归调用
+                 sendBlock(startSize,endSize,file);
+             };
+             // 处理loadstart事件。该事件在读取操作开始之前触发。
+             reader.onloadstart = function(e) {
+                // console.log('onloadstart ---> ', e);
+             };
+             // 处理loadend事件。该事件在读取操作结束时（不管成功失败）触发。
+             reader.onloadend = function(e) {
+                // console.log('onloadend ---> ', e);
+             };
+             // 处理progress事件。该事件在读取Blob时触发。
+             reader.onprogress = function(e) {
+                // console.log('onprogress ---> ', e);
+             }
+             // 处理error事件。该事件在读取操作发生错误时触发。
+             reader.onerror = function(e) {
+                 // console.log('onerror ---> ', e);
+             }
          }
      }
 
@@ -381,14 +392,14 @@
      console.log("开始--发送请求头--长度:"+fileMessages.length);
      socket.send(start);
 
-
      /** 发送文件块部分，文件主体分块上传*/
      // 循环发送文件块
-     for(var x=0;x<fileBlockSize;x++){
-         sendBlock(startSize,endSize,file);
+     sendBlock(startSize,endSize,file);
+/*     for(var x=0;x<fileBlockSize;x++){
+
          startSize=endSize;
          endSize=startSize+block;
-     }
+     }*/
 
  }
 

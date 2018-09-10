@@ -1,5 +1,6 @@
 package cn.lsj.netty.chat.impl;
 
+import cn.lsj.netty.chat.chatutil.ChatFileOutput;
 import cn.lsj.vo.FileBlock;
 import cn.lsj.vo.FileMessage;
 import cn.lsj.netty.chat.WebSocketFrameHandler;
@@ -52,7 +53,7 @@ public class BinaryWebSocketFrameHandler extends WebSocketFrameHandler{
         if(fileQueueBean == null)
             fileQueueBean = new FileQueueBean();
         try {
-            // 第一次是请求报文，报文数据很小;不会出现粘包现象
+            // 第一次是请求报文，报文数据很小;不会出现粘包现象---解析报文
             if(fileQueueBean.isFileMessage()){
                 String str = ByteBufUtil.byteToString(byteBuf);
                 // 解析报文
@@ -89,55 +90,7 @@ public class BinaryWebSocketFrameHandler extends WebSocketFrameHandler{
                 fileQueueBean.setFileMessage(false);
                 concurrentFileMap.put(channelId,fileQueueBean);
             }else {
-                // 用户文件块传输开始
-                byte[] byteArray = new byte[byteBuf.capacity()];
-                byteBuf.readBytes(byteArray);
-                // 获取上传的文件块队列
-                LinkQueue<FileBlock> blockLinkQueue = fileQueueBean.getFileQueue();
-                // 获取首节点但不弹出
-                FileBlock fileBlock = blockLinkQueue.peek();
-                // 获取缓存字节流对象
-                ByteArrayOutputStream byteArrayOutputStream = fileQueueBean.getFileOutputMap().get(fileBlock.getUuid());
-                // 获取文件报文
-                FileMessage fileMessage = fileQueueBean.getFileMessageMap().get(fileBlock.getUuid());
-                // 将文件块流保存在缓存中
-                byteArrayOutputStream.write(byteArray);
-                // 判断此帧是否结束，如果结束，队列中头节点出队
-                if(binaryWebSocketFrame.isFinalFragment()) {
-                    // 头结点出队
-                    blockLinkQueue.poll();
-                    //当前处理的文件块序号加1
-                    fileQueueBean.getCurrentBlockNum().getAndIncrement();
-                }
-                if(fileQueueBean.getCurrentBlockNum().get() ==  fileMessage.getFileBlockSize()){
-                    // 取出下一个block ，正常情况，这个block是结束标志 block
-                    FileBlock endBlock = blockLinkQueue.poll();
-                    // 如果是结束块标识，表示所有文件块已经上传完毕
-                    if(endBlock.isFinish()){
-                        System.out.println("输出到文件！-------------BinaryWebSocketFrameHandler-----");
-                        FileOutputStream fileOutputStream = null;
-                        try {
-                            fileOutputStream = new FileOutputStream(new File("D:/123.pdf"));
-                            byteArrayOutputStream.writeTo(fileOutputStream);
-                            fileOutputStream.flush();
-                        }catch (Exception e){
-                            e.printStackTrace();
-                        }finally {
-                            // 重置为0
-                            fileQueueBean.getCurrentBlockNum().getAndSet(0);
-                            fileQueueBean.setFileMessage(true);
-                            try {
-                                byteArrayOutputStream.close();
-                                if(fileOutputStream != null)
-                                    fileOutputStream.close();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }else {
-                        System.out.println("解析文件出错!");
-                    }
-                }
+                ChatFileOutput.fileOutput(binaryWebSocketFrame,byteBuf,fileQueueBean);
             }
         }catch (Exception e){
             e.printStackTrace();

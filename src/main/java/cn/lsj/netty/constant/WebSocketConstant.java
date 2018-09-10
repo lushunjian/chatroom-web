@@ -33,7 +33,7 @@ public class WebSocketConstant {
     public static String GROUP="group";
     // 文件上传队列
     public static LinkQueue<FileBlock> socketFileLinkQueue = new LinkQueue<>();
-    // 用户的文件上传信息,键是 channelId
+    // 用户的文件上传信息,键是 channelId 即客户端id
     public static ConcurrentMap<String,FileQueueBean> fileBlockMap = new ConcurrentHashMap<>();
 
 }
