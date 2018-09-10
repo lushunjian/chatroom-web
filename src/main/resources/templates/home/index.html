@@ -115,7 +115,9 @@
 
                         <div class="ui menu">
                             <a class="item"><i class="image icon"></i> 图片 </a>
-                            <a class="item"><i class="folder open icon"></i>文件 </a>
+                            <a class="item">
+                                <input id="file" type="file" style="position: absolute;right:0;top:0;opacity:0;left:0;width:100%;height:100%" multiple />
+                                <i class="folder open icon"></i>文件 </a>
                             <a class="item"><i class="unmute icon"></i> 语音 </a>
                             <a class="item"><i class="video camera icon"></i> 视频 </a>
                             <a class="item"><i class="calendar icon"></i> 聊天记录 </a>
@@ -145,10 +147,10 @@
             </div>
         </div>
     </div>
-    <div>
-        <input id="file" type="file" multiple />
+<!--    <div>
+        <input id="files" type="file"  multiple />
         <button id="sendFile">发送</button>
-    </div>
+    </div>-->
     <!-- 用户下线提示框 -->
     <div class="ui small modal" id="userOffline">
         <div class="header">下线通知</div>

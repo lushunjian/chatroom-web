@@ -279,7 +279,7 @@
     var block = 1024*1024;   //每次传 1M
     var totalSize = 0;
      //发送文件
-    $("#sendFile").click(function() {
+    $("#file").on('change',function() {
         var inputElement = document.getElementById("file");
         var fileList = inputElement.files;
 
@@ -351,6 +351,13 @@
                  socket.send(ArrayBuffer);
                  startSize = endSize;
                  endSize = startSize+block;
+                 // 进度条
+                 var percent=0;
+                 if(startSize<totalSize)
+                    percent = Math.floor(startSize/totalSize)*100;
+                 else
+                    percent = 100;
+                 console.log("当前进度----"+percent);
                  // 递归调用
                  sendBlock(startSize,endSize,file);
              };
@@ -370,6 +377,8 @@
              reader.onerror = function(e) {
                  // console.log('onerror ---> ', e);
              }
+         }else{
+            totalSize=0;
          }
      }
 
