@@ -276,7 +276,7 @@
 
     // 服务端每次接受流有最大长度限制(65536)，所以大文件需分块发送 -- 1024*1024*5;
     var j=0;
-    var block = 1024*1024;   //每次传 1M
+    var block = 1024*1024*5;   //每次传 5M
     var totalSize = 0;
      //发送文件
     $("#file").on('change',function() {
@@ -358,6 +358,10 @@
                  else
                     percent = 100;
                  console.log("当前进度----"+percent);
+                 //进度条更新
+                 $('#fileProgress').progress({
+                     percent: percent
+                 });
                  // 递归调用
                  sendBlock(startSize,endSize,file);
              };
