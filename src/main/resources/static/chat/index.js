@@ -354,7 +354,7 @@
                  // 进度条
                  var percent=0;
                  if(startSize<totalSize)
-                    percent = Math.floor(startSize/totalSize)*100;
+                    percent = Math.floor(startSize*100/totalSize);
                  else
                     percent = 100;
                  console.log("当前进度----"+percent);
