@@ -14,7 +14,7 @@ import java.io.IOException;
 
 public class ChatFileOutput {
 
-    private Logger logger = LoggerFactory.getLogger(ChatFileOutput.class);
+    private static Logger logger = LoggerFactory.getLogger(ChatFileOutput.class);
 
     public static void fileOutput(WebSocketFrame webSocketFrame, ByteBuf byteBuf, FileQueueBean fileQueueBean) throws IOException {
         // 用户文件块传输开始
@@ -44,25 +44,24 @@ public class ChatFileOutput {
                 FileBlock endBlock = blockLinkQueue.poll();
                 // 如果是结束块标识，表示所有文件块已经上传完毕，关闭输出流。重置文件块下标
                 if(endBlock.isFinish()){
-                    System.out.println("输出到文件！-------------BinaryWebSocketFrameHandler-----fileName"+fileMessage.getFileName());
+                    logger.info("输出到文件！");
                     try {
                         outputStream.close();
                     }catch (Exception e){
                         e.printStackTrace();
-                        System.out.println("关流失败!!");
+                        logger.error("关流失败!!");
                     }finally {
                         // 文件块重置为0
                         fileQueueBean.getCurrentBlockNum().getAndSet(0);
                         fileQueueBean.setFileMessage(true);
                     }
                 }else {
-                    System.out.println("解析文件出错!");
+                    logger.error("解析文件出错!");
                 }
-
-                }
+            }
         }catch (Exception e){
             e.printStackTrace();
-            System.out.println("后台异常!!!");
+            logger.error("后台异常!!!");
         }
     }
 }

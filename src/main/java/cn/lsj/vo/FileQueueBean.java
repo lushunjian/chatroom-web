@@ -15,7 +15,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class FileQueueBean {
 
-    // 用于存放文件上传的文件块对象
+    // 用于存放文件上传的文件块对象，用于计数
     private LinkQueue<FileBlock> fileQueue = new LinkQueue<>();
     // 队列中当前包含的文件数量(注意是文件数量，不是文件块的数量)
     private AtomicInteger fileQueueCount = new AtomicInteger(0);

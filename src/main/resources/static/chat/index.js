@@ -10,6 +10,11 @@
      on: 'hover'
  });
 
+ // 进度条测试
+ $('#test').progress({
+   percent: 22
+ });
+
     //好友搜索
     $('.ui.search')
         .search({
@@ -300,15 +305,30 @@
             fileParam["fileLength"]=totalSize;
             fileParam["fileBlockSize"]=blockSize;
             // 文件名 不可为空
-            fileParam["fileName"]=file.name;
+            var fileName = file.name
+            fileParam["fileName"]=fileName;
             // 参数分隔符，可自定义
-            fileParam["paramBoundary"]=$.md5(file.name);
+            var md5Name = $.md5(fileName);
+            fileParam["paramBoundary"]=md5Name;
             var extraParam = {};
             // senderAccount字段必填
             extraParam["senderAccount"]="111";
             extraParam["receiverAccount"]="222";
             extraParam["sendTime"]=new Date().getTime();
-
+            // 文件上传样式
+            var time = new Date().Format("yyyy-MM-dd HH:mm:ss");
+            // 文件大小保留两位小数，单位 M
+            var fileSize = (totalSize/(1024*1024)).toFixed(2);
+            // 处理一下文件名，防止文件名过长，样式出现问题
+            var fileNames = fileName.split(".");
+            var htmlFileName = fileNames[0].substring(0,12)+"...  （"+fileNames[1]+"）";
+            var fileHtml = '<div class="comment"><a class="avatar"><img src="/static/semantic/themes/default/assets/images/matt.jpg"></a>'+
+                   '<div class="content"><a class="author">我 </a><div class="metadata"><span class="date">'+time+'</span></div><div class="text">'+
+                   '<div class="ui segment" style="width:270px;height:80px"><a class="ui orange right ribbon label"><i class="block layout icon"></i></a>'+
+                   '<div class="ui form" style="margin-top: -25px"><div class="inline field" style="margin-bottom: 5px"><label>名称:</label>'+
+                    '<label>'+htmlFileName+'</label></div><div class="inline field"><label>大小:</label><label>'+fileSize+'M</label></div></div>'+
+                    '<div class="ui bottom attached progress" id="'+md5Name+'"><div class="bar"></div></div></div></div></div></div>';
+            $("#chatContent").append(fileHtml);
             // 上传文件
             fileBlockUpload(fileParam,extraParam,startSize,endSize,blockSize,file);
          }
@@ -329,7 +349,7 @@
     }
 
      // 分块发送文件---保证顺序递归调用，当前一个文件块读取完成后，才读取下一个文件块
-     function sendBlock(startSize,endSize,file){
+     function sendBlock(startSize,endSize,file,md5Name){
          var blob;
          if (file.webkitSlice) {
              blob = file.webkitSlice(startSize, endSize);
@@ -356,12 +376,19 @@
                  var percent=0;
                  if(startSize<totalSize)
                     percent = Math.floor(startSize*100/totalSize);
-                 else
+                 else{
                     percent = 100;
+                    // 将消息保存在缓存中
+                 }
                  console.log("当前进度----"+percent);
                  //进度条更新
-                 $('#fileProgress').progress({
+                 /*$("#"+md5Name+"").progress({
                      percent: percent
+                 });*/
+                 $("#"+md5Name+"").on('progress', function(){
+                    $(this).progress({
+                            percent: percent
+                        });
                  });
                  // 递归调用，相当于同步阻塞，当文件较大时，会导致卡顿
                  sendBlock(startSize,endSize,file);
@@ -407,8 +434,8 @@
      socket.send(start);
 
      /** 发送文件块部分，文件主体分块上传*/
-     // 循环发送文件块
-     sendBlock(startSize,endSize,file);
+     // 循环发送文件块,文件名md5值
+     sendBlock(startSize,endSize,file,fileParam["paramBoundary"]);
 /*     for(var x=0;x<fileBlockSize;x++){
 
          startSize=endSize;
