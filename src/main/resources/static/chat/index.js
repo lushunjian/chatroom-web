@@ -282,7 +282,10 @@
     // 服务端每次接受流有最大长度限制(65536)，所以大文件需分块发送 -- 1024*1024*5;
     var j=0;
     var block = 1024*1024*10;   //每次传 10M
+    // 文件总大小 字节
     var totalSize = 0;
+    // 文件上传进度条
+    var percent=0;
      //发送文件
     $("#file").on('change',function() {
         var inputElement = document.getElementById("file");
@@ -372,26 +375,23 @@
                  socket.send(ArrayBuffer);
                  startSize = endSize;
                  endSize = startSize+block;
-                 // 进度条
-                 var percent=0;
-                 if(startSize<totalSize)
+
+                 if(startSize<totalSize){
                     percent = Math.floor(startSize*100/totalSize);
-                 else{
-                    percent = 100;
-                    // 将消息保存在缓存中
+                    // 进度展示
+                    $("#"+md5Name).progress({percent: Number(percent)});
+                 }else{
+                    // 进度条 100
+                    $("#"+md5Name).progress({percent: 100});
+                    // 文件上传完成，进度条重置
+                    percent = 0;
+                    // 上传完成后，需把聊天信息保存到缓存中
+                    // ...
+
                  }
-                 console.log("当前进度----"+percent);
-                 //进度条更新
-                 /*$("#"+md5Name+"").progress({
-                     percent: percent
-                 });*/
-                 $("#"+md5Name+"").on('progress', function(){
-                    $(this).progress({
-                            percent: percent
-                        });
-                 });
+
                  // 递归调用，相当于同步阻塞，当文件较大时，会导致卡顿
-                 sendBlock(startSize,endSize,file);
+                 sendBlock(startSize,endSize,file,md5Name);
              };
              // 处理loadstart事件。该事件在读取操作开始之前触发。
              reader.onloadstart = function(e) {
