@@ -6,11 +6,15 @@ import cn.lsj.vo.FileMessage;
 import cn.lsj.vo.FileQueueBean;
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class ChatFileOutput {
+
+    private Logger logger = LoggerFactory.getLogger(ChatFileOutput.class);
 
     public static void fileOutput(WebSocketFrame webSocketFrame, ByteBuf byteBuf, FileQueueBean fileQueueBean) throws IOException {
         // 用户文件块传输开始
