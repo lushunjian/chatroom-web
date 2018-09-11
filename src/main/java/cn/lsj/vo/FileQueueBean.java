@@ -3,6 +3,7 @@ package cn.lsj.vo;
 import cn.lsj.util.LinkQueue;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -20,8 +21,8 @@ public class FileQueueBean {
     private AtomicInteger fileQueueCount = new AtomicInteger(0);
     // 每个文件的请求报文 (文件信息) ; 键是文件名的md5值
     private ConcurrentMap<String,FileMessage> fileMessageMap = new ConcurrentHashMap<>();
-    // 每个文件的二进制流存储对象; 存储在内存中 ; 键是文件名的md5值
-    private ConcurrentMap<String,ByteArrayOutputStream> fileOutputMap = new ConcurrentHashMap<>();
+    // 以追加形式 把二进制流写入文件
+    private ConcurrentMap<String,FileOutputStream> fileOutStreamMap = new ConcurrentHashMap<>();
     // 当前进行到的文件块序号
     private AtomicInteger currentBlockNum = new AtomicInteger(0);
     // 客户端channelId
@@ -64,14 +65,6 @@ public class FileQueueBean {
         this.fileMessageMap = fileMessageMap;
     }
 
-    public ConcurrentMap<String, ByteArrayOutputStream> getFileOutputMap() {
-        return fileOutputMap;
-    }
-
-    public void setFileOutputMap(ConcurrentMap<String, ByteArrayOutputStream> fileOutputMap) {
-        this.fileOutputMap = fileOutputMap;
-    }
-
     public AtomicInteger getFileQueueCount() {
         return fileQueueCount;
     }
@@ -94,5 +87,13 @@ public class FileQueueBean {
 
     public void setChannelId(String channelId) {
         this.channelId = channelId;
+    }
+
+    public ConcurrentMap<String, FileOutputStream> getFileOutStreamMap() {
+        return fileOutStreamMap;
+    }
+
+    public void setFileOutStreamMap(ConcurrentMap<String, FileOutputStream> fileOutStreamMap) {
+        this.fileOutStreamMap = fileOutStreamMap;
     }
 }

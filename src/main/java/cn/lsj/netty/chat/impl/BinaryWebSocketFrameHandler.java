@@ -72,7 +72,10 @@ public class BinaryWebSocketFrameHandler extends WebSocketFrameHandler{
                 // 保存文件报文信息
                 fileQueueBean.getFileMessageMap().put(fileNameMD5,fileMessage);
                 // 生成文件二进制流缓存
-                fileQueueBean.getFileOutputMap().put(fileNameMD5,new ByteArrayOutputStream());
+                //fileQueueBean.getFileOutputMap().put(fileNameMD5,new ByteArrayOutputStream());
+                // 以流追加的形式输出到文件
+                File dest = new File("D://"+fileMessage.getFileName());
+                fileQueueBean.getFileOutStreamMap().put(fileNameMD5,new FileOutputStream(dest,true));
                 // 文件块上传队列。 队列中格式如下
                 /**
                  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

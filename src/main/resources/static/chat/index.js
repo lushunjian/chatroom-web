@@ -344,6 +344,7 @@
          var reader = new FileReader();
          reader.readAsArrayBuffer(blob);
          if(startSize<totalSize){
+            // 都是异步方法
              // 处理load事件。该事件在读取操作完成时触发。
              reader.onload = function loaded(e) {
                  var ArrayBuffer = e.target.result;
@@ -362,7 +363,7 @@
                  $('#fileProgress').progress({
                      percent: percent
                  });
-                 // 递归调用
+                 // 递归调用，相当于同步阻塞，当文件较大时，会导致卡顿
                  sendBlock(startSize,endSize,file);
              };
              // 处理loadstart事件。该事件在读取操作开始之前触发。
