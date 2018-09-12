@@ -60,7 +60,7 @@ public class ChatFileOutput {
                     }finally {
                         // 文件块重置为0
                         fileQueueBean.getCurrentBlockNum().getAndSet(0);
-                        fileQueueBean.setFileMessage(true);
+                        //fileQueueBean.setFileMessage(true);
                     }
                 }else {
                     logger.error("解析文件出错!");
