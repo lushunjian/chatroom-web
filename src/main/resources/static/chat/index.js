@@ -310,9 +310,8 @@
             // 文件名 不可为空
             var fileName = file.name
             fileParam["fileName"]=fileName;
-            // 参数分隔符，可自定义
-            var md5Name = $.md5(fileName);
-            fileParam["paramBoundary"]=md5Name;
+            // 文件唯一标识
+            var fileUuid = uuid();
             var extraParam = {};
             // senderAccount字段必填
             extraParam["senderAccount"]="111";
@@ -325,15 +324,42 @@
             // 处理一下文件名，防止文件名过长，样式出现问题
             var fileNames = fileName.split(".");
             var htmlFileName = fileNames[0].substring(0,12)+"...  （"+fileNames[1]+"）";
-            var fileHtml = '<div class="comment"><a class="avatar"><img src="/static/semantic/themes/default/assets/images/matt.jpg"></a>'+
-                   '<div class="content"><a class="author">我 </a><div class="metadata"><span class="date">'+time+'</span></div><div class="text">'+
-                   '<div class="ui segment" style="width:270px;height:80px"><a class="ui orange right ribbon label"><i class="block layout icon"></i></a>'+
-                   '<div class="ui form" style="margin-top: -25px"><div class="inline field" style="margin-bottom: 5px"><label>名称:</label>'+
-                    '<label>'+htmlFileName+'</label></div><div class="inline field"><label>大小:</label><label>'+fileSize+'M</label></div></div>'+
-                    '<div class="ui bottom attached progress" id="'+md5Name+'"><div class="bar"></div></div></div></div></div></div>';
-            $("#chatContent").append(fileHtml);
-            // 上传文件
-            fileBlockUpload(fileParam,extraParam,startSize,endSize,blockSize,file);
+
+            $.ajax({
+                   type: "POST",
+                   url: "/socket/file/message",
+                   data: {"fileLength":totalSize,
+                          "fileBlockSize":blockSize,
+                          "fileName":fileName,
+                          "fileUuid":fileUuid,
+                          "senderAccount":$("#userAccount").val(),
+                          "receiverAccount":$("#receiverAccount").val(),
+                          "sendTime":new Date().getTime()
+
+                   },
+                   dataType:"json",
+                   async: false,
+                   success: function(ret){
+                        if(ret.code==200){
+                            var fileHtml = '<div class="comment"><a class="avatar"><img src="/static/semantic/themes/default/assets/images/matt.jpg"></a>'+
+                                   '<div class="content"><a class="author">我 </a><div class="metadata"><span class="date">'+time+'</span></div><div class="text">'+
+                                   '<div class="ui segment" style="width:270px;height:80px"><a class="ui orange right ribbon label"><i class="block layout icon"></i></a>'+
+                                   '<div class="ui form" style="margin-top: -25px"><div class="inline field" style="margin-bottom: 5px"><label>名称:</label>'+
+                                    '<label>'+htmlFileName+'</label></div><div class="inline field"><label>大小:</label><label>'+fileSize+'M</label></div></div>'+
+                                    '<div class="ui bottom attached progress" id="'+fileUuid+'"><div class="bar"></div></div></div></div></div></div>';
+                            $("#chatContent").append(fileHtml);
+                            // 上传文件
+                             sendBlock(startSize,endSize,file,fileUuid);
+                             // 完成后，清空input文件框中的内容
+                              let obj = document.getElementById('file') ;
+                              obj.value="";
+                        }else{
+                            alert(22);
+                            return false;
+                        }
+                   }
+                });
+
          }
         return false;
     });
@@ -423,75 +449,6 @@
          return buf;
      }
 
- //文件分块上传方法，包含请求头，文件体，结束标识
- function fileBlockUpload(fileParam,extraParam,startSize,endSize,fileBlockSize,file) {
-        console.log("分块数--"+fileBlockSize);
-     /** 构造请求头，附带额外信息*/
-     var fileMessages = fileMessage(fileParam,extraParam);
-     //将字符串 转换成 二进制流
-     var start = getBuffer(fileMessages);
-     console.log("开始--发送请求头--长度:"+fileMessages.length);
-     socket.send(start);
-
-     /** 发送文件块部分，文件主体分块上传*/
-     // 循环发送文件块,文件名md5值
-     sendBlock(startSize,endSize,file,fileParam["paramBoundary"]);
-/*     for(var x=0;x<fileBlockSize;x++){
-
-         startSize=endSize;
-         endSize=startSize+block;
-     }*/
-
- }
-
-     //  生成文件上传请求报文
-     /**
-      *      Content-Type:multipart/file
-      *      Accept-Encoding:utf-8
-      *      File-Length:
-      *      File-Block-Size:
-      *      File-Name:
-      *      Param-Boundary:--abc
-      *      --abc
-      *      name="senderAccount"
-      *      111
-      *
-      *      --abc
-      *      name="receiverAccount"
-      *      222
-      *
-      *      --abc
-      *      name="sendTime"
-      *      131231313123
-      *
-      *      --abc
-      *
-      */
-     function fileMessage(fileParam,extraParam) {
-         var str = "Content-Type:multipart/file\nAccept-Encoding:utf-8";
-         var fileLength = fileParam["fileLength"];
-         var fileBlockSize = fileParam["fileBlockSize"];
-         var fileName = fileParam["fileName"];
-         var paramBoundary = fileParam["paramBoundary"];
-         if(!fileLength) return null;
-         if(!fileBlockSize) return null;
-         if(!fileName) return null;
-         str += "\nFile-Length:"+fileLength+"\nFile-Block-Size:"+fileBlockSize+"\nFile-Name:"+fileName;
-         if (!paramBoundary) {
-             return str;
-         }
-         str += "\nParam-Boundary:" + paramBoundary;
-         for (var key in extraParam) {
-             if(extraParam.hasOwnProperty(key)){
-                 str += "\n" + paramBoundary;
-                 str += "\nname=" + key;
-                 str += "\n" + extraParam[key]+"\n";
-             }
-         }
-         str += paramBoundary;
-         return str;
-     }
-
     // 消息对象
     function Message(sender,senderName,sendTime,receiver,receiverName,messageContent,messageType){
         this.sender = sender;
@@ -501,4 +458,19 @@
         this.receiverName=receiverName;
         this.messageContent = messageContent;
         this.messageType = messageType;
+    }
+
+    //生成uid方法
+    function uuid() {
+        var s = [];
+        var hexDigits = "0123456789abcdef";
+        for (var i = 0; i < 36; i++) {
+            s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+        }
+        s[14] = "4";  // bits 12-15 of the time_hi_and_version field to 0010
+        s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1);  // bits 6-7 of the clock_seq_hi_and_reserved to 01
+        s[8] = s[13] = s[18] = s[23] = "-";
+
+        var uuid = s.join("");
+        return uuid;
     }

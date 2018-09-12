@@ -16,17 +16,16 @@ import java.security.NoSuchAlgorithmException;
  */
 public class FileMessageParse {
 
-    public static FileMessage messageParse(String str) throws IOException, NoSuchAlgorithmException {
-        ByteArrayInputStream is=new ByteArrayInputStream(str.getBytes());
+    public static FileMessage messageParse(String str) throws IOException {
+        /*ByteArrayInputStream is=new ByteArrayInputStream(str.getBytes());
         BufferedReader br=new BufferedReader(new InputStreamReader(is));
         String line = null;
         FileMessage fileMessage = new FileMessage();
-        MessageDigest md5 = MessageDigest.getInstance("MD5");
         while((line = br.readLine()) != null){
             String[] kv = line.split(":");
             if(kv.length==2){
                 String key = kv[0];
-                String value = kv[1];
+                String value = new String(kv[1].getBytes(),"utf-8");
                 if("Content-Type".equals(key))
                     fileMessage.setContentType(value);
                 else if("Accept-Encoding".equals(key))
@@ -61,7 +60,8 @@ public class FileMessageParse {
         }
         //  设置文件名 md5值
         fileMessage.setFileNameMD5(MD5Utils.getMD5(fileMessage.getFileName()));
-        return fileMessage;
+        return fileMessage;*/
+        return null;
     }
 
 

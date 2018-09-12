@@ -98,7 +98,7 @@ public class LoginController {
             }catch (JedisConnectionException | RedisConnectionFailureException e  ){
                 attr.addAttribute("cssStyle","red message");
                 attr.addAttribute("status","true");
-                attr.addAttribute("message","服务器异常，redis连接失败!");
+                attr.addAttribute("message","redis connect fail!");
                 return "redirect:/login";
             }
         } else {

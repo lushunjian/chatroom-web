@@ -17,7 +17,7 @@ public class WebSocketConstant {
 
     public static ChannelGroup group = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
     public static WebSocketServerHandshaker serverHandshake;      //握手成功对象，用于关闭连接
-    // 用于保存用户连接的管道上下文对象
+    // 用于保存用户连接的管道上下文对象,键是用户账号，值是通道对象
     public static ConcurrentMap<String,Channel> concurrentMap = new ConcurrentHashMap<>();
     public final static String WEBSOCKET= "websocket";
     public final static String GET= "GET";

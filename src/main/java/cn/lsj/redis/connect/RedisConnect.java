@@ -4,6 +4,7 @@ import cn.lsj.redis.service.RedisAction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.stereotype.Component;
@@ -42,9 +43,9 @@ public class RedisConnect<T> {
              redisConnection = connectionFactory.getConnection();
              Jedis redis = (Jedis) redisConnection.getNativeConnection();
              return redisAction.doRedisAction(redis);
-         }catch (Exception e){
-             e.printStackTrace();
-             logger.info("-----后台异常！");
+         }catch (RedisConnectionFailureException e){
+             //e.printStackTrace();
+             logger.info("-----redis 连接失败");
              throw e;
          }finally {
             if(redisConnection != null && !redisConnection.isClosed())

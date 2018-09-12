@@ -37,9 +37,9 @@ public class Message implements Serializable {
     // 服务端通知用户异地登录下线通知，默认为 0，当为 1 时，强制客户端下线
     private int isOffline = 0;
     // 消息是否包含附件 默认为 0，表示不含，当为 1 时，表示包含文件，用户正在上传文件
-    private int haveFile = 0;
-    // 文件信息
-    private SocketFile socketFile;
+    private int haveFileMessage = 0;
+    // 文件信息,请求报文
+    private String fileMessage;
 
     public String getSender() {
         return sender;
@@ -121,19 +121,19 @@ public class Message implements Serializable {
         this.sendTime = sendTime;
     }
 
-    public SocketFile getSocketFile() {
-        return socketFile;
+    public int getHaveFileMessage() {
+        return haveFileMessage;
     }
 
-    public void setSocketFile(SocketFile socketFile) {
-        this.socketFile = socketFile;
+    public void setHaveFileMessage(int haveFileMessage) {
+        this.haveFileMessage = haveFileMessage;
     }
 
-    public int getHaveFile() {
-        return haveFile;
+    public String getFileMessage() {
+        return fileMessage;
     }
 
-    public void setHaveFile(int haveFile) {
-        this.haveFile = haveFile;
+    public void setFileMessage(String fileMessage) {
+        this.fileMessage = fileMessage;
     }
 }

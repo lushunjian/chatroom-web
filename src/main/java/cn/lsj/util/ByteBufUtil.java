@@ -2,6 +2,7 @@ package cn.lsj.util;
 
 import io.netty.buffer.ByteBuf;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 /**
@@ -11,7 +12,7 @@ import java.util.List;
  */
 public class ByteBufUtil {
 
-    public static String byteToString(ByteBuf byteBuf){
+    public static String byteToString(ByteBuf byteBuf) throws UnsupportedEncodingException {
         StringBuilder result= new StringBuilder();
         byte[] byteArray = new byte[byteBuf.capacity()];
         byteBuf.readBytes(byteArray);
@@ -21,7 +22,7 @@ public class ByteBufUtil {
                 result.append((char) b);
             }
         }
-        return result.toString();
+        return new String(result.toString().getBytes(),"utf-8");
     }
 
     /**

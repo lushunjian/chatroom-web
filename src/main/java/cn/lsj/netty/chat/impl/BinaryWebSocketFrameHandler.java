@@ -45,58 +45,14 @@ public class BinaryWebSocketFrameHandler extends WebSocketFrameHandler{
     @Override
     public void webSocketHandler(ChannelHandlerContext ctx) {
         ByteBuf byteBuf=binaryWebSocketFrame.content();
-        // 获得文件相关信息
-        ConcurrentMap<String,FileQueueBean> concurrentFileMap = WebSocketConstant.fileBlockMap;
         // 通道id
         String channelId = ctx.channel().id().asLongText();
-        FileQueueBean fileQueueBean = concurrentFileMap.get(channelId);
-        if(fileQueueBean == null)
-            fileQueueBean = new FileQueueBean();
-        try {
-            // 第一次是请求报文，报文数据很小;不会出现粘包现象---解析报文
-            if(fileQueueBean.isFileMessage()){
-                String str = ByteBufUtil.byteToString(byteBuf);
-                // 解析报文
-                FileMessage fileMessage = FileMessageParse.messageParse(str);
-                System.out.println("报文解析完毕----"+JSON.toJSONString(fileMessage));
-                // 获取发送者的用户账号，此字段请求报文中必填，否则不进行后续操作
-                String userAccount = fileMessage.getParam().get("senderAccount");
-                // 保存用户账号
-                fileQueueBean.setUserAccount(userAccount);
-                // 保存通道id
-                fileQueueBean.setChannelId(channelId);
-                // 获取文件名的 md5值
-                String fileNameMD5 = fileMessage.getFileNameMD5();
-                //先返回值,然后在+1,相当于i++
-                fileQueueBean.getFileQueueCount().getAndIncrement();
-                // 保存文件报文信息
-                fileQueueBean.getFileMessageMap().put(fileNameMD5,fileMessage);
-                // 生成文件二进制流缓存
-                //fileQueueBean.getFileOutputMap().put(fileNameMD5,new ByteArrayOutputStream());
-                // 以流追加的形式输出到文件
-                File dest = new File("D://"+fileMessage.getFileName());
-                fileQueueBean.getFileOutStreamMap().put(fileNameMD5,new FileOutputStream(dest,true));
-                // 文件块上传队列。 队列中格式如下
-                /**
-                 * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-                 *  dataBlock |  dataBlock |  dataBlock |  dataBlock | endBlock
-                 * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-                 * */
-                LinkQueue<FileBlock> fileBlockLinkQueue = new LinkQueue<>();
-                for(int i=0;i<fileMessage.getFileBlockSize();i++){
-                    fileBlockLinkQueue.add(new FileBlock(fileNameMD5,i,userAccount));
-                }
-                // 加入结束标志 block
-                fileBlockLinkQueue.add(new FileBlock(fileNameMD5,true,userAccount));
-                // 保存文件上传队列
-                fileQueueBean.setFileQueue(fileBlockLinkQueue);
-                fileQueueBean.setFileMessage(false);
-                concurrentFileMap.put(channelId,fileQueueBean);
-            }else {
-                ChatFileOutput.fileOutput(binaryWebSocketFrame,byteBuf,fileQueueBean);
-            }
-        }catch (Exception e){
-            e.printStackTrace();
+        FileQueueBean fileQueueBean = WebSocketConstant.fileBlockMap.get(channelId);
+
+        if(fileQueueBean == null){
+            System.out.println("离线文件！！");
+        }else {
+            ChatFileOutput.fileOutput(binaryWebSocketFrame,byteBuf,fileQueueBean);
         }
 
     }

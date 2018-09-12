@@ -35,13 +35,8 @@ public class ContinuationWebSocketFrameHandler extends WebSocketFrameHandler {
     public void webSocketHandler(ChannelHandlerContext ctx) {
         System.out.println("continuationWebSocketFrame-----"+continuationWebSocketFrame+"此帧是否结束--"+continuationWebSocketFrame.isFinalFragment());
         ByteBuf byteBuf=continuationWebSocketFrame.content();
-        ConcurrentMap<String,FileQueueBean> concurrentFileMap = WebSocketConstant.fileBlockMap;
-        FileQueueBean fileQueueBean = concurrentFileMap.get(ctx.channel().id().asLongText());
-        try {
-            ChatFileOutput.fileOutput(continuationWebSocketFrame,byteBuf,fileQueueBean);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        FileQueueBean fileQueueBean = WebSocketConstant.fileBlockMap.get(ctx.channel().id().asLongText());
+         ChatFileOutput.fileOutput(continuationWebSocketFrame,byteBuf,fileQueueBean);
     }
 
     public ContinuationWebSocketFrame getContinuationWebSocketFrame() {

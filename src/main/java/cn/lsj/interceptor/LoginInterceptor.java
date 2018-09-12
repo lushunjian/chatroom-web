@@ -2,6 +2,7 @@ package cn.lsj.interceptor;
 
 import cn.lsj.redis.service.RedisHandler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 import redis.clients.jedis.exceptions.JedisConnectionException;
@@ -66,9 +67,12 @@ public class LoginInterceptor implements HandlerInterceptor {
             }
             httpServletResponse.sendRedirect("/login");
             return false;
-        }catch (JedisConnectionException | ConnectException e){
-            System.out.println("redis 连接失败!");
-            httpServletResponse.sendRedirect("/login");
+        }catch (JedisConnectionException | RedisConnectionFailureException | ConnectException e){
+            System.out.println("redis 连接失败");
+            String cssStyle = "red message";
+            String message = "redis connect fail";
+            String status = "true";
+            httpServletResponse.sendRedirect("/login?cssStyle="+cssStyle+"&message="+message+"&status="+status);
             return false;
         }
     }

@@ -10,14 +10,41 @@ import java.util.Map;
  */
 public class FileMessage {
 
+    // 文件唯一标识
+    private String fileUuid;
     private String contentType;
     private String acceptEncoding;
     private long fileLength;
     private int fileBlockSize;
     private String fileName;
-    private String fileNameMD5;
     private String paramBoundary;
-    private Map<String,String> param = new HashMap<>();
+    private String senderAccount;
+    private String receiverAccount;
+    private long sendTime;
+
+    public String getSenderAccount() {
+        return senderAccount;
+    }
+
+    public void setSenderAccount(String senderAccount) {
+        this.senderAccount = senderAccount;
+    }
+
+    public String getReceiverAccount() {
+        return receiverAccount;
+    }
+
+    public void setReceiverAccount(String receiverAccount) {
+        this.receiverAccount = receiverAccount;
+    }
+
+    public long getSendTime() {
+        return sendTime;
+    }
+
+    public void setSendTime(long sendTime) {
+        this.sendTime = sendTime;
+    }
 
     public String getContentType() {
         return contentType;
@@ -67,19 +94,11 @@ public class FileMessage {
         this.paramBoundary = paramBoundary;
     }
 
-    public Map<String, String> getParam() {
-        return param;
+    public String getFileUuid() {
+        return fileUuid;
     }
 
-    public void setParam(Map<String, String> param) {
-        this.param = param;
-    }
-
-    public String getFileNameMD5() {
-        return fileNameMD5;
-    }
-
-    public void setFileNameMD5(String fileNameMD5) {
-        this.fileNameMD5 = fileNameMD5;
+    public void setFileUuid(String fileUuid) {
+        this.fileUuid = fileUuid;
     }
 }
