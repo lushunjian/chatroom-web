@@ -350,9 +350,7 @@
                             $("#chatContent").append(fileHtml);
                             // 上传文件
                              sendBlock(startSize,endSize,file,fileUuid);
-                             // 完成后，清空input文件框中的内容
-                              let obj = document.getElementById('file') ;
-                              obj.value="";
+
                         }else{
                             alert(22);
                             return false;
@@ -361,6 +359,9 @@
                 });
 
          }
+         // 完成后，清空input文件框中的内容
+        let obj = document.getElementById('file') ;
+        obj.value="";
         return false;
     });
 
