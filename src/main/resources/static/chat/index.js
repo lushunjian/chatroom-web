@@ -308,7 +308,7 @@
             fileParam["fileLength"]=totalSize;
             fileParam["fileBlockSize"]=blockSize;
             // 文件名 不可为空
-            var fileName = file.name
+            var fileName = file.name;
             fileParam["fileName"]=fileName;
             // 文件唯一标识
             var fileUuid = uuid();
@@ -340,7 +340,7 @@
                    dataType:"json",
                    async: false,
                    success: function(ret){
-                        if(ret.code==200){
+                        if(ret.code===200){
                             var fileHtml = '<div class="comment"><a class="avatar"><img src="/static/semantic/themes/default/assets/images/matt.jpg"></a>'+
                                    '<div class="content"><a class="author">我 </a><div class="metadata"><span class="date">'+time+'</span></div><div class="text">'+
                                    '<div class="ui segment" style="width:270px;height:80px"><a class="ui orange right ribbon label"><i class="block layout icon"></i></a>'+
@@ -360,8 +360,7 @@
 
          }
          // 完成后，清空input文件框中的内容
-        let obj = document.getElementById('file') ;
-        obj.value="";
+         document.getElementById('file').value="" ;
         return false;
     });
 
