@@ -8,6 +8,7 @@ import cn.lsj.vo.FileQueueBean;
 import cn.lsj.vo.HttpResponseBean;
 import com.alibaba.fastjson.JSONObject;
 import io.netty.channel.Channel;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +24,9 @@ import java.util.concurrent.ConcurrentMap;
 @RestController
 @RequestMapping(value = "/socket",produces = {MediaType.APPLICATION_JSON_VALUE})
 public class FileController {
+
+    @Value("${netty.filePath}")
+    private String filePath;
 
     /**
      * socket文件互传，请求报文解析
@@ -61,8 +65,15 @@ public class FileController {
                     fileQueueBean.getFileMessageMap().put(fileUUID, fileMessage);
                     // 生成文件二进制流缓存
                     //fileQueueBean.getFileOutputMap().put(fileNameMD5,new ByteArrayOutputStream());
+                    // 判断文件夹是否存在 ,如果没有，递归创建文件夹
+                    File file = new File(filePath);
+                    if(!file.exists()&&!file.isDirectory()) {
+                        boolean flag = file.mkdirs();
+                        if(!flag)    //文件夹创建失败
+                            return new HttpResponseBean(500);
+                    }
                     // 以流追加的形式输出到文件
-                    File dest = new File("D:\\" + fileMessage.getFileName());
+                    File dest = new File(filePath + fileMessage.getFileName());
                     fileQueueBean.getFileOutStreamMap().put(fileUUID, new FileOutputStream(dest, true));
                     // 文件块上传队列。 队列中格式如下
                     /**
