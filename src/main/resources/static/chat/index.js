@@ -134,11 +134,28 @@
                         如果不是给用户提示有未读消息 */
                     // 判断是否相等，如果相等则表示用户正在和此好友聊天
                     if(senderAccount === account){
+                        // 文件传输消息
                         var time = new Date(Number(result.sendTime)).Format("yyyy-MM-dd HH:mm:ss");
-                        var html = '<div class="comment"><a class="avatar"><img src="/static/semantic/themes/default/assets/images/elliot.jpg">'+
-                                   '</a><div class="content"><a class="author">'+result.senderName+' </a><div class="metadata"><span class="date">' + time +
-                                   '</span></div><div class="text">' + result.messageContent + ' </div></div></div>';
-                        $("#chatContent").append(html);
+                        if(result.haveFileMessage){
+                            // 处理一下文件名，防止文件名过长，样式出现问题
+                            var fileNames = result.fileName.split(".");
+                            var htmlFileName = fileNames[0].substring(0,12)+"...  （"+fileNames[1]+"）";
+                            // 文件大小保留两位小数，单位 M
+                            var fileSize = (result.fileSize/(1024*1024)).toFixed(2);
+                            var html ='<div class="comment"><a class="avatar"><img src="/static/semantic/themes/default/assets/images/matt.jpg"></a>'+
+                                     '<div class="content"><a class="author">'+result.senderName+' </a><div class="metadata"><span class="date">'+time+'</span></div><div class="text">'+
+                                     '<div class="ui segment" style="width:270px;height:80px;cursor:pointer" onclick="downLoadFile('+result.downloadPath+')">'+
+                                     '<a class="ui orange right ribbon label"><i class="block layout icon"></i></a>'+
+                                     '<div class="ui form" style="margin-top: -25px"><div class="inline field" style="margin-bottom: 5px"><label>名称:</label>'+
+                                      '<label>'+htmlFileName+'</label></div><div class="inline field"><label>大小:</label><label>'+fileSize+'M</label></div></div>'+
+                                      '</div></div></div></div>';
+                            $("#chatContent").append(html);
+                        }else{  // 文本消息
+                            var html = '<div class="comment"><a class="avatar"><img src="/static/semantic/themes/default/assets/images/elliot.jpg">'+
+                                       '</a><div class="content"><a class="author">'+result.senderName+' </a><div class="metadata"><span class="date">' + time +
+                                       '</span></div><div class="text">' + result.messageContent + ' </div></div></div>';
+                            $("#chatContent").append(html);
+                        }
                     }else{
                         // 在对应的好友处给消息提示
                         messageUnreadCount(senderAccount);
@@ -156,6 +173,12 @@
             console.log('异常')
          }
     });
+
+    //文件下载请求
+    function downLoadFile(filePath){
+        alert(filePath);
+        window.location.href="/";
+    }
 
     //未读好友消息样式
     function messageUnreadCount(senderAccount){
@@ -312,11 +335,6 @@
             fileParam["fileName"]=fileName;
             // 文件唯一标识
             var fileUuid = uuid();
-            var extraParam = {};
-            // senderAccount字段必填
-            extraParam["senderAccount"]="111";
-            extraParam["receiverAccount"]="222";
-            extraParam["sendTime"]=new Date().getTime();
             // 文件上传样式
             var time = new Date().Format("yyyy-MM-dd HH:mm:ss");
             // 文件大小保留两位小数，单位 M
@@ -333,6 +351,7 @@
                           "fileName":fileName,
                           "fileUuid":fileUuid,
                           "senderAccount":$("#userAccount").val(),
+                          "senderName":$("#userName").val();
                           "receiverAccount":$("#receiverAccount").val(),
                           "sendTime":new Date().getTime()
 

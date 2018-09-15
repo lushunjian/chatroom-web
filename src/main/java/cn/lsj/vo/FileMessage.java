@@ -19,7 +19,9 @@ public class FileMessage {
     private String fileName;
     private String paramBoundary;
     private String senderAccount;
+    private String senderName;
     private String receiverAccount;
+    private String fileSavePath;
     private long sendTime;
 
     public String getSenderAccount() {
@@ -100,5 +102,21 @@ public class FileMessage {
 
     public void setFileUuid(String fileUuid) {
         this.fileUuid = fileUuid;
+    }
+
+    public String getSenderName() {
+        return senderName;
+    }
+
+    public void setSenderName(String senderName) {
+        this.senderName = senderName;
+    }
+
+    public String getFileSavePath() {
+        return fileSavePath;
+    }
+
+    public void setFileSavePath(String fileSavePath) {
+        this.fileSavePath = fileSavePath;
     }
 }

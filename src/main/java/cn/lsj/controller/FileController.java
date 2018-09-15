@@ -61,6 +61,9 @@ public class FileController {
                     String fileUUID = fileMessage.getFileUuid();
                     //先返回值,然后在+1,相当于i++
                     fileQueueBean.getFileQueueCount().getAndIncrement();
+                    // 以流追加的形式输出到文件
+                    String fileSavePath = filePath + fileMessage.getFileName();
+                    fileMessage.setFileSavePath(fileSavePath);
                     // 保存文件报文信息
                     fileQueueBean.getFileMessageMap().put(fileUUID, fileMessage);
                     // 生成文件二进制流缓存
@@ -72,8 +75,8 @@ public class FileController {
                         if(!flag)    //文件夹创建失败
                             return new HttpResponseBean(500);
                     }
-                    // 以流追加的形式输出到文件
-                    File dest = new File(filePath + fileMessage.getFileName());
+                    // 保存路径
+                    File dest = new File(fileSavePath);
                     fileQueueBean.getFileOutStreamMap().put(fileUUID, new FileOutputStream(dest, true));
                     // 文件块上传队列。 队列中格式如下
                     /**

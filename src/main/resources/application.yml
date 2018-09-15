@@ -5,7 +5,7 @@ netty:
   host: 127.0.0.1
   port: 8889
   route: webSocket      # webSocket建立连接的路由
-  filePath: D://socketFile//        #websocket文件上传保存的本地路径
+  filePath: /socketFile/       #websocket文件上传保存的本地路径
   bossThreadCount: 200
   workThreadCount: 200
   maxFramePayloadLength: 10485760   #最大数据帧的长度,与前端文件分块大小保持一致    -- 10M -- 1024*1024*5

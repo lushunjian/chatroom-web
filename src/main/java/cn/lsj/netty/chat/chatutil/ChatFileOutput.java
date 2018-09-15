@@ -1,5 +1,6 @@
 package cn.lsj.netty.chat.chatutil;
 
+import cn.lsj.domain.Message;
 import cn.lsj.netty.constant.WebSocketConstant;
 import cn.lsj.util.ByteBufUtil;
 import cn.lsj.util.FileMessageParse;
@@ -9,7 +10,9 @@ import cn.lsj.vo.FileMessage;
 import cn.lsj.vo.FileQueueBean;
 import com.alibaba.fastjson.JSON;
 import io.netty.buffer.ByteBuf;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,6 +57,24 @@ public class ChatFileOutput {
                     logger.info("输出到文件！");
                     try {
                         outputStream.close();
+                        // 获取接收端的用户账号
+                        String receiverAccount=fileMessage.getReceiverAccount();
+                        // 获取客户端socket通道
+                        Channel channel = WebSocketConstant.concurrentMap.get(receiverAccount);
+                        // 判断接收端是否在线
+                        if(channel != null){
+                            Message message = new Message(0);
+                            message.setSender(fileMessage.getSenderAccount());
+                            message.setSenderName(fileMessage.getSenderName());
+                            message.setReceiver(fileMessage.getReceiverAccount());
+                            message.setSendTime(fileMessage.getSendTime()+"");
+                            message.setFileName(fileMessage.getFileName());
+                            message.setDownloadPath(fileMessage.getFileSavePath());
+                            TextWebSocketFrame content = new TextWebSocketFrame(JSON.toJSONString(message));
+                            channel.writeAndFlush(content);
+                        }else {
+                            logger.info("处理离线消息!");
+                        }
                     }catch (Exception e){
                         e.printStackTrace();
                         logger.error("关流失败!!");

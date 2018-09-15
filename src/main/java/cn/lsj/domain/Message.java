@@ -36,10 +36,14 @@ public class Message implements Serializable {
     private String status;
     // 服务端通知用户异地登录下线通知，默认为 0，当为 1 时，强制客户端下线
     private int isOffline = 0;
-    // 消息是否包含附件 默认为 0，表示不含，当为 1 时，表示包含文件，用户正在上传文件
+    // 消息是否包含附件 默认为 0，表示不含，当为 1 时，表示包含文件，
     private int haveFileMessage = 0;
-    // 文件信息,请求报文
-    private String fileMessage;
+    // 文件信息,文件名
+    private String fileName;
+    // 文件大小
+    private long fileSize;
+    // 文件下载路径
+    private String downloadPath;
 
     public String getSender() {
         return sender;
@@ -129,11 +133,27 @@ public class Message implements Serializable {
         this.haveFileMessage = haveFileMessage;
     }
 
-    public String getFileMessage() {
-        return fileMessage;
+    public String getDownloadPath() {
+        return downloadPath;
     }
 
-    public void setFileMessage(String fileMessage) {
-        this.fileMessage = fileMessage;
+    public void setDownloadPath(String downloadPath) {
+        this.downloadPath = downloadPath;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public long getFileSize() {
+        return fileSize;
+    }
+
+    public void setFileSize(long fileSize) {
+        this.fileSize = fileSize;
     }
 }
