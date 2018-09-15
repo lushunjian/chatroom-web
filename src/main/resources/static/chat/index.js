@@ -177,8 +177,7 @@
 
     //文件下载请求
     function downLoadFile(filePath){
-        alert(filePath);
-        window.location.href="/";
+        window.location.href="/socket/file/download?filePath="+filePath;
     }
 
     //未读好友消息样式

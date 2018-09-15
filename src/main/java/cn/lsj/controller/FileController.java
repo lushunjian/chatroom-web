@@ -12,8 +12,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.File;
-import java.io.FileOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 import java.util.concurrent.ConcurrentMap;
 
 /**
@@ -100,6 +100,41 @@ public class FileController {
         }catch (Exception e){
             e.printStackTrace();
             return new HttpResponseBean(500);
+        }
+    }
+
+    @GetMapping("/file/download")
+    public void fileDownLoad(@RequestParam("filePath") String filePath, HttpServletResponse response){
+        String[] fileNames = filePath.split("/");
+        if(fileNames.length>0){
+            String fileName = fileNames[fileNames.length-1];
+            response.setHeader("content-type", "application/octet-stream");
+            response.setContentType("application/octet-stream");
+            response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
+            // 每次写10M
+            byte[] buff = new byte[1024];
+            BufferedInputStream bis = null;
+            OutputStream os;
+            try {
+                os = response.getOutputStream();
+                bis = new BufferedInputStream(new FileInputStream(new File(filePath)));
+                int i = bis.read(buff);
+                while (i != -1) {
+                    os.write(buff, 0, buff.length);
+                    os.flush();
+                    i = bis.read(buff);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (bis != null) {
+                    try {
+                        bis.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
         }
     }
 }
