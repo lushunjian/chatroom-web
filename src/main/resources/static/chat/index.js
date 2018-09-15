@@ -136,6 +136,7 @@
                     if(senderAccount === account){
                         // 文件传输消息
                         var time = new Date(Number(result.sendTime)).Format("yyyy-MM-dd HH:mm:ss");
+                        console.log(result);
                         if(result.haveFileMessage){
                             // 处理一下文件名，防止文件名过长，样式出现问题
                             var fileNames = result.fileName.split(".");
@@ -144,7 +145,7 @@
                             var fileSize = (result.fileSize/(1024*1024)).toFixed(2);
                             var html ='<div class="comment"><a class="avatar"><img src="/static/semantic/themes/default/assets/images/matt.jpg"></a>'+
                                      '<div class="content"><a class="author">'+result.senderName+' </a><div class="metadata"><span class="date">'+time+'</span></div><div class="text">'+
-                                     '<div class="ui segment" style="width:270px;height:80px;cursor:pointer" onclick="downLoadFile('+result.downloadPath+')">'+
+                                     '<div class="ui segment" style="width:270px;height:80px;cursor:pointer" onclick="downLoadFile(\''+result.downloadPath+'\')" >'+
                                      '<a class="ui orange right ribbon label"><i class="block layout icon"></i></a>'+
                                      '<div class="ui form" style="margin-top: -25px"><div class="inline field" style="margin-bottom: 5px"><label>名称:</label>'+
                                       '<label>'+htmlFileName+'</label></div><div class="inline field"><label>大小:</label><label>'+fileSize+'M</label></div></div>'+
@@ -351,7 +352,7 @@
                           "fileName":fileName,
                           "fileUuid":fileUuid,
                           "senderAccount":$("#userAccount").val(),
-                          "senderName":$("#userName").val();
+                          "senderName":$("#userName").val(),
                           "receiverAccount":$("#receiverAccount").val(),
                           "sendTime":new Date().getTime()
 

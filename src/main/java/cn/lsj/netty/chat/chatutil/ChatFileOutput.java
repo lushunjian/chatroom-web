@@ -70,6 +70,8 @@ public class ChatFileOutput {
                             message.setSendTime(fileMessage.getSendTime()+"");
                             message.setFileName(fileMessage.getFileName());
                             message.setDownloadPath(fileMessage.getFileSavePath());
+                            message.setHaveFileMessage(1);
+                            message.setFileSize(fileMessage.getFileLength());
                             TextWebSocketFrame content = new TextWebSocketFrame(JSON.toJSONString(message));
                             channel.writeAndFlush(content);
                         }else {
