@@ -46,9 +46,9 @@
         </div>
 
         <!-- 页面布局 -->
-        <div class="ui horizontal segment" style="margin-left: 400px">
+        <div class="ui horizontal segment" style="margin-left: 300px;margin-right: 300px">
             <!-- 左边部分 -->
-            <div class="ui left very close rail" style="width: 400px">
+            <div class="ui left very close rail" style="width: 300px">
                 <div class="ui pointing menu">
                     <a class="item active" data-tab="one">我的好友 </a>
                     <a class="item" data-tab="two">我的群组 </a>
@@ -76,15 +76,15 @@
                 </idv>
             </div>
             <!-- 右边部分 -->
-            <!-- 正在聊天的好友信息，群成员信息 -->
-            <!--<div class="ui right very close rail">
+            <!-- 视频聊天框 -->
+            <div class="ui right very close rail" style="width: 300px">
                 <div class="ui segment">
                     <div class="ui card">
                         <div class="image">
                             <img src="/static/semantic/themes/default/assets/images/watchmen-horizontal.jpg">
                         </div>
                         <div class="content">
-                            <div class="header">Watchmen</div>
+                            <div class="header">视频聊天框</div>
                             <div class="description">
                                 In a gritty and alternate 1985 the glory days of costumed vigilantes have been brought to a close by a government crackdown, but after one of the masked veterans is brutally murdered an investigation into the killer is initiated.
                             </div>
@@ -101,7 +101,7 @@
                         </div>
                     </div>
                 </div>
-            </div>-->
+            </div>
 
             <!-- 中间聊天框 -->
             <div>
@@ -121,8 +121,16 @@
                                 <i class="folder open icon"></i>文件 </a>
                             <a class="item"><i class="unmute icon"></i> 语音 </a>
                             <a class="item"><i class="video camera icon"></i> 视频 </a>
-                            <a class="item"><i class="calendar icon"></i> 聊天记录 </a>
-                            <a class="item"><i class="user icon"></i> 好友详情 </a>
+                            <div class="ui simple dropdown item">
+                                More
+                                <i class="dropdown icon"></i>
+                                <div class="menu">
+                                    <a class="item"><i class="calendar icon"></i> 聊天记录 </a>
+                                    <a class="item"><i class="user icon"></i> 好友详情 </a>
+                                </div>
+                            </div>
+                           <!-- <a class="item"><i class="calendar icon"></i> 聊天记录 </a>
+                            <a class="item"><i class="user icon"></i> 好友详情 </a>-->
                         </div>
                         <form class="ui reply form">
                             <div class="field">
@@ -150,7 +158,7 @@
     </div>
 
     <!-- 文件样式 -->
-        <div class="comment">
+        <!--<div class="comment">
             <a class="avatar"><img src="/static/semantic/themes/default/assets/images/matt.jpg"></a>
             <div class="content"><a class="author">我 </a><div class="metadata"><span class="date">时间</span></div>
                 <div class="text">
@@ -173,7 +181,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>-->
     <!-- 用户下线提示框 -->
     <div class="ui small modal" id="userOffline">
         <div class="header">下线通知</div>
