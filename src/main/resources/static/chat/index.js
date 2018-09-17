@@ -591,17 +591,18 @@
 
     var localStream;
     var offer=0;
-
+    var videoObj = {"video": true,"audio": true};
+    var errBack = function(error){
+             //处理媒体流创建失败错误
+             console.log('getUserMedia error: ' + error);
+         }
     if (navigator.getUserMedia) {
-        navigator.getUserMedia({
-            "video": true,
-            "audio": true
-            }, function(stream) {
+        navigator.getUserMedia(videoObj, function(stream) {
             localStream = stream;
             // 获得vido标签对象
             var video = document.getElementById('localVideo');
            //绑定本地媒体流到video标签用于输出
-            video.src = (window.URL || window.webkitURL || window.mozURL).createObjectURL(stream);
+            video.src = window.URL.createObjectURL(stream);
             // play带有播放和暂停按钮的一段视频
             video.onloadedmetadata = function(e) {
                video.play();
@@ -616,10 +617,7 @@
                      console.log('Failure callback: ' + error);
                     });
                 }
-            },function(error){
-            //处理媒体流创建失败错误
-            console.log('getUserMedia error: ' + error);
-        });
+            },errBack);
     }else {
         alert("getUserMedia not supported");
         console.log("getUserMedia not supported");
