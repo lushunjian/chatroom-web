@@ -137,7 +137,7 @@
                         // 文件传输消息
                         var time = new Date(Number(result.sendTime)).Format("yyyy-MM-dd HH:mm:ss");
                         console.log(result);
-                        if(result.haveFileMessage){
+                        if(result.messageType == "file"){
                             // 处理一下文件名，防止文件名过长，样式出现问题
                             var fileNames = result.fileName.split(".");
                             var htmlFileName = fileNames[0].substring(0,12)+"...  （"+fileNames[1]+"）";
@@ -151,11 +151,25 @@
                                       '<label>'+htmlFileName+'</label></div><div class="inline field"><label>大小:</label><label>'+fileSize+'M</label></div></div>'+
                                       '</div></div></div></div>';
                             $("#chatContent").append(html);
-                        }else{  // 文本消息
+                        }else if(result.messageType == "text"){  // 文本消息
                             var html = '<div class="comment"><a class="avatar"><img src="/static/semantic/themes/default/assets/images/elliot.jpg">'+
                                        '</a><div class="content"><a class="author">'+result.senderName+' </a><div class="metadata"><span class="date">' + time +
                                        '</span></div><div class="text">' + result.messageContent + ' </div></div></div>';
                             $("#chatContent").append(html);
+                        }else if(result.messageType == "video"){  // 视频信令消息
+                            console.log('onmessage: ', resultData);
+                            //如果是一个ICE的候选，则将其加入到PeerConnection中，否则设定对方的session描述为传递过来的描述
+                            if( resultData.event === "_ice_candidate" ){
+                                pc.addIceCandidate(new RTCIceCandidate(json.data.candidate));
+                            } else {
+                                pc.setRemoteDescription(new RTCSessionDescription(json.data.sdp));
+                                // 如果是一个offer，那么需要回复一个answer
+                                if(json.event === "_offer") {
+                                    pc.createAnswer(sendAnswerFn, function (error) {
+                                        console.log('Failure callback: ' + error);
+                                    });
+                                }
+                            }
                         }
                     }else{
                         // 在对应的好友处给消息提示
@@ -221,7 +235,7 @@
         // 接收者姓名
         var receiverName = $("#receiverName").val();
         // 消息类型
-        var messageType = "whisper";
+        var messageType = "text";
 
         // 如果用户没有输入内容，不允许发送消息
         if(messageContent) {
@@ -327,12 +341,8 @@
              var endSize = block;
              //向下取整
             var blockSize = Math.floor(fileBlockSize);
-            var fileParam = {};
-            fileParam["fileLength"]=totalSize;
-            fileParam["fileBlockSize"]=blockSize;
             // 文件名 不可为空
             var fileName = file.name;
-            fileParam["fileName"]=fileName;
             // 文件唯一标识
             var fileUuid = uuid();
             // 文件上传样式
@@ -493,3 +503,92 @@
         var uuid = s.join("");
         return uuid;
     }
+
+
+
+    /**************************************************************
+    *
+    * WebRTC 部分，用于端到端的视频
+    *
+    * webSocket做信令服务器
+    *
+    ***************************************************************/
+
+     // stun和turn服务器
+    var iceServer = {
+        "iceServers": [{
+            "url": "stun:stun.l.google.com:19302"
+        }, {
+            "url": "turn:numb.viagenie.ca",
+            "username": "webrtc@live.com",
+            "credential": "muazkh"
+        }]
+     };
+
+    // 创建PeerConnection实例 (参数为null则没有iceserver，即使没有stunserver和turnserver，仍可在局域网下通讯)
+    //var pc = new webkitRTCPeerConnection(iceServer);
+    // 兼容不同浏览器
+    var pc = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
+
+    // 发送offer和answer的函数，发送本地session描述
+    var sendOfferFn = function(desc){
+        pc.setLocalDescription(desc);
+        socket.send(JSON.stringify({
+            "event": "_offer",
+            "data": {
+                "sdp": desc
+            }
+        }));
+    };
+
+    var sendAnswerFn = function(desc){
+        pc.setLocalDescription(desc);
+        socket.send(JSON.stringify({
+            "event": "_answer",
+            "data": {
+                "sdp": desc
+            }
+        }));
+    };
+
+     // 发送ICE候选到其他客户端
+    pc.onicecandidate = function(event){
+        if (event.candidate !== null) {
+            socket.send(JSON.stringify({
+                "event": "_ice_candidate",
+                "data": {
+                    "candidate": event.candidate
+                }
+            }));
+        }
+    };
+
+    // 如果检测到媒体流连接到本地，将其绑定到一个video标签上输出
+    pc.onaddstream = function(event){
+        document.getElementById('remoteVideo').src = URL.createObjectURL(event.stream);
+    };
+
+    // 呼叫方初始化
+    // Get a list of friends from a server
+    // User selects a friend to start a peer connection with
+    navigator.getUserMedia({
+        "video": true,
+        "audio": true
+        }, function(stream) {
+
+       //绑定本地媒体流到video标签用于输出
+        document.getElementById('localVideo').src = URL.createObjectURL(stream);
+
+        //pc.onaddstream({stream: stream});
+        // Adding a local stream won't trigger the onaddstream callback
+        pc.addStream(stream);
+        // 视频发起放，调用此函数。通过点击事件执行此方法
+        if(offer){
+            pc.createOffer(sendOfferFn,function(){
+                 console.log('Failure callback: ' + error);
+                });
+            }
+        },function(error){
+        //处理媒体流创建失败错误
+        console.log('getUserMedia error: ' + error);
+    });

@@ -29,7 +29,7 @@ public class Message implements Serializable {
     // 发送内容
     private String messageContent;
     // 消息类型
-    // whisper 表示私聊， group 为群聊
+    // text -- 文本消息; file -- 文件消息; video -- 视频消息; audio -- 语音消息
     private String messageType;
     // 消息状态
     // 1 表示实时消息  ，0 表示离线消息

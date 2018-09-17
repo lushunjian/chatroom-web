@@ -43,21 +43,17 @@ public class TextWebSocketFrameHandler extends WebSocketFrameHandler {
         Message userMessage = JSON.parseObject(message,Message.class);
         String type=userMessage.getMessageType();
         // 私聊
-        if(WebSocketConstant.WHISPER.equals(type)){
-            // 获得接收者的管道流
-            Channel channel = WebSocketConstant.concurrentMap.get(userMessage.getReceiver());
-            // 如果为 null 表示接收方没有上线，存入数据库，并设置状态为离线消息
-            if(channel == null){
-                logger.info("接收者不在线 !");
-            }else {
-                TextWebSocketFrame content = new TextWebSocketFrame(JSON.toJSONString(userMessage));
-                channel.writeAndFlush(content);
-            }
-        }else {     //群聊
-            logger.info("查出群中所有用户，群发!");
+        // 获得接收者的管道流
+        Channel channel = WebSocketConstant.concurrentMap.get(userMessage.getReceiver());
+        // 如果为 null 表示接收方没有上线，存入数据库，并设置状态为离线消息
+        if(channel == null){
+            logger.info("接收者不在线 !");
+        }else {
+            TextWebSocketFrame content = new TextWebSocketFrame(JSON.toJSONString(userMessage));
+            channel.writeAndFlush(content);
         }
-            // 群发
-            //WebSocketConstant.group.writeAndFlush(test);
+        // 群发
+        //WebSocketConstant.group.writeAndFlush(test);
 
     }
 
