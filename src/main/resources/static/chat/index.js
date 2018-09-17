@@ -575,15 +575,18 @@
                              navigator.webkitGetUserMedia ||
                              navigator.mozGetUserMedia;
 
+    var mediaStreamTrack;
+
     if (navigator.getUserMedia) {
         navigator.getUserMedia({
             "video": true,
             "audio": true
             }, function(stream) {
+            mediaStreamTrack = stream;
             // 获得vido标签对象
             var video = document.getElementById('localVideo');
            //绑定本地媒体流到video标签用于输出
-            video.src = window.URL.createObjectURL(stream);
+            video.src = (window.URL || window.webkitURL).createObjectURL(stream);
             // play带有播放和暂停按钮的一段视频
             video.onloadedmetadata = function(e) {
                video.play();
@@ -606,3 +609,10 @@
         alert("getUserMedia not supported");
         console.log("getUserMedia not supported");
      }
+
+
+    $("#videoHangup").on("click",function(){
+        mediaStreamTrack.getTracks().forEach(function (track) {
+            track.stop();
+        });
+    });
