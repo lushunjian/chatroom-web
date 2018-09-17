@@ -527,7 +527,7 @@
 
     // 创建PeerConnection实例 (参数为null则没有iceserver，即使没有stunserver和turnserver，仍可在局域网下通讯)
     //var pc = new webkitRTCPeerConnection(iceServer);
-    // 兼容不同浏览器
+    // 兼容不同浏览器 PeerConnection
     var pc = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
 
     // 发送offer和answer的函数，发送本地session描述
@@ -580,11 +580,16 @@
             "video": true,
             "audio": true
             }, function(stream) {
-
+            // 获得vido标签对象
+            var video = document.getElementById('localVideo');
            //绑定本地媒体流到video标签用于输出
-            document.getElementById('localVideo').src = URL.createObjectURL(stream);
+            video.src = window.URL.createObjectURL(stream);
+            // play带有播放和暂停按钮的一段视频
+            video.onloadedmetadata = function(e) {
+               video.play();
+            };
 
-            //pc.onaddstream({stream: stream});
+            pc.onaddstream({stream: stream});
             // Adding a local stream won't trigger the onaddstream callback
             pc.addStream(stream);
             // 视频发起放，调用此函数。通过点击事件执行此方法
