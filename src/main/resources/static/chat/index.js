@@ -526,9 +526,23 @@
      };
 
     // 创建PeerConnection实例 (参数为null则没有iceserver，即使没有stunserver和turnserver，仍可在局域网下通讯)
-    //var pc = new webkitRTCPeerConnection(iceServer);
     // 兼容不同浏览器 PeerConnection
-    var pc = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
+    var pc;
+        var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
+        //判断是否Firefox浏览器
+        if (userAgent.indexOf("Firefox") > -1) {
+            pc = new mozRTCPeerConnection(iceServer);
+        }
+        //判断是否chorme浏览器
+        else if (userAgent.indexOf("Chrome") > -1){
+            pc = new webkitRTCPeerConnection(iceServer);
+        }
+        // 其他浏览器
+        else{
+            pc = new RTCPeerConnection(iceServer);
+        }
+    // 兼容不同浏览器 PeerConnection
+    //var pc = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
 
     // 发送offer和answer的函数，发送本地session描述
     var sendOfferFn = function(desc){
@@ -575,18 +589,19 @@
                              navigator.webkitGetUserMedia ||
                              navigator.mozGetUserMedia;
 
-    var mediaStreamTrack;
+    var localStream;
+    var offer=0;
 
     if (navigator.getUserMedia) {
         navigator.getUserMedia({
             "video": true,
             "audio": true
             }, function(stream) {
-            mediaStreamTrack = stream;
+            localStream = stream;
             // 获得vido标签对象
             var video = document.getElementById('localVideo');
            //绑定本地媒体流到video标签用于输出
-            video.src = (window.URL || window.webkitURL).createObjectURL(stream);
+            video.src = (window.URL || window.webkitURL || window.mozURL).createObjectURL(stream);
             // play带有播放和暂停按钮的一段视频
             video.onloadedmetadata = function(e) {
                video.play();
@@ -595,7 +610,7 @@
             pc.onaddstream({stream: stream});
             // Adding a local stream won't trigger the onaddstream callback
             pc.addStream(stream);
-            // 视频发起放，调用此函数。通过点击事件执行此方法
+            // 视频发起方，调用此函数。通过点击事件执行此方法
             if(offer){
                 pc.createOffer(sendOfferFn,function(){
                      console.log('Failure callback: ' + error);
@@ -612,7 +627,7 @@
 
 
     $("#videoHangup").on("click",function(){
-        mediaStreamTrack.getTracks().forEach(function (track) {
+        localStream.getTracks().forEach(function (track) {
             track.stop();
         });
     });
