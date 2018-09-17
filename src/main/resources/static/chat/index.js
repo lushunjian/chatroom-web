@@ -571,24 +571,33 @@
     // 呼叫方初始化
     // Get a list of friends from a server
     // User selects a friend to start a peer connection with
-    navigator.getUserMedia({
-        "video": true,
-        "audio": true
-        }, function(stream) {
+    navigator.getUserMedia = navigator.getUserMedia ||
+                             navigator.webkitGetUserMedia ||
+                             navigator.mozGetUserMedia;
 
-       //绑定本地媒体流到video标签用于输出
-        document.getElementById('localVideo').src = URL.createObjectURL(stream);
+    if (navigator.getUserMedia) {
+        navigator.getUserMedia({
+            "video": true,
+            "audio": true
+            }, function(stream) {
 
-        //pc.onaddstream({stream: stream});
-        // Adding a local stream won't trigger the onaddstream callback
-        pc.addStream(stream);
-        // 视频发起放，调用此函数。通过点击事件执行此方法
-        if(offer){
-            pc.createOffer(sendOfferFn,function(){
-                 console.log('Failure callback: ' + error);
-                });
-            }
-        },function(error){
-        //处理媒体流创建失败错误
-        console.log('getUserMedia error: ' + error);
-    });
+           //绑定本地媒体流到video标签用于输出
+            document.getElementById('localVideo').src = URL.createObjectURL(stream);
+
+            //pc.onaddstream({stream: stream});
+            // Adding a local stream won't trigger the onaddstream callback
+            pc.addStream(stream);
+            // 视频发起放，调用此函数。通过点击事件执行此方法
+            if(offer){
+                pc.createOffer(sendOfferFn,function(){
+                     console.log('Failure callback: ' + error);
+                    });
+                }
+            },function(error){
+            //处理媒体流创建失败错误
+            console.log('getUserMedia error: ' + error);
+        });
+    }else {
+        alert("getUserMedia not supported");
+        console.log("getUserMedia not supported");
+     }
