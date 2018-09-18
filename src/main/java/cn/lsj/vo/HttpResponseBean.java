@@ -10,6 +10,7 @@ public class HttpResponseBean<T> {
         this.code = code;
     }
 
+
     public HttpResponseBean(int code) {
         this.code = code;
     }

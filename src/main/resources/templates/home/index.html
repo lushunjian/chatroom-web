@@ -87,15 +87,28 @@
                         <div class="content">
                             <div class="header">视频聊天框</div>
                         </div>
-                        <div class="ui two bottom attached buttons">
-                            <div class="ui button">
+                        <!--<div class="ui two bottom attached buttons">
+                            <div class="ui inverted grey button" id="reject">
                                 <i class="add icon"></i>
-                                Queue
+                                拒绝
                             </div>
-                            <div class="ui primary button" id="videoHangup">
+                            <div class="ui inverted green button" id="accept">
+                                <i class="play icon"></i>
+                                接受
+                            </div>
+                        </div>-->
+                        <div class="ui two bottom attached buttons">
+                            <div class="ui teal button" id="cancel">
+                                <i class="add icon"></i>
+                                取消
+                            </div>
+                            <div class="ui orange button" id="hangup">
                                 <i class="play icon"></i>
                                 挂断
                             </div>
+                        </div>
+                        <div class="content" style="height:40px">
+                            <div class="header">正在等待对方同意...</div>
                         </div>
                         <div class="image">
                             <video id="remoteVideo" style="width:300px;height:250px;margin:5px" autoplay></video>

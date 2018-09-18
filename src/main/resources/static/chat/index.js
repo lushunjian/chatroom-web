@@ -647,8 +647,8 @@
         });
     });
 
-
-    $("#videoHangup").on("click",function(){
+    // 视频挂断
+    $("#hangup").on("click",function(){
                    // 如果本地已经开启了摄像机
        if(localStream){
            localStream.getTracks().forEach(function (track) {
