@@ -512,6 +512,25 @@
     * webSocket做信令服务器
     * 目前支持谷歌，火狐高版本
     *
+    * -----------------整个过程大致如下------------
+    *
+    * 想象一下Alice呼叫Eve的过程( Alice is trying to call Eve.),下面就是完整offer/answer机制的细节:
+    * 1,Alice创建一个 RTCPeerConnection对象.
+    * 2,Alice创建一个offer(即SDP会话描述)通过RTCPeerConnection createOffer()方法.
+    * 3,Alice调用setLocalDescription()方法用他的offer.
+    * 4,Alice通过信令机制将他的offer发给Eve.
+    * 5,Eve调用setRemoteDescription()方式设置Alice的offer,因此他的RTCPeerConnection知道了Alice的设置.
+    * 6,Eve调用方法createAnswer(),然后会触发一个callback,这个callback里面可以去到自己的answer.
+    * 7,Eve设置他自己的anser通过调用方法setLocalDescription().
+    * 8,Eve通过信令机制将他的anser发给Alice.
+    * 9,Alice设置Eve的anser通过方法setRemoteDescription().
+
+
+    * 另外Alice和Eve也需要交换网络信息(即candidates),发现candidates参考了ICE framework.
+    * 1,Alice创建RTCPeerConnection对象时设置了onicecandidate handler.
+    * 2,hander被调用当candidates找到了的时候.
+    * 3,当Eve收到来自Alice的candidate消息的时候,他调用方法addIceCandidate(),添加candidate到远端描述里面.
+    *
     ***************************************************************/
 
      // stun和turn服务器
