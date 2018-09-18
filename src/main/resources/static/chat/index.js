@@ -592,40 +592,68 @@
     var localStream;
     var offer=0;
     var videoObj = {"video": true,"audio": true};
-    var errBack = function(error){
+    var error = function(error){
              //处理媒体流创建失败错误
              console.log('getUserMedia error: ' + error);
-         }
-    if (navigator.getUserMedia) {
-        navigator.getUserMedia(videoObj, function(stream) {
-            localStream = stream;
-            // 获得vido标签对象
-            var video = document.getElementById('localVideo');
-           //绑定本地媒体流到video标签用于输出
-            video.src = window.URL.createObjectURL(stream);
-            // play带有播放和暂停按钮的一段视频
-            video.onloadedmetadata = function(e) {
-               video.play();
-            };
+         };
+    var success = function(stream) {
+          localStream = stream;
+          // 获得vido标签对象
+          var video = document.getElementById('localVideo');
+         //绑定本地媒体流到video标签用于输出
+          video.src = window.URL.createObjectURL(stream);
+          // play带有播放和暂停按钮的一段视频
+          video.onloadedmetadata = function(e) {
+             video.play();
+          };
 
-            pc.onaddstream({stream: stream});
-            // Adding a local stream won't trigger the onaddstream callback
-            pc.addStream(stream);
-            // 视频发起方，调用此函数。通过点击事件执行此方法
-            if(offer){
-                pc.createOffer(sendOfferFn,function(){
-                     console.log('Failure callback: ' + error);
-                    });
-                }
-            },errBack);
-    }else {
-        alert("getUserMedia not supported");
-        console.log("getUserMedia not supported");
-     }
+/*          pc.onaddstream({stream: stream});
+          // Adding a local stream won't trigger the onaddstream callback
+          pc.addStream(stream);*/
+          //向PeerConnection中加入需要发送的流
+          pc.addStream(stream);
+          // 视频发起方，调用此函数。通过点击事件执行此方法
+          if(offer){
+              pc.createOffer(sendOfferFn,function(){
+                  console.log('Failure callback: ' + error);
+              });
+          }
+    }
+
+    $("#video").on("click",function(){
+    // 判断对方是否在线，如果在线则开启摄像机
+        $.ajax({
+           type: "GET",
+           url: "/user/isOnline",
+           data: {"receiverAccount":$("#receiverAccount").val()},
+           dataType:"json",
+           async: false,
+           success: function(ret){
+               if(ret.data.isOnline == "on"){
+                   // 如果本地摄像头没有开启，则允许开启摄像机
+                   if(!localStream){
+                       // 本地摄像机开启
+                       if (navigator.getUserMedia) {
+                           navigator.getUserMedia(videoObj, success, error);
+                       }else {
+                           alert("getUserMedia not supported");
+                           console.log("getUserMedia not supported");
+                       }
+                   }
+               }else{
+                    alert("对方不在线!");
+               }
+           }
+        });
+    });
 
 
     $("#videoHangup").on("click",function(){
-        localStream.getTracks().forEach(function (track) {
-            track.stop();
-        });
+                   // 如果本地已经开启了摄像机
+       if(localStream){
+           localStream.getTracks().forEach(function (track) {
+               track.stop();
+           });
+           localStream = null;
+       }
     });

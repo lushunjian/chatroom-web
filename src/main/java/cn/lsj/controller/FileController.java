@@ -6,7 +6,6 @@ import cn.lsj.vo.FileBlock;
 import cn.lsj.vo.FileMessage;
 import cn.lsj.vo.FileQueueBean;
 import cn.lsj.vo.HttpResponseBean;
-import com.alibaba.fastjson.JSONObject;
 import io.netty.channel.Channel;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.util.concurrent.ConcurrentMap;
 
 /**
  * @Auther: Lushunjian
