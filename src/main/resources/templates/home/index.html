@@ -206,6 +206,20 @@
             <div class="ui positive right labeled icon button" onclick="forceOffline()">确定 <i class="checkmark icon"></i> </div>
         </div>
     </div>
+    <!-- 视频聊天请求框 -->
+    <div class="ui small modal" id="videoRequest">
+        <div class="header">视频请求</div>
+        <div class="content">
+            <p>您的好友，<span id="videoFriendName"></span>请求与您视频通话</p>
+        </div>
+        <div class="actions">
+            <div class="ui right labeled buttons">
+                <button class="ui button" id="reject">拒绝</button>
+                <div class="or"></div>
+                <button class="ui positive button" id="accept">接受</button>
+            </div>
+        </div>
+    </div>
 </body>
 <script th:src="@{static/jquery-3.3.1.min.js}" type="text/javascript"></script>
 <script th:src="@{static/jquery.cookie.js}" type="text/javascript"></script>
