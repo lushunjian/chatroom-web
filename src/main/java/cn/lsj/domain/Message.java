@@ -44,6 +44,14 @@ public class Message implements Serializable {
     private long fileSize;
     // 文件下载路径
     private String downloadPath;
+    // 视频请求是否同意，状态   -- accept   -- reject  -- pending
+    private String videoRequest;
+    // 视频请求前端
+    private Object sdp;
+    // candidate
+    private Object candidate;
+    // 视频请求类型  -- offer   --- answer  -- ice_candidate
+    private String event;
 
     public String getSender() {
         return sender;
@@ -155,5 +163,37 @@ public class Message implements Serializable {
 
     public void setFileSize(long fileSize) {
         this.fileSize = fileSize;
+    }
+
+    public String getVideoRequest() {
+        return videoRequest;
+    }
+
+    public void setVideoRequest(String videoRequest) {
+        this.videoRequest = videoRequest;
+    }
+
+    public Object getSdp() {
+        return sdp;
+    }
+
+    public void setSdp(Object sdp) {
+        this.sdp = sdp;
+    }
+
+    public Object getCandidate() {
+        return candidate;
+    }
+
+    public void setCandidate(Object candidate) {
+        this.candidate = candidate;
+    }
+
+    public String getEvent() {
+        return event;
+    }
+
+    public void setEvent(String event) {
+        this.event = event;
     }
 }
