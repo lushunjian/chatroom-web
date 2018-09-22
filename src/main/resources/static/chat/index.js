@@ -99,7 +99,9 @@
     var userAccount = $.cookie("userAccount");
 
     // 视频请求好友数据
-    var videoFriend;
+    var videoFriend={};
+    // 视频请求发起方账号
+    var videoRequestAccount;
 
     // 打开WebSocket, 传递的参数url没有同源策略的限制。
     var socket = IWebSocket({
@@ -138,15 +140,15 @@
                     // 判断是否相等，如果相等则表示用户正在和此好友聊天
                     if(senderAccount === account){
                         // 文件传输消息
+                        var html;
                         var time = new Date(Number(result.sendTime)).Format("yyyy-MM-dd HH:mm:ss");
-                        console.log(result);
-                        if(result.messageType == "file"){
+                        if(result.messageType === "file"){
                             // 处理一下文件名，防止文件名过长，样式出现问题
                             var fileNames = result.fileName.split(".");
                             var htmlFileName = fileNames[0].substring(0,12)+"...  （"+fileNames[1]+"）";
                             // 文件大小保留两位小数，单位 M
                             var fileSize = (result.fileSize/(1024*1024)).toFixed(2);
-                            var html ='<div class="comment"><a class="avatar"><img src="/static/semantic/themes/default/assets/images/matt.jpg"></a>'+
+                            html ='<div class="comment"><a class="avatar"><img src="/static/semantic/themes/default/assets/images/matt.jpg"></a>'+
                                      '<div class="content"><a class="author">'+result.senderName+' </a><div class="metadata"><span class="date">'+time+'</span></div><div class="text">'+
                                      '<div class="ui segment" style="width:270px;height:80px;cursor:pointer" onclick="downLoadFile(\''+result.downloadPath+'\')" >'+
                                      '<a class="ui orange right ribbon label"><i class="block layout icon"></i></a>'+
@@ -154,12 +156,12 @@
                                       '<label>'+htmlFileName+'</label></div><div class="inline field"><label>大小:</label><label>'+fileSize+'M</label></div></div>'+
                                       '</div></div></div></div>';
                             $("#chatContent").append(html);
-                        }else if(result.messageType == "text"){  // 文本消息
-                            var html = '<div class="comment"><a class="avatar"><img src="/static/semantic/themes/default/assets/images/elliot.jpg">'+
+                        }else if(result.messageType === "text"){  // 文本消息
+                            html = '<div class="comment"><a class="avatar"><img src="/static/semantic/themes/default/assets/images/elliot.jpg">'+
                                        '</a><div class="content"><a class="author">'+result.senderName+' </a><div class="metadata"><span class="date">' + time +
                                        '</span></div><div class="text">' + result.messageContent + ' </div></div></div>';
                             $("#chatContent").append(html);
-                        }else if(result.messageType == "video"){  // 视频信令消息
+                        }else if(result.messageType === "video"){  // 视频信令消息
                             console.log('onmessage: ', resultData);
                             // 请求状态，收到好友的视频请求
                             if(result.videoRequest === "pending"){
@@ -173,19 +175,35 @@
 
                             }
                             // 好友同意了视频请求
-                            else if(result.videoRequest === "accept"){
-                                //如果是一个ICE的候选，则将其加入到PeerConnection中，否则设定对方的session描述为传递过来的描述
-                                if( result.event === "ice_candidate" ){
-                                    pc.addIceCandidate(new RTCIceCandidate(result.candidate));
+                            else if(result.videoRequest === "accept") {
+                                // ------------------------------------
+                                // 如果本地摄像头没有开启，则允许开启摄像机
+                                var userAccount = $("#userAccount");
+                                // 如果是发起方，就开启本地视频
+                                if (result.videoRequestAccount === userAccount.val()) {
+                                    // 本地摄像机开启
+                                    if (navigator.getUserMedia) {
+                                        // 发起offer
+                                        navigator.getUserMedia(videoObj, successVideo, errorVideo);
+                                    } else {
+                                        alert("getUserMedia not supported");
+                                        console.log("getUserMedia not supported");
+                                    }
                                 } else {
-                                    pc.setRemoteDescription(new RTCSessionDescription(result.sdp));
-                                    // 如果是一个offer，那么需要回复一个answer
-                                    if(result.event === "offer") {
-                                        pc.createAnswer(sendAnswerFn, function (error) {
-                                            console.log('Failure callback: ' + error);
-                                        });
+                                    //如果是一个ICE的候选，则将其加入到PeerConnection中，否则设定对方的session描述为传递过来的描述
+                                    if (result.event === "ice_candidate") {
+                                        pc.addIceCandidate(new RTCIceCandidate(result.candidate));
+                                    } else {
+                                        pc.setRemoteDescription(new RTCSessionDescription(result.sdp));
+                                        // 如果是一个offer，那么需要回复一个answer
+                                        if (result.event === "offer") {
+                                            pc.createAnswer(sendAnswerFn, function (error) {
+                                                console.log('Failure callback: ' + error);
+                                            });
+                                        }
                                     }
                                 }
+
                             }
                             // 不支持的处理
                             else{
@@ -588,18 +606,27 @@
     // 发送offer和answer的函数，发送本地session描述
     var sendOfferFn = function(desc){
         pc.setLocalDescription(desc);
-        videoFriend.videoRequest = "accept";
-        videoFriend.sdp = desc
-        videoFriend.event = "offer";
+        // 接收者账号
+        var receiver = $("#receiverAccount").val();
+        videoFriend["videoRequest"] = "accept";
+        videoFriend["sdp"] = desc;
+        videoFriend["event"] = "offer";
+        videoFriend["receiver"] = receiver;
+        videoFriend["sender"]=userAccount;
+        videoFriend["messageType"] = "video";
           // 发送同意视频请求
         socket.send(JSON.stringify(videoFriend));
     };
 
     var sendAnswerFn = function(desc){
         pc.setLocalDescription(desc);
-        videoFriend.videoRequest = "accept";
-        videoFriend.sdp = desc
-        videoFriend.event = "answer";
+        videoFriend["videoRequest"] = "accept";
+        videoFriend["sdp"] = desc;
+        videoFriend["event"] = "answer";
+        var receiver = $("#receiverAccount").val();
+        videoFriend["receiver"] = receiver;
+        videoFriend["sender"]=userAccount;
+        videoFriend["messageType"] = "video";
           // 发送
         socket.send(JSON.stringify(videoFriend));
     };
@@ -607,8 +634,13 @@
      // 发送ICE候选到其他客户端
     pc.onicecandidate = function(event){
         if (event.candidate !== null) {
-            videoFriend.videoRequest = "accept";
-            videoFriend.candidate = event.candidate;
+            videoFriend["videoRequest"] = "accept";
+            videoFriend["candidate"] = event.candidate;
+            var receiver = $("#receiverAccount").val();
+            videoFriend["receiver"] = receiver;
+            videoFriend["sender"]=userAccount;
+            videoFriend["event"] = "ice_candidate";
+            videoFriend["messageType"] = "video";
             socket.send(JSON.stringify(videoFriend));
         }
     };
@@ -663,7 +695,7 @@
            dataType:"json",
            async: false,
            success: function(ret){
-               if(ret.data.isOnline == "on"){
+               if(ret.data.isOnline === "on"){
                    // 发送者姓名
                    var senderName = $("#userName").val();
                    // 发送时间，毫秒数
@@ -688,25 +720,51 @@
 
     // 视频挂断
     $("#hangup").on("click",function(){
-                   // 如果本地已经开启了摄像机
+        // 如果本地已经开启了摄像机
        if(localStream){
            localStream.getTracks().forEach(function (track) {
                track.stop();
            });
            localStream = null;
        }
+
+    });
+
+    // 拒绝好友的视频请求
+    $("#reject").on("click",function () {
+        // 发送者姓名
+        var senderName = $("#userName").val();
+        // 发送时间，毫秒数
+        var sendTime = new Date().getTime();
+        // 接收者账号
+        var receiver = $("#receiverAccount").val();
+        // 接收者姓名
+        var receiverName = $("#receiverName").val();
+        // 消息类型
+        var messageType = "video";
+        // pending表示视频请求，拒绝好友视频请求
+        var message = new Message(userAccount,senderName,sendTime,receiver,receiverName,null,messageType,"reject");
+        // 发送视频请求
+        socket.send(JSON.stringify(message));
     });
 
     // 同意好友的视频请求
     $("#accept").on("click",function(){
-        // 如果本地摄像头没有开启，则允许开启摄像机
-       if(!localStream){
-           // 本地摄像机开启
-           if (navigator.getUserMedia) {
-               navigator.getUserMedia(videoObj, successVideo, errorVideo);
-           }else {
-               alert("getUserMedia not supported");
-               console.log("getUserMedia not supported");
-           }
-       }
+        // 发送者姓名
+        var senderName = $("#userName").val();
+        // 发送时间，毫秒数
+        var sendTime = new Date().getTime();
+        // 接收者账号
+        var receiver = $("#receiverAccount").val();
+        // 接收者姓名
+        var receiverName = $("#receiverName").val();
+        // 消息类型
+        var messageType = "video";
+
+        // pending表示视频请求，同意好友视频请求
+        var message = new Message(userAccount,senderName,sendTime,receiver,receiverName,null,messageType,"accept");
+        // 由对方发起视频请求
+        message["videoRequestAccount"]=receiver;
+        // 发送视频请求
+        socket.send(JSON.stringify(message));
     });

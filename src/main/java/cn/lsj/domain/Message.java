@@ -46,6 +46,8 @@ public class Message implements Serializable {
     private String downloadPath;
     // 视频请求是否同意，状态   -- accept   -- reject  -- pending
     private String videoRequest;
+    // 视频请求发起方账号;
+    private String videoRequestAccount;
     // 视频请求前端
     private Object sdp;
     // candidate
@@ -195,5 +197,13 @@ public class Message implements Serializable {
 
     public void setEvent(String event) {
         this.event = event;
+    }
+
+    public String getVideoRequestAccount() {
+        return videoRequestAccount;
+    }
+
+    public void setVideoRequestAccount(String videoRequestAccount) {
+        this.videoRequestAccount = videoRequestAccount;
     }
 }
