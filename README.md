@@ -25,7 +25,7 @@
 
 2. 确保本地已安装好redis，并且已成功启动。用户登录信息保存在redis中，登录超时拦截也依赖redis，因此如果没有redis服务，项目将无法正常运行。项目中连接redis没有设置密码，因此安装redis时最好也不要设置密码。如果设置了密码，将需要修改application.yml文件中redis相关的配置
 
-3. 启动项目，在浏览器中输入如下网址即可来到登录页面。http://127.0.0.1:6789/login，来到登录界面后，输入user表中的user_account和user_password即可实现登录。
+3. 启动项目，在浏览器中输入如下网址即可来到登录页面。http://127.0.0.1:6789/login  来到登录界面后，输入user表中的user_account和user_password即可实现登录。
 
 ### 实现功能
 
