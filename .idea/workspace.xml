@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="713e67bc-a513-4f23-b218-f6e39ae6d9f2" name="Default" comment="大文件上传">
+    <list default="true" id="713e67bc-a513-4f23-b218-f6e39ae6d9f2" name="Default" comment="项目截图和数据库">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/lsj/redis/config/RedisConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/lsj/redis/config/RedisConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/home/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/home/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/cn/lsj/netty/NettyServer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cn/lsj/netty/NettyServer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/cn/lsj/redis/config/RedisConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/cn/lsj/redis/config/RedisConfig.class" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -68,8 +63,8 @@
       <file leaf-file-name="index.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/resources/static/chat/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="589">
-              <caret line="769" column="7" selection-start-line="769" selection-start-column="7" selection-end-line="769" selection-end-column="7" />
+            <state relative-caret-position="104">
+              <caret line="673" column="20" selection-start-line="673" selection-start-column="20" selection-end-line="673" selection-end-column="20" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#div#1;n#div#0;n#div#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#!!top" expanded="true" />
@@ -308,102 +303,6 @@
               <item name="chatroom-web" type="b2602c69:ProjectViewProjectNode" />
               <item name="chatroom-web" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="chatroom-web" type="b2602c69:ProjectViewProjectNode" />
-              <item name="chatroom-web" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="chatroom-web" type="b2602c69:ProjectViewProjectNode" />
-              <item name="chatroom-web" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="chatroom-web" type="b2602c69:ProjectViewProjectNode" />
-              <item name="chatroom-web" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="chatroom-web" type="b2602c69:ProjectViewProjectNode" />
-              <item name="chatroom-web" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="lsj" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="chatroom-web" type="b2602c69:ProjectViewProjectNode" />
-              <item name="chatroom-web" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="lsj" type="462c0819:PsiDirectoryNode" />
-              <item name="redis" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="chatroom-web" type="b2602c69:ProjectViewProjectNode" />
-              <item name="chatroom-web" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="lsj" type="462c0819:PsiDirectoryNode" />
-              <item name="redis" type="462c0819:PsiDirectoryNode" />
-              <item name="config" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="chatroom-web" type="b2602c69:ProjectViewProjectNode" />
-              <item name="chatroom-web" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="lsj" type="462c0819:PsiDirectoryNode" />
-              <item name="redis" type="462c0819:PsiDirectoryNode" />
-              <item name="service" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="chatroom-web" type="b2602c69:ProjectViewProjectNode" />
-              <item name="chatroom-web" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="chatroom-web" type="b2602c69:ProjectViewProjectNode" />
-              <item name="chatroom-web" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="chatroom-web" type="b2602c69:ProjectViewProjectNode" />
-              <item name="chatroom-web" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-              <item name="chat" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="chatroom-web" type="b2602c69:ProjectViewProjectNode" />
-              <item name="chatroom-web" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="chatroom-web" type="b2602c69:ProjectViewProjectNode" />
-              <item name="chatroom-web" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-              <item name="templates" type="462c0819:PsiDirectoryNode" />
-              <item name="home" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
@@ -595,7 +494,7 @@
       <workItem from="1537775185951" duration="805000" />
       <workItem from="1538608992511" duration="630000" />
       <workItem from="1547039366710" duration="498000" />
-      <workItem from="1547039918618" duration="5109000" />
+      <workItem from="1547039918618" duration="6461000" />
     </task>
     <task id="LOCAL-00001" summary="一些初始化">
       <created>1534896615242</created>
@@ -870,17 +769,45 @@
       <option name="project" value="LOCAL" />
       <updated>1537625235042</updated>
     </task>
-    <option name="localTasksCounter" value="40" />
+    <task id="LOCAL-00040" summary="图片和sql">
+      <created>1547045494396</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1547045494396</updated>
+    </task>
+    <task id="LOCAL-00041" summary="大文件上传">
+      <created>1547045517771</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1547045517771</updated>
+    </task>
+    <task id="LOCAL-00042" summary="开摄像头js修改">
+      <created>1547046335278</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1547046335278</updated>
+    </task>
+    <task id="LOCAL-00043" summary="项目截图和数据库">
+      <created>1547046734006</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1547046734006</updated>
+    </task>
+    <option name="localTasksCounter" value="44" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="177129000" />
+    <option name="totallyTimeSpent" value="178481000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="2062" height="1126" extended-state="6" />
     <layout>
       <window_info anchor="right" id="Palette" order="4" />
-      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.500499" side_tool="true" weight="0.471183" />
+      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.500998" side_tool="true" visible="true" weight="0.62184024" />
       <window_info anchor="right" id="Maven Projects" order="1" weight="0.15568863" />
       <window_info anchor="bottom" id="Database Changes" order="13" show_stripe_button="false" />
       <window_info id="Capture Tool" order="6" />
@@ -889,22 +816,22 @@
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="2" weight="0.25" />
       <window_info id="UI Designer" order="4" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.499501" visible="true" weight="0.23862487" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.499002" weight="0.4924166" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Messages" order="9" sideWeight="0.499501" weight="0.2082912" />
       <window_info anchor="right" id="Palette&#9;" order="6" />
       <window_info id="Image Layers" order="3" />
       <window_info anchor="bottom" id="Java Enterprise" order="12" weight="0.32962587" />
       <window_info anchor="right" id="Capture Analysis" order="5" />
-      <window_info anchor="bottom" id="Version Control" order="10" weight="0.32457027" />
+      <window_info anchor="bottom" id="Version Control" order="10" sideWeight="0.499002" visible="true" weight="0.62184024" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.20424671" />
       <window_info anchor="bottom" id="Spring" order="11" />
       <window_info anchor="bottom" id="Terminal" order="7" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.8286853" visible="true" weight="0.28193614" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.80748665" visible="true" weight="0.28193614" />
       <window_info anchor="right" id="Bean Validation" order="9" />
       <window_info id="Web" order="7" side_tool="true" />
       <window_info anchor="right" id="Theme Preview" order="7" />
-      <window_info id="Favorites" order="5" sideWeight="0.17131475" side_tool="true" visible="true" weight="0.28193614" />
+      <window_info id="Favorites" order="5" sideWeight="0.19251336" side_tool="true" visible="true" weight="0.28193614" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
@@ -921,9 +848,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="集成thymeleaf模板引擎" />
-    <MESSAGE value="用户注册" />
-    <MESSAGE value="聊天室" />
     <MESSAGE value="聊天室主页修改" />
     <MESSAGE value="登录拦截" />
     <MESSAGE value="登录拦截功能实现" />
@@ -944,9 +868,12 @@
     <MESSAGE value="下线关闭连接" />
     <MESSAGE value="界面修改" />
     <MESSAGE value="修改文件分块上传" />
-    <MESSAGE value="大文件上传" />
     <MESSAGE value="视频通话" />
-    <option name="LAST_COMMIT_MESSAGE" value="视频通话" />
+    <MESSAGE value="图片和sql" />
+    <MESSAGE value="大文件上传" />
+    <MESSAGE value="开摄像头js修改" />
+    <MESSAGE value="项目截图和数据库" />
+    <option name="LAST_COMMIT_MESSAGE" value="项目截图和数据库" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1359,8 +1286,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/static/chat/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="589">
-          <caret line="769" column="7" selection-start-line="769" selection-start-column="7" selection-end-line="769" selection-end-column="7" />
+        <state relative-caret-position="104">
+          <caret line="673" column="20" selection-start-line="673" selection-start-column="20" selection-end-line="673" selection-end-column="20" />
           <folding>
             <element signature="n#style#0;n#div#0;n#div#1;n#div#0;n#div#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#!!top" expanded="true" />
