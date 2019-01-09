@@ -669,7 +669,12 @@
           // 获得vido标签对象
           var video = document.getElementById('localVideo');
          //绑定本地媒体流到video标签用于输出
-          video.src = window.URL.createObjectURL(stream);
+        try {
+            video.src = window.URL.createObjectURL(stream);
+        }catch (e) {
+            console.log(e);
+            video.srcObjct = stream;
+        }
           // play带有播放和暂停按钮的一段视频
           video.onloadedmetadata = function(e) {
              video.play();
@@ -684,7 +689,7 @@
           pc.createOffer(sendOfferFn,function(){
               console.log('Failure callback: ' + error);
           });
-    }
+    };
 
     $("#video").on("click",function(){
     // 判断对方是否在线，如果在线则开启摄像机
