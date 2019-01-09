@@ -1,5 +1,6 @@
 package cn.lsj.redis.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -25,6 +26,9 @@ public class RedisConfig {
     }
 
 
+    @Value("${spring.redis.password}")
+    private String password;
+
     /**
      * 使用连接池+工厂模式实例化Redis连接对象
      * */
@@ -33,6 +37,7 @@ public class RedisConfig {
     public JedisConnectionFactory getConnectionFactory() {
         JedisConnectionFactory factory = new JedisConnectionFactory();
         factory.setUsePool(true);
+        factory.setPassword(password);
         JedisPoolConfig config = getRedisConfig();
         factory.setPoolConfig(config);
         //在所有的属性被初始化后调用。但是会在init前调用，不加此行代码会报空指针异常
