@@ -42,12 +42,12 @@
 
 主界面
 
-![](https://github.com/lushunjian/chatroom-web/image/chat-room6.png)
+![主界面](https://github.com/lushunjian/chatroom-web/image/chat-room6.png)
 
 后台日志
 
-![](https://github.com/lushunjian/chatroom-web/image/chat-room.png)
+![日志](https://github.com/lushunjian/chatroom-web/image/chat-room.png)
 
 视频通话
 
-![](https://github.com/lushunjian/chatroom-web/image/chat-room3.png)
+![视频](https://github.com/lushunjian/chatroom-web/image/chat-room3.png)
