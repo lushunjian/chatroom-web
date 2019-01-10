@@ -38,16 +38,16 @@
 
 登录界面
 
-![登录](https://github.com/lushunjian/chatroom-web/image/chat-room5.png)
+![登录](https://github.com/lushunjian/chatroom-web/blob/master/image/chat-room5.png)
 
 主界面
 
-![主界面](https://github.com/lushunjian/chatroom-web/image/chat-room6.png)
+![主界面](https://github.com/lushunjian/chatroom-web/blob/master/image/chat-room6.png)
 
 后台日志
 
-![日志](https://github.com/lushunjian/chatroom-web/image/chat-room.png)
+![日志](https://github.com/lushunjian/chatroom-web/blob/master/image/chat-room.png)
 
 视频通话
 
-![视频](https://github.com/lushunjian/chatroom-web/image/chat-room3.png)
+![视频](https://github.com/lushunjian/chatroom-web/blob/master/image/chat-room3.png)
