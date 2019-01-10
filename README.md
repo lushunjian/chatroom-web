@@ -51,3 +51,7 @@
 视频通话
 
 ![视频](https://github.com/lushunjian/chatroom-web/blob/master/image/chat-room3.png)
+
+文件互传
+
+![文件互传](https://github.com/lushunjian/chatroom-web/blob/master/image/chat-room8.png)
